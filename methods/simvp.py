@@ -31,12 +31,12 @@ class SimVP(Base_method):
             
             cur_seq = batch_x.clone()
             for _ in range(d):
-                cur_pred = self.model(cur_seq)
-                pred_y.append(cur_pred)
+                cur_seq = self.model(cur_seq)
+                pred_y.append(cur_seq)
 
             if m != 0:
-                cur_pred = self.model(cur_seq)
-                pred_y.append(cur_pred[:, :m])
+                cur_seq = self.model(cur_seq)
+                pred_y.append(cur_seq[:, :m])
             
             pred_y = torch.cat(pred_y, dim=1)
         return pred_y
