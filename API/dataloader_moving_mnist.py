@@ -20,8 +20,7 @@ def load_fixed_set(root):
     path = os.path.join(root, filename)
     dataset = np.load(path)
     dataset = dataset[..., np.newaxis]
-    # return dataset
-    return dataset[:, :100]
+    return dataset
 
 
 class MovingMNIST(data.Dataset):
