@@ -57,7 +57,12 @@ This project has provided an environment setting file of conda, users can easily
 If you are interested in our repository and our paper, please cite the following paper:
 
 ```
-TBD
+@article{tan2022simvp,
+  title={SimVP: Towards Simple yet Powerful Spatiotemporal Predictive Learning},
+  author={Tan, Cheng and Gao, Zhangyang and Li, Stan Z},
+  journal={arXiv preprint arXiv:2211.12509},
+  year={2022}
+}
 ```
 
 ## Contact
