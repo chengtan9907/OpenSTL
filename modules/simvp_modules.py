@@ -9,8 +9,20 @@ from timm.models.layers import DropPath, trunc_normal_
 from timm.models.convnext import ConvNeXtBlock
 from timm.models.mlp_mixer import MixerBlock
 from timm.models.swin_transformer import SwinTransformerBlock, window_partition, window_reverse
+from timm.models.vision_transformer import Block as ViTBlock
 
-from .layers import ChannelAggregationFFN, MultiOrderGatedAggregation
+from .layers import (HorBlock, ChannelAggregationFFN, MultiOrderGatedAggregation,
+                     PoolFormerBlock, CBlock, SABlock)
+
+
+class DWConv(nn.Module):
+    def __init__(self, dim=768):
+        super(DWConv, self).__init__()
+        self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, bias=True, groups=dim)
+
+    def forward(self, x):
+        x = self.dwconv(x)
+        return x
 
 
 class Mlp(nn.Module):
@@ -92,18 +104,8 @@ class SpatialAttention(nn.Module):
         return x
 
 
-class DWConv(nn.Module):
-    def __init__(self, dim=768):
-        super(DWConv, self).__init__()
-        self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, bias=True, groups=dim)
-
-    def forward(self, x):
-        x = self.dwconv(x)
-        return x
-
-
 class GASubBlock(nn.Module):
-    """A GABlock for SimVP.V1"""
+    """A GABlock (gSTA) for SimVP"""
 
     def __init__(self, dim, kernel_size=21, mlp_ratio=4., drop=0., drop_path=0.1, act_layer=nn.GELU):
         super().__init__()
@@ -142,6 +144,39 @@ class GASubBlock(nn.Module):
         return x
 
 
+class ConvMixerSubBlock(nn.Module):
+    """A block of ConvMixer."""
+
+    def __init__(self, dim, kernel_size=9, activation=nn.GELU):
+        super().__init__()
+        # spatial mixing
+        self.conv_dw = nn.Conv2d(dim, dim, kernel_size, groups=dim, padding="same")
+        self.act_1 = activation()
+        self.norm_1 = nn.BatchNorm2d(dim)
+        # channel mixing
+        self.conv_pw = nn.Conv2d(dim, dim, kernel_size=1)
+        self.act_2 = activation()
+        self.norm_2 = nn.BatchNorm2d(dim)
+
+        self.apply(self._init_weights)
+
+    def _init_weights(self, m):
+        if isinstance(m, nn.BatchNorm2d):
+            nn.init.constant_(m.bias, 0)
+            nn.init.constant_(m.weight, 1.0)
+        elif isinstance(m, nn.Conv2d):
+            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+            fan_out //= m.groups
+            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+            if m.bias is not None:
+                m.bias.data.zero_()
+
+    def forward(self, x):
+        x = x + self.norm_1(self.act_1(self.conv_dw(x)))
+        x = self.norm_2(self.act_2(self.conv_pw(x)))
+        return x
+
+
 class ConvNeXtSubBlock(ConvNeXtBlock):
     """A block of ConvNeXt."""
 
@@ -150,11 +185,7 @@ class ConvNeXtSubBlock(ConvNeXtBlock):
         self.apply(self._init_weights)
 
     def _init_weights(self, m):
-        if isinstance(m, nn.Linear):
-            trunc_normal_(m.weight, std=.02)
-            if isinstance(m, nn.Linear) and m.bias is not None:
-                nn.init.constant_(m.bias, 0)
-        elif isinstance(m, (nn.LayerNorm, nn.GroupNorm, nn.BatchNorm2d)):
+        if isinstance(m, (nn.LayerNorm, nn.GroupNorm, nn.BatchNorm2d)):
             nn.init.constant_(m.bias, 0)
             nn.init.constant_(m.weight, 1.0)
         elif isinstance(m, nn.Conv2d):
@@ -167,6 +198,29 @@ class ConvNeXtSubBlock(ConvNeXtBlock):
     def forward(self, x):
         x = x + self.drop_path(self.gamma.reshape(1, -1, 1, 1) * self.mlp(self.norm(self.conv_dw(x))))
         return x
+
+
+class HorNetSubBlock(HorBlock):
+    """A block of HorNet."""
+
+    def __init__(self, dim, mlp_ratio=4., drop_path=0.1, init_value=1e-6):
+        super().__init__(dim, mlp_ratio=mlp_ratio, drop_path=drop_path, init_value=init_value)
+        self.apply(self._init_weights)
+
+    def _init_weights(self, m):
+        if isinstance(m, nn.Linear):
+            trunc_normal_(m.weight, std=.02)
+            if isinstance(m, nn.Linear) and m.bias is not None:
+                nn.init.constant_(m.bias, 0)
+        elif isinstance(m, nn.LayerNorm):
+            nn.init.constant_(m.bias, 0)
+            nn.init.constant_(m.weight, 1.0)
+        elif isinstance(m, nn.Conv2d):
+            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+            fan_out //= m.groups
+            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+            if m.bias is not None:
+                m.bias.data.zero_()
 
 
 class MLPMixerSubBlock(MixerBlock):
@@ -194,14 +248,77 @@ class MLPMixerSubBlock(MixerBlock):
         return x.reshape(B, H, W, C).permute(0, 3, 1, 2)
 
 
+class MogaSubBlock(nn.Module):
+    """A block of MogaNet."""
+
+    def __init__(self, embed_dims, mlp_ratio=4., drop_rate=0., drop_path_rate=0., init_value=1e-5,
+                 attn_dw_dilation=[1, 2, 3], attn_channel_split=[1, 3, 4]):
+        super(MogaSubBlock, self).__init__()
+        self.out_channels = embed_dims
+        # spatial attention
+        self.norm1 = nn.BatchNorm2d(embed_dims)
+        self.attn = MultiOrderGatedAggregation(
+            embed_dims, attn_dw_dilation=attn_dw_dilation, attn_channel_split=attn_channel_split)
+        self.drop_path = DropPath(drop_path_rate) if drop_path_rate > 0. else nn.Identity()
+        # channel MLP
+        self.norm2 = nn.BatchNorm2d(embed_dims)
+        mlp_hidden_dims = int(embed_dims * mlp_ratio)
+        self.mlp = ChannelAggregationFFN(
+            embed_dims=embed_dims, mlp_hidden_dims=mlp_hidden_dims, ffn_drop=drop_rate)
+        # init layer scale
+        self.layer_scale_1 = nn.Parameter(init_value * torch.ones((1, embed_dims, 1, 1)), requires_grad=True)
+        self.layer_scale_2 = nn.Parameter(init_value * torch.ones((1, embed_dims, 1, 1)), requires_grad=True)
+
+        self.apply(self._init_weights)
+
+    def _init_weights(self, m):
+        if isinstance(m, nn.Linear):
+            trunc_normal_(m.weight, std=.02)
+            if isinstance(m, nn.Linear) and m.bias is not None:
+                nn.init.constant_(m.bias, 0)
+        elif isinstance(m, (nn.LayerNorm, nn.GroupNorm, nn.BatchNorm2d)):
+            nn.init.constant_(m.bias, 0)
+            nn.init.constant_(m.weight, 1.0)
+        elif isinstance(m, nn.Conv2d):
+            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+            fan_out //= m.groups
+            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+            if m.bias is not None:
+                m.bias.data.zero_()
+
+    def forward(self, x):
+        x = x + self.drop_path(self.layer_scale_1 * self.attn(self.norm1(x)))
+        x = x + self.drop_path(self.layer_scale_2 * self.mlp(self.norm2(x)))
+        return x
+
+
+class PoolFormerSubBlock(PoolFormerBlock):
+    """A block of PoolFormer."""
+
+    def __init__(self, dim, mlp_ratio=4., drop=0., drop_path=0.1):
+        super().__init__(dim, pool_size=3, mlp_ratio=mlp_ratio, drop_path=drop_path,
+                         drop=drop, init_value=1e-5)
+        self.apply(self._init_weights)
+
+    def _init_weights(self, m):
+        if isinstance(m, nn.Linear):
+            trunc_normal_(m.weight, std=.02)
+            if isinstance(m, nn.Linear) and m.bias is not None:
+                nn.init.constant_(m.bias, 0)
+        elif isinstance(m, (nn.LayerNorm, nn.GroupNorm, nn.BatchNorm2d)):
+            nn.init.constant_(m.bias, 0)
+            nn.init.constant_(m.weight, 1.0)
+
+
 class SwinSubBlock(SwinTransformerBlock):
     """A block of Swin Transformer."""
 
     def __init__(self, dim, input_resolution=None, layer_i=0, mlp_ratio=4., drop=0., drop_path=0.1):
         window_size = 7 if input_resolution[0] % 7 == 0 else min(4, input_resolution[0] // 16)
         shift_size = 0 if (layer_i % 2 == 0) else window_size // 2
-        super().__init__(dim, input_resolution, num_heads=4, window_size=window_size, shift_size=shift_size,
-                         mlp_ratio=mlp_ratio, drop_path=drop_path, drop=drop, qkv_bias=True)
+        super().__init__(dim, input_resolution, num_heads=8, window_size=window_size,
+                         shift_size=shift_size, mlp_ratio=mlp_ratio,
+                         drop_path=drop_path, drop=drop, qkv_bias=True)
         self.apply(self._init_weights)
 
     def _init_weights(self, m):
@@ -251,27 +368,23 @@ class SwinSubBlock(SwinTransformerBlock):
         return x.reshape(B, H, W, C).permute(0, 3, 1, 2)
 
 
-class MogaSubBlock(nn.Module):
-    """A block of MogaNet."""
+def UniformerSubBlock(embed_dims, mlp_ratio=4., drop=0., drop_path=0., init_value=1e-6, block_type='Conv'):
+    """Build a block of Uniformer."""
 
-    def __init__(self, embed_dims, mlp_ratio=4., drop_rate=0., drop_path_rate=0., init_value=1e-5,
-                 attn_dw_dilation=[1, 2, 3], attn_channel_split=[1, 3, 4]):
-        super(MogaSubBlock, self).__init__()
-        self.out_channels = embed_dims
-        # spatial attention
-        self.norm1 = nn.BatchNorm2d(embed_dims)
-        self.attn = MultiOrderGatedAggregation(
-            embed_dims, attn_dw_dilation=attn_dw_dilation, attn_channel_split=attn_channel_split)
-        self.drop_path = DropPath(drop_path_rate) if drop_path_rate > 0. else nn.Identity()
-        # channel MLP
-        self.norm2 = nn.BatchNorm2d(embed_dims)
-        mlp_hidden_dims = int(embed_dims * mlp_ratio)
-        self.mlp = ChannelAggregationFFN(
-            embed_dims=embed_dims, mlp_hidden_dims=mlp_hidden_dims, ffn_drop=drop_rate)
-        # init layer scale
-        self.layer_scale_1 = nn.Parameter(init_value * torch.ones((1, embed_dims, 1, 1)), requires_grad=True)
-        self.layer_scale_2 = nn.Parameter(init_value * torch.ones((1, embed_dims, 1, 1)), requires_grad=True)
+    assert block_type in ['Conv', 'MHSA']
+    if block_type == 'Conv':
+        return CBlock(dim=embed_dims, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
+    else:
+        return SABlock(dim=embed_dims, num_heads=8, mlp_ratio=mlp_ratio, qkv_bias=True,
+                       drop=drop, drop_path=drop_path, init_value=init_value)
 
+
+class ViTSubBlock(ViTBlock):
+    """A block of Vision Transformer."""
+
+    def __init__(self, dim, mlp_ratio=4., drop=0., drop_path=0.1):
+        super().__init__(dim=dim, num_heads=8, mlp_ratio=mlp_ratio, qkv_bias=True,
+                         drop=drop, drop_path=drop_path, act_layer=nn.GELU, norm_layer=nn.LayerNorm)
         self.apply(self._init_weights)
 
     def _init_weights(self, m):
@@ -282,14 +395,10 @@ class MogaSubBlock(nn.Module):
         elif isinstance(m, (nn.LayerNorm, nn.GroupNorm, nn.BatchNorm2d)):
             nn.init.constant_(m.bias, 0)
             nn.init.constant_(m.weight, 1.0)
-        elif isinstance(m, nn.Conv2d):
-            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-            fan_out //= m.groups
-            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-            if m.bias is not None:
-                m.bias.data.zero_()
 
     def forward(self, x):
-        x = x + self.drop_path(self.layer_scale_1 * self.attn(self.norm1(x)))
-        x = x + self.drop_path(self.layer_scale_2 * self.mlp(self.norm2(x)))
-        return x
+        B, C, H, W = x.shape
+        x = x.flatten(2).transpose(1, 2)
+        x = x + self.drop_path(self.attn(self.norm1(x)))
+        x = x + self.drop_path(self.mlp(self.norm2(x)))
+        return x.reshape(B, H, W, C).permute(0, 3, 1, 2)

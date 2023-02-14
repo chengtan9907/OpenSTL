@@ -34,7 +34,9 @@ def create_parser():
     parser.add_argument('--config_file', '-c', default='./configs/mmnist/simvp/SimVP.py', type=str,
                         help='Path to the default config file')
     parser.add_argument('--model_type', default=None, type=str,
-                        help='Name of model for the method (default: None)')
+                        help='Name of model for SimVP (default: None)')
+    parser.add_argument('--drop', type=float, default=0.0, help='Dropout rate(default: 0.)')
+    parser.add_argument('--drop_path', type=float, default=0.1, help='Drop path rate for SimVP (default: 0.1)')
 
     # Training parameters
     parser.add_argument('--epoch', default=200, type=int, help='end epochs')

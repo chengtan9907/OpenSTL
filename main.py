@@ -130,11 +130,13 @@ class Exp(object):
                     self.train_loader, epoch, num_updates, loss_mean, eta)
 
             if epoch % self.args.log_step == 0:
+                cur_lr = self.method.current_lr()
+                cur_lr = sum(cur_lr) / len(cur_lr)
                 with torch.no_grad():
                     vali_loss = self.vali(self.vali_loader)
 
-                print_log('Epoch: {0}, Steps: {1} | Train Loss: {2:.7f} Vali Loss: {3:.7f}\n'.format(
-                    epoch + 1, len(self.train_loader), loss_mean, vali_loss))
+                print_log('Epoch: {0}, Steps: {1} | Lr: {2:.7f} | Train Loss: {3:.7f} | Vali Loss: {4:.7f}\n'.format(
+                    epoch + 1, len(self.train_loader), cur_lr, loss_mean, vali_loss))
                 recorder(vali_loss, self.method.model, self.path)
 
         best_model_path = osp.join(self.path, 'checkpoint.pth')

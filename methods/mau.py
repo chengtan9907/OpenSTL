@@ -47,6 +47,9 @@ class MAU(Base_method):
             
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item()))
 
+        if hasattr(self.model_optim, 'sync_lookahead'):
+            self.model_optim.sync_lookahead()
+
         return num_updates, loss_mean, eta
 
     def vali_one_epoch(self, vali_loader, **kwargs):

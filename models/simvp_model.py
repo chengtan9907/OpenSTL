@@ -1,7 +1,8 @@
 import torch
 from torch import nn
 from timm.models.layers import trunc_normal_
-from modules import ConvNeXtSubBlock, GASubBlock, MLPMixerSubBlock, MogaSubBlock, SwinSubBlock
+from modules import (ConvNeXtSubBlock, ConvMixerSubBlock, GASubBlock, HorNetSubBlock, MLPMixerSubBlock,
+                     MogaSubBlock, PoolFormerSubBlock, SwinSubBlock, UniformerSubBlock, ViTSubBlock)
 
 
 def sampling_generator(N, reverse=False):
@@ -174,23 +175,39 @@ class MetaBlock(nn.Module):
         super(MetaBlock, self).__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
-        model_type = model_type if model_type is not None else 'gSTA'
+        model_type = model_type.lower() if model_type is not None else 'gsta'
 
-        if model_type == 'gSTA':
+        if model_type == 'gsta':
             self.block = GASubBlock(
                 in_channels, kernel_size=21, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path, act_layer=nn.GELU)
-        elif model_type == 'ConvNeXt':
+        elif model_type == 'convmixer':
+            self.block = ConvMixerSubBlock(in_channels, kernel_size=11, activation=nn.GELU)
+        elif model_type == 'convnext':
             self.block = ConvNeXtSubBlock(
                 in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
-        elif model_type == 'MLP':
+        elif model_type == 'hornet':
+            self.block = HorNetSubBlock(in_channels, mlp_ratio=mlp_ratio, drop_path=drop_path)
+        elif model_type == 'mlp':
             self.block = MLPMixerSubBlock(
                 in_channels, input_resolution, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
-        elif model_type == 'Moga':
+        elif model_type == 'moga':
             self.block = MogaSubBlock(
                 in_channels, mlp_ratio=mlp_ratio, drop_rate=drop, drop_path_rate=drop_path)
-        elif model_type == 'Swin':
+        elif model_type == 'poolformer':
+            self.block = PoolFormerSubBlock(
+                in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
+        elif model_type == 'swin':
             self.block = SwinSubBlock(
                 in_channels, input_resolution, layer_i=layer_i, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
+        elif model_type == 'uniformer':
+            block_type = 'MHSA' if in_channels == out_channels and layer_i > 0 else 'Conv'
+            self.block = UniformerSubBlock(
+                in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path, block_type=block_type)
+        elif model_type == 'vit':
+            self.block = ViTSubBlock(
+                in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
+        else:
+            assert False and "Invalid model_type in SimVP"
 
         if in_channels != out_channels:
             self.reduction = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0)
@@ -231,7 +248,7 @@ class MidMetaNet(nn.Module):
 
 
 class SimVP_Model(nn.Module):
-    def __init__(self, in_shape, hid_S=16, hid_T=256, N_S=4, N_T=4, model_type='',
+    def __init__(self, in_shape, hid_S=16, hid_T=256, N_S=4, N_T=4, model_type='gSTA',
                  mlp_ratio=8., drop=0.0, drop_path=0.0, spatio_kernel_enc=3, spatio_kernel_dec=3,
                  **kwargs):
         super(SimVP_Model, self).__init__()

@@ -49,6 +49,9 @@ class CrevNet(Base_method):
             self.scheduler2.step()
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
 
+        if hasattr(self.model_optim, 'sync_lookahead'):
+            self.model_optim.sync_lookahead()
+
         return num_updates, loss_mean
 
     def vali_one_epoch(self, vali_loader, **kwargs):
