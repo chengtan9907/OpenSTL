@@ -8,6 +8,7 @@ from .base_method import Base_method
 from .optim_scheduler import get_optim_scheduler
 from timm.utils import AverageMeter
 
+
 class CrevNet(Base_method):
     def __init__(self, args, device, steps_per_epoch):
         args.pre_seq_length = 8
@@ -21,8 +22,8 @@ class CrevNet(Base_method):
         return CrevNet_Model(**config).to(self.device)
 
     def _init_optimizer(self, steps_per_epoch):
-        self.model_optim, self.scheduler = get_optim_scheduler(self.args.lr, self.args.epoch, self.model.frame_predictor, steps_per_epoch)
-        self.model_optim2, self.scheduler2 = get_optim_scheduler(self.args.lr, self.args.epoch, self.model.encoder, steps_per_epoch)
+        self.model_optim, self.scheduler = get_optim_scheduler(self.args, self.args.epoch, self.model.frame_predictor, steps_per_epoch)
+        self.model_optim2, self.scheduler2 = get_optim_scheduler(self.args, self.args.epoch, self.model.encoder, steps_per_epoch)
 
     def train_one_epoch(self, train_loader, epoch, num_updates, loss_mean, **kwargs):
         losses_m = AverageMeter()

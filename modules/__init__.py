@@ -7,6 +7,11 @@ from .e3dlstm_modules import Eidetic3DLSTMCell, tf_Conv3d
 from .crevnet_modules import zig_rev_predictor, autoencoder
 from .phydnet_modules import PhyCell, PhyD_ConvLSTM, PhyD_EncoderRNN, K2M
 from .mau_modules import MAUCell
-from .simvp_modules import GASubBlock
+from .simvp_modules import ConvNeXtSubBlock, GASubBlock, MLPMixerSubBlock, MogaSubBlock, SwinSubBlock
 
-__all__ = ('ConvLSTMCell', 'CausalLSTMCell', 'GHU', 'SpatioTemporalLSTMCell', 'SpatioTemporalLSTMCellv2', 'MIMBlock', 'MIMN', 'Eidetic3DLSTMCell', 'tf_Conv3d', 'zig_rev_predictor', 'autoencoder', 'PhyCell', 'PhyD_ConvLSTM', 'PhyD_EncoderRNN', 'K2M', 'MAUCell', 'GASubBlock')
+__all__ = [
+    'ConvLSTMCell', 'CausalLSTMCell', 'GHU', 'SpatioTemporalLSTMCell', 'SpatioTemporalLSTMCellv2',
+    'MIMBlock', 'MIMN', 'Eidetic3DLSTMCell', 'tf_Conv3d', 'zig_rev_predictor', 'autoencoder', 'PhyCell',
+    'PhyD_ConvLSTM', 'PhyD_EncoderRNN', 'K2M', 'MAUCell',
+    'ConvNeXtSubBlock', 'GASubBlock', 'MLPMixerSubBlock', 'MogaSubBlock', 'SwinSubBlock',
+]

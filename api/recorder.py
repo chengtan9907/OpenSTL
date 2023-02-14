@@ -1,6 +1,7 @@
 import numpy as np
 import torch
 
+
 class Recorder:
     def __init__(self, verbose=False, delta=0):
         self.verbose = verbose

@@ -5,6 +5,7 @@ from .predrnn import PredRNN
 
 from utils import *
 
+
 class MIM(PredRNN):
     def __init__(self, args, device, steps_per_epoch):
         PredRNN.__init__(self, args, device, steps_per_epoch)

@@ -1,22 +1,27 @@
-import nni
+import time
 import logging
 import pickle
 import json
 import torch
 import numpy as np
 import os.path as osp
-from parser import create_parser
 from fvcore.nn import FlopCountAnalysis, flop_count_table
 
 import warnings
 warnings.filterwarnings('ignore')
 
-from API import metric, Recorder
+try:
+    import nni
+    has_nni = True
+except ImportError: 
+    has_nni = False
 
+from api import metric, Recorder
 from constants import method_maps
-from utils import *
+from utils import create_parser, set_seed, print_log, output_namespace, check_dir, get_dataset, load_config
 
-class Exp:
+
+class Exp(object):
     def __init__(self, args):
         self.args = args
         self.config = self.args.__dict__
@@ -27,10 +32,11 @@ class Exp:
 
         T, C, H, W = self.args.in_shape
         if self.args.method == 'SimVP':
-            _tmp_input = torch.ones(1, self.args.aft_seq_length, C, H, W).to(self.device)
+            _tmp_input = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
             flops = FlopCountAnalysis(self.method.model, _tmp_input)
         elif self.args.method == 'CrevNet':
-            _tmp_input = torch.ones(self.args.batch_size, 20, C, H, W).to(self.device)  # crevnet must use the batchsize rather than 1
+            # crevnet must use the batchsize rather than 1
+            _tmp_input = torch.ones(self.args.batch_size, 20, C, H, W).to(self.device)
             flops = FlopCountAnalysis(self.method.model, _tmp_input)
         elif self.args.method == 'PhyDNet':
             _tmp_input1 = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
@@ -49,6 +55,7 @@ class Exp:
             _tmp_input = torch.ones(1, self.args.total_length, Hp, Wp, Cp).to(self.device)
             _tmp_flag = torch.ones(1, self.args.total_length - 2, Hp, Wp, Cp).to(self.device)
             flops = FlopCountAnalysis(self.method.model, (_tmp_input, _tmp_flag))
+        print_log(self.method.model)
         print_log(flop_count_table(flops))
 
     def _acquire_device(self):
@@ -77,7 +84,9 @@ class Exp:
 
         for handler in logging.root.handlers[:]:
             logging.root.removeHandler(handler)
-        logging.basicConfig(level=logging.INFO, filename=osp.join(self.path, 'log.log'),
+        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+        logging.basicConfig(level=logging.INFO,
+                            filename=osp.join(self.path, 'train_{}.log'.format(timestamp)),
                             filemode='a', format='%(asctime)s - %(message)s')
         # prepare data
         self._get_data()
@@ -104,7 +113,7 @@ class Exp:
         fw = open(osp.join(self.checkpoints_path, str(epoch) + '.pkl'), 'rb')
         state = pickle.load(fw)
         self.method.scheduler.load_state_dict(state)
-    
+
     def train(self):
         recorder = Recorder(verbose=True)
         num_updates = 0
@@ -114,9 +123,11 @@ class Exp:
             loss_mean = 0.0
 
             if self.args.method in ['SimVP', 'CrevNet', 'PhyDNet']:
-                num_updates, loss_mean = self.method.train_one_epoch(self.train_loader, epoch, num_updates, loss_mean)
+                num_updates, loss_mean = self.method.train_one_epoch(
+                    self.train_loader, epoch, num_updates, loss_mean)
             elif self.args.method in ['ConvLSTM', 'PredRNNpp', 'PredRNN', 'PredRNNv2', 'MIM', 'E3DLSTM', 'MAU']:
-                num_updates, loss_mean, eta = self.method.train_one_epoch(self.train_loader, epoch, num_updates, loss_mean, eta)
+                num_updates, loss_mean, eta = self.method.train_one_epoch(
+                    self.train_loader, epoch, num_updates, loss_mean, eta)
 
             if epoch % self.args.log_step == 0:
                 with torch.no_grad():
@@ -132,20 +143,20 @@ class Exp:
     def vali(self, vali_loader):
         preds, trues, val_loss = self.method.vali_one_epoch(self.vali_loader)
 
-        # mae, mse, ssim, psnr, lpips = metric(preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std, return_ssim_psnr=True)
-        # print_log('vali\t mse:{}, mae:{}, ssim:{}, psnr:{}, lpips:{}'.format(mse, mae, ssim, psnr, lpips))
         mae, mse = metric(preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std, return_ssim_psnr=False)
         print_log('val\t mse:{}, mae:{}'.format(mse, mae))
-        nni.report_intermediate_result(mse)
+        if has_nni:
+            nni.report_intermediate_result(mse)
 
         return val_loss
 
     def test(self):
         inputs, trues, preds = self.method.test_one_epoch(self.test_loader)
-        mae, mse, ssim, psnr = metric(preds, trues, self.test_loader.dataset.mean, self.test_loader.dataset.std, return_ssim_psnr=True)
+        mae, mse, ssim, psnr = metric(
+            preds, trues, self.test_loader.dataset.mean, self.test_loader.dataset.std, return_ssim_psnr=True)
         metrics = np.array([mae, mse])
         print_log('mse:{}, mae:{}, ssim:{}, psnr:{}'.format(mse, mae, ssim, psnr))
-                
+        
         folder_path = osp.join(self.path, 'saved')
         check_dir(folder_path)
 
@@ -158,16 +169,18 @@ if __name__ == '__main__':
     args = create_parser().parse_args()
     config = args.__dict__
 
-    tuner_params = nni.get_next_parameter()
-    config.update(tuner_params)
-    
+    if has_nni:
+        tuner_params = nni.get_next_parameter()
+        config.update(tuner_params)
+
     default_params = load_config(osp.join('./configs', args.method + '.py') if args.config_file is None else args.config_file)
     config.update(default_params)
 
     exp = Exp(args)
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>> training <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+    print('>'*35 + ' training ' + '<'*35)
     exp.train()
 
-    print('>>>>>>>>>>>>>>>>>>>>>>>>>> testing  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<')
+    print('>'*35 + ' testing  ' + '<'*35)
     mse = exp.test()
-    nni.report_final_result(mse)
+    if has_nni:
+        nni.report_final_result(mse)

@@ -5,8 +5,8 @@ import numpy as np
 
 from models import PhyDNet_Model
 from .base_method import Base_method
-from .optim_scheduler import get_optim_scheduler
 from timm.utils import AverageMeter
+
 
 class PhyDNet(Base_method):
     def __init__(self, args, device, steps_per_epoch):

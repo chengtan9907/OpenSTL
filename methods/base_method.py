@@ -1,5 +1,6 @@
 from .optim_scheduler import get_optim_scheduler
 
+
 class Base_method(object):
     def __init__(self, args, device, steps_per_epoch):
         super(Base_method, self).__init__()
@@ -11,10 +12,8 @@ class Base_method(object):
     def _build_model(self, **kwargs):
         raise NotImplementedError
 
-    # def _init_optimizer(self, **kwargs):
-    #     raise NotImplementedError
     def _init_optimizer(self, steps_per_epoch):
-        return get_optim_scheduler(self.args.lr, self.args.epoch, self.model, steps_per_epoch)
+        return get_optim_scheduler(self.args, self.args.epoch, self.model, steps_per_epoch)
 
     def train_one_epoch(self, train_loader, **kwargs): 
         '''

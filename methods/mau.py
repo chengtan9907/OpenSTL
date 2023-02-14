@@ -9,6 +9,7 @@ from timm.utils import AverageMeter
 
 from utils import *
 
+
 class MAU(Base_method):
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)

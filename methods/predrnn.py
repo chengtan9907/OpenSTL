@@ -5,10 +5,10 @@ import numpy as np
 
 from models import PredRNN_Model
 from .base_method import Base_method
-from .optim_scheduler import get_optim_scheduler
 from timm.utils import AverageMeter
 
 from utils import *
+
 
 class PredRNN(Base_method):
     def __init__(self, args, device, steps_per_epoch):
