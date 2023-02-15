@@ -7,6 +7,13 @@ from utils import *
 
 
 class PredRNNpp(PredRNN):
+    r"""PredRNN++
+
+    Implementation of `PredRNN++: Towards A Resolution of the Deep-in-Time Dilemma
+    in Spatiotemporal Predictive Learning <https://arxiv.org/abs/1804.06300>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         PredRNN.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.args)

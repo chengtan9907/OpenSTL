@@ -1,5 +1,12 @@
 # SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning
 
+<p align="left">
+<a href="https://arxiv.org/abs/2211.12509" alt="arXiv">
+    <img src="https://img.shields.io/badge/arXiv-2211.12509-b31b1b.svg?style=flat" /></a>
+<a href="https://github.com/Westlake-AI/MogaNet/blob/main/LICENSE" alt="license">
+    <img src="https://img.shields.io/badge/license-Apache--2.0-%23B7A800" /></a>
+</p>
+
 This repository contains the implementation code for paper:
 
 **SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning**  
@@ -9,29 +16,22 @@ This repository contains the implementation code for paper:
 
 This is the journal version of our previous conference work (SimVP: Simpler yet Better Video Prediction, In CVPR 2022).
 
-The overall framework of SimVP.
+It is worth noticing that the hidden Translator $h$ in SimVP can be replaced by any [MetaFormer](https://arxiv.org/abs/2111.11418) block (satisfying the macro design of `token mixing` and `channel mixing`).
 <p align="center">
-    <img src="./readme_figures/arch.png" width="600"> <br>
+    <img width="75%" src="https://user-images.githubusercontent.com/44519745/219116763-bb4ab408-7f25-47d3-b93e-79834c7b065e.png"> <br>
 </p>
 
 The performance of SimVPs on the Moving MNIST dataset. For the training time, the less the better. For the inference efficiency (frames per second), the more the better.
 <p align="center">
-    <img src="./readme_figures/plot.png" width="600"> <br>
+    <img width="70%" src="https://user-images.githubusercontent.com/44519745/219116933-a34f5133-b38f-4657-bea4-c49361696fd2.png"> <br>
 </p>
 
 Quantitative results of different methods on the Moving MNIST dataset ($10 \rightarrow 10$ frames).
 <p align="center">
-    <img src="./readme_figures/table.png" width="600"> <br>
+    <img width="75%" src="https://user-images.githubusercontent.com/44519745/219117248-90825af9-28e8-42c6-8fec-858ef7f6dd92.png"> <br>
 </p>
 
-## Dependencies
-* argparse
-* numpy
-* hickle
-* scikit-image=0.16.2
-* torch
-* timm
-* tqdm
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Overview
 
@@ -41,20 +41,88 @@ Quantitative results of different methods on the Moving MNIST dataset ($10 \righ
 * `modules/` contains network modules and layers.
 * `main.py` is the executable python file with possible arguments for training, validating, and testing pipelines.
 
-## Install
+## Installation
 
 This project has provided an environment setting file of conda, users can easily reproduce the environment by the following commands:
-```
-  conda env create -f environment.yml
-  conda activate SimVP
+```shell
+conda env create -f environment.yml
+conda activate SimVP
 ```
 
-### Moving MNIST dataset
+<details close>
+<summary>Dependencies</summary>
 
+* argparse
+* numpy
+* hickle
+* scikit-image=0.16.2
+* torch
+* timm
+* tqdm
+</details>
+
+## Getting Started
+
+An example of training SimVP+gSTA on Moving MNIST dataset.
+```shell
+cd ./data/moving_mnist
+bash download_mmnist.sh
+cd ../..
+python main.py -d mmnist -m SimVP --model_type gsta --lr 1e-3 --ex_name mmnist_simvp_gsta
 ```
-  cd ./data/moving_mnist
-  bash download_mmnist.sh
-```
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## Overview of Model Zoo
+
+We support various video prediction methods and will provide benchmarks on various video prediction datasets. We are working on add new methods and collecting experiment results.
+
+* Video Prediction Methods.
+
+    <details open>
+    <summary>Currently supported methods</summary>
+
+    - [x] [ConvLSTM](https://arxiv.org/abs/1506.04214) (NIPS'2015)
+    - [x] [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) (NIPS'2017)
+    - [x] [PredRNN++](https://arxiv.org/abs/1804.06300) (ICML'2018)
+    - [x] [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX) (ICLR'2018)
+    - [x] [MAU](https://arxiv.org/abs/1811.07490) (CVPR'2019)
+    - [x] [CrevNet](https://openreview.net/forum?id=B1lKS2AqtX) (ICLR'2020)
+    - [x] [PhyDNet](https://arxiv.org/abs/2003.01460) (CVPR'2020)
+    - [x] [PredRNN.V2](https://arxiv.org/abs/2103.09504v4) (TPAMI'2022)
+    - [x] [SimVP](https://arxiv.org/abs/2206.05099) (CVPR'2022)
+
+    </details>
+
+    <details open>
+    <summary>Currently supported MetaFormer models for SimVP</summary>
+
+    - [x] [ViT](https://arxiv.org/abs/2010.11929) (ICLR'2021)
+    - [x] [Swin-Transformer](https://arxiv.org/abs/2103.14030) (ICCV'2021)
+    - [x] [MLP-Mixer](https://arxiv.org/abs/2105.01601) (NIPS'2021)
+    - [x] [ConvMixer](https://arxiv.org/abs/2201.09792) (Openreview'2021)
+    - [x] [UniFormer](https://arxiv.org/abs/2201.09450) (ICLR'2022)
+    - [x] [PoolFormer](https://arxiv.org/abs/2111.11418) (CVPR'2022)
+    - [x] [ConvNeXt](https://arxiv.org/abs/2201.03545) (CVPR'2022)
+    - [x] [VAN](https://arxiv.org/abs/2202.09741) (ArXiv'2022)
+    - [x] [IncepU (SimVP.V1)](https://arxiv.org/abs/2206.05099) (CVPR'2022)
+    - [x] [gSTA (SimVP.V2)](https://arxiv.org/abs/2211.12509) (ArXiv'2022)
+    - [x] [HorNet](https://arxiv.org/abs/2207.14284) (NIPS'2022)
+    - [x] [MogaNet](https://arxiv.org/abs/2211.03295) (ArXiv'2022)
+
+    </details>
+
+* Video Prediction Benchmarks.
+
+    <details open>
+    <summary>Currently supported datasets</summary>
+
+    - [ ] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004)  [[download](https://www.csc.kth.se/cvap/actions/)]
+    - [ ] [KITTI Cityscapes](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://figshare.com/articles/dataset/KITTI_hkl_files/7985684)]
+    - [x] [Moving MNIST](http://arxiv.org/abs/1502.04681) (ICML'2015) [[download](http://www.cs.toronto.edu/~nitish/unsupervised_video/)]
+    - [ ] [TaxiBJ](https://arxiv.org/abs/1610.00081) (AAAI'2017) [[download](https://github.com/TolicWang/DeepST/tree/master/data/TaxiBJ)]
+
+    </details>
 
 ## Citation
 
@@ -71,4 +139,10 @@ If you are interested in our repository and our paper, please cite the following
 
 ## Contact
 
-If you have any questions, feel free to contact us through email (tancheng@westlake.edu.cn). Enjoy!
+If you have any questions, feel free to contact us through email. Enjoy!
+
+- Cheng Tan (tancheng@westlake.edu.cn), Westlake University & Zhejiang University
+- Siyuan Li (lisiyuan@westlake.edu.cn), Westlake University & Zhejiang University
+- Zhangyang Gao (gaozhangyang@westlake.edu.cn), Westlake University & Zhejiang University
+
+<p align="right">(<a href="#top">back to top</a>)</p>

@@ -10,6 +10,12 @@ from timm.utils import AverageMeter
 
 
 class CrevNet(Base_method):
+    r"""CrevNet
+
+    Implementation of `Efficient and Information-Preserving Future Frame Prediction
+    and Beyond <https://openreview.net/forum?id=B1eY_pVYvB>`_.
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         args.pre_seq_length = 8
         args.total_length = args.pre_seq_length + args.aft_seq_length
@@ -22,8 +28,10 @@ class CrevNet(Base_method):
         return CrevNet_Model(**config).to(self.device)
 
     def _init_optimizer(self, steps_per_epoch):
-        self.model_optim, self.scheduler = get_optim_scheduler(self.args, self.args.epoch, self.model.frame_predictor, steps_per_epoch)
-        self.model_optim2, self.scheduler2 = get_optim_scheduler(self.args, self.args.epoch, self.model.encoder, steps_per_epoch)
+        self.model_optim, self.scheduler = get_optim_scheduler(
+            self.args, self.args.epoch, self.model.frame_predictor, steps_per_epoch)
+        self.model_optim2, self.scheduler2 = get_optim_scheduler(
+            self.args, self.args.epoch, self.model.encoder, steps_per_epoch)
 
     def train_one_epoch(self, train_loader, epoch, num_updates, loss_mean, **kwargs):
         losses_m = AverageMeter()
@@ -47,7 +55,8 @@ class CrevNet(Base_method):
             losses_m.update(loss.item(), batch_x.size(0))
             self.scheduler.step()
             self.scheduler2.step()
-            train_pbar.set_description('train loss: {:.4f}'.format(loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
+            train_pbar.set_description('train loss: {:.4f}'.format(
+                loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
 
         if hasattr(self.model_optim, 'sync_lookahead'):
             self.model_optim.sync_lookahead()
@@ -62,7 +71,8 @@ class CrevNet(Base_method):
             batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
             input = torch.cat([batch_x, batch_y], dim=1)
             pred_y, loss = self.model(input, training=False)
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [pred_y, batch_y], [preds_lst, trues_lst]))
+            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
+                                                  ), [pred_y, batch_y], [preds_lst, trues_lst]))
 
             if i * batch_x.shape[0] > 1000:
                 break
@@ -88,5 +98,6 @@ class CrevNet(Base_method):
             list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
                  batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
 
-        inputs, trues, preds = map(lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
+        inputs, trues, preds = map(
+            lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
         return inputs, trues, preds

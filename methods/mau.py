@@ -11,6 +11,13 @@ from utils import *
 
 
 class MAU(Base_method):
+    r"""MAU
+
+    Implementation of `MAU: A Motion-Aware Unit for Video Prediction and Beyond
+    <https://openreview.net/forum?id=qwtfY-3ibt7>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.args)
@@ -75,7 +82,8 @@ class MAU(Base_method):
             img_gen, loss = self.model(test_ims, real_input_flag)
             pred_y = img_gen[:, -self.args.aft_seq_length:, :]
           
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [pred_y, batch_y], [preds_lst, trues_lst]))
+            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
+                                                  ), [pred_y, batch_y], [preds_lst, trues_lst]))
 
             if i * batch_x.shape[0] > 1000:
                 break
@@ -115,5 +123,6 @@ class MAU(Base_method):
             list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
                  batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
 
-        inputs, trues, preds = map(lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
+        inputs, trues, preds = map(
+            lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
         return inputs, trues, preds

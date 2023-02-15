@@ -11,6 +11,13 @@ from utils import *
 
 
 class PredRNN(Base_method):
+    r"""PredRNN
+
+    Implementation of `PredRNN: A Recurrent Neural Network for Spatiotemporal
+    Predictive Learning <https://dl.acm.org/doi/abs/10.5555/3294771.3294855>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.args)
@@ -35,9 +42,11 @@ class PredRNN(Base_method):
             ims = torch.cat([batch_x, batch_y], dim=1).permute(0, 1, 3, 4, 2).contiguous()
             ims = reshape_patch(ims, self.args.patch_size)
             if self.args.reverse_scheduled_sampling == 1:
-                real_input_flag = reserve_schedule_sampling_exp(num_updates, ims.shape[0], self.args)
+                real_input_flag = reserve_schedule_sampling_exp(
+                    num_updates, ims.shape[0], self.args)
             else:
-                eta, real_input_flag = schedule_sampling(eta, num_updates, ims.shape[0], self.args)
+                eta, real_input_flag = schedule_sampling(
+                    eta, num_updates, ims.shape[0], self.args)
 
             img_gen, loss = self.model(ims, real_input_flag)
             loss.backward()
@@ -91,7 +100,8 @@ class PredRNN(Base_method):
             img_gen = reshape_patch_back(img_gen, self.args.patch_size)
             pred_y = img_gen[:, -self.args.aft_seq_length:].permute(0, 1, 4, 2, 3).contiguous()
           
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [pred_y, batch_y], [preds_lst, trues_lst]))
+            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
+                                                  ), [pred_y, batch_y], [preds_lst, trues_lst]))
 
             if i * batch_x.shape[0] > 1000:
                 break
@@ -143,5 +153,6 @@ class PredRNN(Base_method):
             list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
                  batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
 
-        inputs, trues, preds = map(lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
+        inputs, trues, preds = map(
+            lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
         return inputs, trues, preds

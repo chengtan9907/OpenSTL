@@ -9,6 +9,13 @@ from timm.utils import AverageMeter
 
 
 class SimVP(Base_method):
+    r"""SimVP
+
+    Implementation of `SimVP: Simpler yet Better Video Prediction
+    <https://arxiv.org/abs/2206.05099>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.config)
@@ -76,7 +83,8 @@ class SimVP(Base_method):
             pred_y = self._predict(batch_x)
             loss = self.criterion(pred_y, batch_y)
 
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [pred_y, batch_y], [preds_lst, trues_lst]))
+            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
+                                                  ), [pred_y, batch_y], [preds_lst, trues_lst]))
 
             if i * batch_x.shape[0] > 1000:
                 break
@@ -100,5 +108,6 @@ class SimVP(Base_method):
             list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
                  batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
 
-        inputs, trues, preds = map(lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
+        inputs, trues, preds = map(
+            lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
         return inputs, trues, preds

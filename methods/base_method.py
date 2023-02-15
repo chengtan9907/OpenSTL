@@ -5,6 +5,15 @@ from .optim_scheduler import get_optim_scheduler
 
 
 class Base_method(object):
+    """Base Method.
+
+    This class defines the basic functions of a video prediction (VP)
+    method training and testing. Any VP method that inherits this class
+    should at least define its own `train_one_epoch`, `vali_one_epoch`,
+    and `test_one_epoch` function.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         super(Base_method, self).__init__()
         self.args = args
@@ -17,7 +26,8 @@ class Base_method(object):
         raise NotImplementedError
 
     def _init_optimizer(self, steps_per_epoch):
-        return get_optim_scheduler(self.args, self.args.epoch, self.model, steps_per_epoch)
+        return get_optim_scheduler(
+            self.args, self.args.epoch, self.model, steps_per_epoch)
 
     def train_one_epoch(self, train_loader, **kwargs): 
         '''

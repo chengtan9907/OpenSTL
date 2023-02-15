@@ -10,6 +10,13 @@ from utils import *
 
 
 class PredRNNv2(PredRNN):
+    r"""PredRNNv2
+
+    Implementation of `PredRNN: A Recurrent Neural Network for Spatiotemporal
+    Predictive Learning <https://arxiv.org/abs/2103.09504v4>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         PredRNN.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.args)
@@ -34,9 +41,11 @@ class PredRNNv2(PredRNN):
             ims = torch.cat([batch_x, batch_y], dim=1).permute(0, 1, 3, 4, 2).contiguous()
             ims = reshape_patch(ims, self.args.patch_size)
             if self.args.reverse_scheduled_sampling == 1:
-                real_input_flag = reserve_schedule_sampling_exp(num_updates, ims.shape[0], self.args)
+                real_input_flag = reserve_schedule_sampling_exp(
+                    num_updates, ims.shape[0], self.args)
             else:
-                eta, real_input_flag = schedule_sampling(eta, num_updates, ims.shape[0], self.args)
+                eta, real_input_flag = schedule_sampling(
+                    eta, num_updates, ims.shape[0], self.args)
 
             img_gen, loss = self.model(ims, real_input_flag)
             loss.backward()

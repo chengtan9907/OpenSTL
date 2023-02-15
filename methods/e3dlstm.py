@@ -7,6 +7,13 @@ from utils import *
 
 
 class E3DLSTM(PredRNN):
+    r"""E3D-LSTM
+
+    Implementation of `EEidetic 3D LSTM: A Model for Video Prediction and Beyond
+    <https://openreview.net/forum?id=B1lKS2AqtX>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         PredRNN.__init__(self, args, device,steps_per_epoch)
         self.model = self._build_model(self.args)

@@ -1,8 +1,9 @@
 import torch
 from torch import nn
 from timm.models.layers import trunc_normal_
-from modules import (ConvNeXtSubBlock, ConvMixerSubBlock, GASubBlock, HorNetSubBlock, MLPMixerSubBlock,
-                     MogaSubBlock, PoolFormerSubBlock, SwinSubBlock, UniformerSubBlock, ViTSubBlock)
+from modules import (ConvNeXtSubBlock, ConvMixerSubBlock, GASubBlock, HorNetSubBlock,
+                     MLPMixerSubBlock, MogaSubBlock, PoolFormerSubBlock, SwinSubBlock,
+                     UniformerSubBlock, VANSubBlock, ViTSubBlock)
 
 
 def sampling_generator(N, reverse=False):
@@ -12,7 +13,16 @@ def sampling_generator(N, reverse=False):
 
 
 class BasicConv2d(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, dilation=1, upsampling=False, act_norm=False):
+
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 kernel_size=3,
+                 stride=1,
+                 padding=0,
+                 dilation=1,
+                 upsampling=False,
+                 act_norm=False):
         super(BasicConv2d, self).__init__()
         self.act_norm = act_norm
         if upsampling is True:
@@ -23,7 +33,8 @@ class BasicConv2d(nn.Module):
             ])
         else:
             self.conv = nn.Conv2d(
-                in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, dilation=dilation)
+                in_channels, out_channels, kernel_size=kernel_size,
+                stride=stride, padding=padding, dilation=dilation)
 
         self.norm = nn.GroupNorm(2, out_channels)
         self.act = nn.SiLU(True)
@@ -43,14 +54,22 @@ class BasicConv2d(nn.Module):
 
 
 class ConvSC(nn.Module):
-    def __init__(self, C_in, C_out, kernel_size=3, downsampling=False, upsampling=False, act_norm=True, is_3d=False):
+
+    def __init__(self,
+                 C_in,
+                 C_out,
+                 kernel_size=3,
+                 downsampling=False,
+                 upsampling=False,
+                 act_norm=True,
+                 is_3d=False):
         super(ConvSC, self).__init__()
 
         stride = 2 if downsampling is True else 1
         padding = (kernel_size - stride + 1) // 2
 
-        self.conv = BasicConv2d(C_in, C_out, kernel_size=kernel_size, stride=stride, upsampling=upsampling,
-                                padding=padding, act_norm=act_norm)
+        self.conv = BasicConv2d(C_in, C_out, kernel_size=kernel_size, stride=stride,
+                                upsampling=upsampling, padding=padding, act_norm=act_norm)
 
     def forward(self, x):
         y = self.conv(x)
@@ -58,13 +77,22 @@ class ConvSC(nn.Module):
 
 
 class GroupConv2d(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride, padding,groups,act_norm=False):
+
+    def __init__(self,
+                 in_channels,
+                 out_channels,
+                 kernel_size=3,
+                 stride=1,
+                 padding=0,
+                 groups=1,
+                 act_norm=False):
         super(GroupConv2d, self).__init__()
         self.act_norm=act_norm
-        if in_channels%groups != 0:
+        if in_channels % groups != 0:
             groups=1
         self.conv = nn.Conv2d(
-            in_channels, out_channels, kernel_size=kernel_size, stride=stride, padding=padding, groups=groups)
+            in_channels, out_channels, kernel_size=kernel_size,
+            stride=stride, padding=padding, groups=groups)
         self.norm = nn.GroupNorm(groups,out_channels)
         self.activate = nn.LeakyReLU(0.2, inplace=True)
 
@@ -76,6 +104,7 @@ class GroupConv2d(nn.Module):
 
 
 class gInception_ST(nn.Module):
+
     def __init__(self, C_in, C_hid, C_out, incep_ker = [3,5,7,11], groups = 8):        
         super(gInception_ST, self).__init__()
         self.conv1 = nn.Conv2d(C_in, C_hid, kernel_size=1, stride=1, padding=0)
@@ -83,7 +112,8 @@ class gInception_ST(nn.Module):
         layers = []
         for ker in incep_ker:
             layers.append(GroupConv2d(
-                C_hid, C_out, kernel_size=ker, stride=1, padding=ker//2, groups=groups, act_norm=True))
+                C_hid, C_out, kernel_size=ker, stride=1,
+                padding=ker//2, groups=groups, act_norm=True))
         self.layers = nn.Sequential(*layers)
 
     def forward(self, x):
@@ -95,6 +125,8 @@ class gInception_ST(nn.Module):
 
 
 class Encoder(nn.Module):
+    """3D Encoder for SimVP"""
+
     def __init__(self, C_in, C_hid, N_S, spatio_kernel):
         samplings = sampling_generator(N_S)
         super(Encoder, self).__init__()
@@ -112,6 +144,8 @@ class Encoder(nn.Module):
 
 
 class Decoder(nn.Module):
+    """3D Decoder for SimVP"""
+
     def __init__(self, C_hid, C_out, N_S, spatio_kernel):
         samplings = sampling_generator(N_S, reverse=True)
         super(Decoder, self).__init__()
@@ -130,19 +164,31 @@ class Decoder(nn.Module):
 
 
 class MidIncepNet(nn.Module):
+    """The hidden Translator of IncepNet for SimVPv1"""
+
     def __init__(self, channel_in, channel_hid, N2, incep_ker=[3,5,7,11], groups=8, **kwargs):
         super(MidIncepNet, self).__init__()
-
+        assert N2 >= 2 and len(incep_ker) > 1
         self.N2 = N2
-        enc_layers = [gInception_ST(channel_in, channel_hid//2, channel_hid, incep_ker= incep_ker, groups=groups)]
+        enc_layers = [gInception_ST(
+            channel_in, channel_hid//2, channel_hid, incep_ker= incep_ker, groups=groups)]
         for i in range(1,N2-1):
-            enc_layers.append(gInception_ST(channel_hid, channel_hid//2, channel_hid, incep_ker= incep_ker, groups=groups))
-        enc_layers.append(gInception_ST(channel_hid, channel_hid//2, channel_hid, incep_ker= incep_ker, groups=groups))
-
-        dec_layers = [gInception_ST(channel_hid, channel_hid//2, channel_hid, incep_ker= incep_ker, groups=groups)]
+            enc_layers.append(
+                gInception_ST(channel_hid, channel_hid//2, channel_hid,
+                              incep_ker=incep_ker, groups=groups))
+        enc_layers.append(
+                gInception_ST(channel_hid, channel_hid//2, channel_hid,
+                              incep_ker=incep_ker, groups=groups))
+        dec_layers = [
+                gInception_ST(channel_hid, channel_hid//2, channel_hid,
+                              incep_ker=incep_ker, groups=groups)]
         for i in range(1,N2-1):
-            dec_layers.append(gInception_ST(2*channel_hid, channel_hid//2, channel_hid, incep_ker= incep_ker, groups=groups))
-        dec_layers.append(gInception_ST(2*channel_hid, channel_hid//2, channel_in, incep_ker= incep_ker, groups=groups))
+            dec_layers.append(
+                gInception_ST(2*channel_hid, channel_hid//2, channel_hid,
+                              incep_ker=incep_ker, groups=groups))
+        dec_layers.append(
+                gInception_ST(2*channel_hid, channel_hid//2, channel_in,
+                              incep_ker=incep_ker, groups=groups))
 
         self.enc = nn.Sequential(*enc_layers)
         self.dec = nn.Sequential(*dec_layers)
@@ -158,7 +204,6 @@ class MidIncepNet(nn.Module):
             z = self.enc[i](z)
             if i < self.N2-1:
                 skips.append(z)
-
         # decoder
         z = self.dec[0](z)
         for i in range(1,self.N2):
@@ -169,9 +214,10 @@ class MidIncepNet(nn.Module):
 
 
 class MetaBlock(nn.Module):
+    """The hidden Translator of MetaFormer for SimVP"""
 
-    def __init__(self, in_channels, out_channels,
-                 input_resolution=None, model_type=None, mlp_ratio=8., drop=0.0, drop_path=0.0, layer_i=0):
+    def __init__(self, in_channels, out_channels, input_resolution=None, model_type=None,
+                 mlp_ratio=8., drop=0.0, drop_path=0.0, layer_i=0):
         super(MetaBlock, self).__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
@@ -179,7 +225,8 @@ class MetaBlock(nn.Module):
 
         if model_type == 'gsta':
             self.block = GASubBlock(
-                in_channels, kernel_size=21, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path, act_layer=nn.GELU)
+                in_channels, kernel_size=21, mlp_ratio=mlp_ratio,
+                drop=drop, drop_path=drop_path, act_layer=nn.GELU)
         elif model_type == 'convmixer':
             self.block = ConvMixerSubBlock(in_channels, kernel_size=11, activation=nn.GELU)
         elif model_type == 'convnext':
@@ -198,11 +245,16 @@ class MetaBlock(nn.Module):
                 in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
         elif model_type == 'swin':
             self.block = SwinSubBlock(
-                in_channels, input_resolution, layer_i=layer_i, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
+                in_channels, input_resolution, layer_i=layer_i, mlp_ratio=mlp_ratio,
+                drop=drop, drop_path=drop_path)
         elif model_type == 'uniformer':
             block_type = 'MHSA' if in_channels == out_channels and layer_i > 0 else 'Conv'
             self.block = UniformerSubBlock(
-                in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path, block_type=block_type)
+                in_channels, mlp_ratio=mlp_ratio, drop=drop,
+                drop_path=drop_path, block_type=block_type)
+        elif model_type == 'van':
+            self.block = VANSubBlock(
+                in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path, act_layer=nn.GELU)
         elif model_type == 'vit':
             self.block = ViTSubBlock(
                 in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
@@ -210,7 +262,8 @@ class MetaBlock(nn.Module):
             assert False and "Invalid model_type in SimVP"
 
         if in_channels != out_channels:
-            self.reduction = nn.Conv2d(in_channels, out_channels, kernel_size=1, stride=1, padding=0)
+            self.reduction = nn.Conv2d(
+                in_channels, out_channels, kernel_size=1, stride=1, padding=0)
 
     def forward(self, x):
         z = self.block(x)
@@ -218,21 +271,30 @@ class MetaBlock(nn.Module):
 
 
 class MidMetaNet(nn.Module):
+    """The hidden Translator of MetaFormer for SimVP"""
 
     def __init__(self, channel_in, channel_hid, N2,
-                 input_resolution=None, model_type=None, mlp_ratio=4., drop=0.0, drop_path=0.1):
+                 input_resolution=None, model_type=None,
+                 mlp_ratio=4., drop=0.0, drop_path=0.1):
         super(MidMetaNet, self).__init__()
+        assert N2 >= 2 and mlp_ratio > 1
         self.N2 = N2
         dpr = [  # stochastic depth decay rule
             x.item() for x in torch.linspace(1e-2, drop_path, self.N2)]
 
+        # downsample
         enc_layers = [MetaBlock(
-            channel_in, channel_hid, input_resolution, model_type, mlp_ratio, drop, drop_path=dpr[0], layer_i=0)]
+            channel_in, channel_hid, input_resolution, model_type,
+            mlp_ratio, drop, drop_path=dpr[0], layer_i=0)]
+        # middle layers
         for i in range(1, N2-1):
             enc_layers.append(MetaBlock(
-                channel_hid, channel_hid, input_resolution, model_type, mlp_ratio, drop, drop_path=dpr[i], layer_i=i))
+                channel_hid, channel_hid, input_resolution, model_type,
+                mlp_ratio, drop, drop_path=dpr[i], layer_i=i))
+        # upsample
         enc_layers.append(MetaBlock(
-            channel_hid, channel_in, input_resolution, model_type, mlp_ratio, drop, drop_path=drop_path, layer_i=N2-1))
+            channel_hid, channel_in, input_resolution, model_type,
+            mlp_ratio, drop, drop_path=drop_path, layer_i=N2-1))
         self.enc = nn.Sequential(*enc_layers)
 
     def forward(self, x):
@@ -248,11 +310,14 @@ class MidMetaNet(nn.Module):
 
 
 class SimVP_Model(nn.Module):
+    """Network model for SimVP"""
+
     def __init__(self, in_shape, hid_S=16, hid_T=256, N_S=4, N_T=4, model_type='gSTA',
-                 mlp_ratio=8., drop=0.0, drop_path=0.0, spatio_kernel_enc=3, spatio_kernel_dec=3,
-                 **kwargs):
+                 mlp_ratio=8., drop=0.0, drop_path=0.0, spatio_kernel_enc=3,
+                 spatio_kernel_dec=3, **kwargs):
         super(SimVP_Model, self).__init__()
         T, C, H, W = in_shape  # T is pre_seq_length
+        H, W = int(H / 2**(N_S/2)), int(W / 2**(N_S/2))  # downsample 1 / 2**(N_S/2)
 
         self.enc = Encoder(C, hid_S, N_S, spatio_kernel_enc)
         self.dec = Decoder(hid_S, C, N_S, spatio_kernel_dec)
@@ -261,7 +326,8 @@ class SimVP_Model(nn.Module):
             self.hid = MidIncepNet(T*hid_S, hid_T, N_T)
         else:
             self.hid = MidMetaNet(T*hid_S, hid_T, N_T,
-                input_resolution=(H, W), model_type=model_type, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
+                input_resolution=(H, W), model_type=model_type,
+                mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
 
     def forward(self, x_raw):
         B, T, C, H, W = x_raw.shape

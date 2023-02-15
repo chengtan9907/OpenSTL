@@ -9,6 +9,13 @@ from timm.utils import AverageMeter
 
 
 class PhyDNet(Base_method):
+    r"""PhyDNet
+
+    Implementation of `Disentangling Physical Dynamics from Unknown Factors for
+    Unsupervised Video Prediction <https://arxiv.org/abs/2003.01460>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.config)
@@ -48,7 +55,8 @@ class PhyDNet(Base_method):
             loss_mean += loss.item()
             losses_m.update(loss.item(), batch_x.size(0))
             self.scheduler.step()
-            train_pbar.set_description('train loss: {:.4f}'.format(loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
+            train_pbar.set_description('train loss: {:.4f}'.format(
+                loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
 
         if hasattr(self.model_optim, 'sync_lookahead'):
             self.model_optim.sync_lookahead()
@@ -64,7 +72,8 @@ class PhyDNet(Base_method):
             pred_y, loss = self.model.inference(batch_x, batch_y, self.constraints)
             loss = self.criterion(pred_y, batch_y)
 
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [pred_y, batch_y], [preds_lst, trues_lst]))
+            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
+                                                  ), [pred_y, batch_y], [preds_lst, trues_lst]))
 
             if i * batch_x.shape[0] > 1000:
                 break
@@ -89,5 +98,6 @@ class PhyDNet(Base_method):
             list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
                  batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
 
-        inputs, trues, preds = map(lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
+        inputs, trues, preds = map(
+            lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
         return inputs, trues, preds

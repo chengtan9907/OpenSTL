@@ -101,6 +101,10 @@ class CBlock(nn.Module):
             if m.bias is not None:
                 m.bias.data.zero_()
 
+    @torch.jit.ignore
+    def no_weight_decay(self):
+        return {}
+
     def forward(self, x):
         x = x + self.pos_embed(x)
         x = x + self.drop_path(self.conv2(self.attn(self.conv1(self.norm1(x)))))
@@ -137,6 +141,10 @@ class SABlock(nn.Module):
         elif isinstance(m, (nn.LayerNorm, nn.GroupNorm, nn.BatchNorm2d)):
             nn.init.constant_(m.bias, 0)
             nn.init.constant_(m.weight, 1.0)
+
+    @torch.jit.ignore
+    def no_weight_decay(self):
+        return {'gamma_1', 'gamma_2'}
 
     def forward(self, x):
         x = x + self.pos_embed(x)

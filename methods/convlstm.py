@@ -7,6 +7,13 @@ from utils import *
 
 
 class ConvLSTM(PredRNN):
+    r"""ConvLSTM
+
+    Implementation of `Convolutional LSTM Network: A Machine Learning Approach
+    for Precipitation Nowcasting <https://arxiv.org/abs/1506.04214>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         PredRNN.__init__(self, args, device,  steps_per_epoch)
         self.model = self._build_model(self.args)

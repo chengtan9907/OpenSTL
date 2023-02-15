@@ -7,6 +7,14 @@ from utils import *
 
 
 class MIM(PredRNN):
+    r"""MIM
+
+    Implementation of `Memory In Memory: A Predictive Neural Network for Learning
+    Higher-Order Non-Stationarity from Spatiotemporal Dynamics
+    <https://arxiv.org/abs/1811.07490>`_.
+
+    """
+
     def __init__(self, args, device, steps_per_epoch):
         PredRNN.__init__(self, args, device, steps_per_epoch)
         assert args.batch_size == args.val_batch_size

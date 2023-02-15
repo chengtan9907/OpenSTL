@@ -27,7 +27,7 @@ def create_parser():
     parser.add_argument('--total_length', default=None, type=int, help="Total Sequence length for prediction")
 
     # method parameters
-    parser.add_argument('--method', default='SimVP', type=str,
+    parser.add_argument('--method', '-m', default='SimVP', type=str,
                         choices=['SimVP', 'ConvLSTM', 'PredRNNpp', 'PredRNN', 'PredRNNv2',
                                  'MIM', 'E3DLSTM', 'MAU', 'CrevNet', 'PhyDNet'],
                         help='Name of video prediction method to train (default: "SimVP")')
