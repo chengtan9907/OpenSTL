@@ -5,8 +5,8 @@ import numpy as np
 
 from models import PhyDNet_Model
 from .base_method import Base_method
-from .optim_scheduler import get_optim_scheduler
 from timm.utils import AverageMeter
+
 
 class PhyDNet(Base_method):
     def __init__(self, args, device, steps_per_epoch):
@@ -49,6 +49,9 @@ class PhyDNet(Base_method):
             losses_m.update(loss.item(), batch_x.size(0))
             self.scheduler.step()
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
+
+        if hasattr(self.model_optim, 'sync_lookahead'):
+            self.model_optim.sync_lookahead()
 
         return num_updates, loss_mean
 

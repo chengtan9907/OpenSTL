@@ -35,6 +35,7 @@ class PhyCell_Cell(nn.Module):
         next_hidden = hidden_tilde + K * (x-hidden_tilde)   # correction , Haddamard product     
         return next_hidden
 
+
 class PhyCell(nn.Module):
     def __init__(self, input_shape, input_dim, F_hidden_dims, n_layers, kernel_size, device):
         super(PhyCell, self).__init__()
@@ -179,6 +180,7 @@ class dcgan_conv(nn.Module):
     def forward(self, input):
         return self.main(input)
 
+
 class dcgan_upconv(nn.Module):
     def __init__(self, nin, nout, stride):
         super(dcgan_upconv, self).__init__()
@@ -194,7 +196,8 @@ class dcgan_upconv(nn.Module):
 
     def forward(self, input):
         return self.main(input)
-        
+
+
 class encoder_E(nn.Module):
     def __init__(self, nc=1, nf=32):
         super(encoder_E, self).__init__()
@@ -208,6 +211,7 @@ class encoder_E(nn.Module):
         h2 = self.c2(h1)    
         h3 = self.c3(h2)
         return h3
+
 
 class decoder_D(nn.Module):
     def __init__(self, nc=1, nf=32):
@@ -233,6 +237,7 @@ class encoder_specific(nn.Module):
         h1 = self.c1(input)  
         h2 = self.c2(h1)     
         return h2
+
 
 class decoder_specific(nn.Module):
     def __init__(self, nc=64, nf=64):
@@ -351,6 +356,7 @@ class _MK(nn.Module):
     def forward(self):
         pass
 
+
 class M2K(_MK):
     """
     convert moment matrix to convolution kernel
@@ -373,6 +379,7 @@ class M2K(_MK):
         m = m.view(sizem)
         return m
 
+
 class K2M(_MK):
     """
     convert convolution kernel to moment matrix
@@ -394,7 +401,6 @@ class K2M(_MK):
         k = _apply_axis_left_dot(k, self.M)
         k = k.view(sizek)
         return k
-
 
     
 def tensordot(a,b,dim):

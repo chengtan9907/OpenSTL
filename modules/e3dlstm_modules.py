@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 class tf_Conv3d(nn.Module):
     def __init__(self, in_channels, out_channels, *vargs, **kwargs):
         super(tf_Conv3d, self).__init__()
@@ -9,6 +10,7 @@ class tf_Conv3d(nn.Module):
 
     def forward(self, input):
         return F.interpolate(self.conv3d(input), size=input.shape[-3:], mode="nearest")
+
 
 class Eidetic3DLSTMCell(nn.Module):
     def __init__(self, in_channel, num_hidden, window_length, height, width, filter_size, stride, layer_norm):

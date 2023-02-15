@@ -2,6 +2,7 @@ import math
 import torch
 import numpy as np
 
+
 def reserve_schedule_sampling_exp(itr, batch_size, args):
     T, img_channel, img_height, img_width = args.in_shape
     if itr < args.r_sampling_step_1:
@@ -96,6 +97,7 @@ def schedule_sampling(eta, itr, batch_size, args):
                                   args.patch_size ** 2 * img_channel))
     return eta, torch.FloatTensor(real_input_flag).to(args.device)
 
+
 def reshape_patch(img_tensor, patch_size):
     assert 5 == img_tensor.ndim
     batch_size, seq_length, img_height, img_width, num_channels = img_tensor.shape
@@ -110,6 +112,7 @@ def reshape_patch(img_tensor, patch_size):
                                   patch_size*patch_size*num_channels)
     return patch_tensor
 
+
 def reshape_patch_back(patch_tensor, patch_size):
     batch_size, seq_length, patch_height, patch_width, channels = patch_tensor.shape
     img_channels = channels // (patch_size*patch_size)
@@ -123,4 +126,3 @@ def reshape_patch_back(patch_tensor, patch_size):
                                 patch_width * patch_size,
                                 img_channels)
     return img_tensor
-

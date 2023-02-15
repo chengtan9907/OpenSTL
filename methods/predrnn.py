@@ -5,10 +5,10 @@ import numpy as np
 
 from models import PredRNN_Model
 from .base_method import Base_method
-from .optim_scheduler import get_optim_scheduler
 from timm.utils import AverageMeter
 
 from utils import *
+
 
 class PredRNN(Base_method):
     def __init__(self, args, device, steps_per_epoch):
@@ -49,6 +49,9 @@ class PredRNN(Base_method):
             losses_m.update(loss.item(), batch_x.size(0))
             
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item()))
+
+        if hasattr(self.model_optim, 'sync_lookahead'):
+            self.model_optim.sync_lookahead()
 
         return num_updates, loss_mean, eta
 

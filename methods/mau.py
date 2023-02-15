@@ -9,6 +9,7 @@ from timm.utils import AverageMeter
 
 from utils import *
 
+
 class MAU(Base_method):
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)
@@ -45,6 +46,9 @@ class MAU(Base_method):
             self.scheduler.step()
             
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item()))
+
+        if hasattr(self.model_optim, 'sync_lookahead'):
+            self.model_optim.sync_lookahead()
 
         return num_updates, loss_mean, eta
 

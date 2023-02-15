@@ -148,12 +148,12 @@ class MovingMNIST(data.Dataset):
         return self.length
 
 
-def load_data(batch_size, val_batch_size, num_workers, data_root):
+def load_data(batch_size, val_batch_size, num_workers, data_root, pre_seq_length=10, aft_seq_length=10):
 
     train_set = MovingMNIST(root=data_root, is_train=True,
-                            n_frames_input=10, n_frames_output=10, num_objects=[2])
+                            n_frames_input=pre_seq_length, n_frames_output=aft_seq_length, num_objects=[2])
     test_set = MovingMNIST(root=data_root, is_train=False,
-                           n_frames_input=10, n_frames_output=10, num_objects=[2])
+                           n_frames_input=pre_seq_length, n_frames_output=aft_seq_length, num_objects=[2])
 
     dataloader_train = torch.utils.data.DataLoader(
         train_set, batch_size=batch_size, shuffle=True, pin_memory=True, drop_last=True, num_workers=num_workers)
