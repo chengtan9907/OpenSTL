@@ -1,4 +1,6 @@
 method = 'SimVP'
+spatio_kernel_enc = 3
+spatio_kernel_dec = 3
 model_type = 'gSTA'
 hid_S = 128
 hid_T = 1024

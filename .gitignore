@@ -132,3 +132,12 @@ results
 figs
 .vscode
 .ipynb_checkpoints
+
+# temp
+api
+constants
+methods
+models
+modules
+utils
+configs/kitticaltech/simvp

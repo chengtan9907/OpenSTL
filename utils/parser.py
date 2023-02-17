@@ -31,7 +31,7 @@ def create_parser():
                         choices=['SimVP', 'ConvLSTM', 'PredRNNpp', 'PredRNN', 'PredRNNv2',
                                  'MIM', 'E3DLSTM', 'MAU', 'CrevNet', 'PhyDNet'],
                         help='Name of video prediction method to train (default: "SimVP")')
-    parser.add_argument('--config_file', '-c', default='./configs/mmnist/simvp/SimVP.py', type=str,
+    parser.add_argument('--config_file', '-c', default=None, type=str,
                         help='Path to the default config file')
     parser.add_argument('--model_type', default=None, type=str,
                         help='Name of model for SimVP (default: None)')

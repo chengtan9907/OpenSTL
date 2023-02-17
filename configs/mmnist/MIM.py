@@ -15,3 +15,6 @@ filter_size = 5
 stride = 1
 patch_size = 4
 layer_norm = 0
+# training
+batch_size = 16
+val_batch_size = 16

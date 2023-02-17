@@ -7,14 +7,14 @@
     <img src="https://img.shields.io/badge/license-Apache--2.0-%23B7A800" /></a>
 </p>
 
-This repository contains the implementation code for paper:
+This repository is an open-source project for video prediction benchmarks, which contains the implementation code for paper:
 
 **SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning**  
 [Cheng Tan](https://westlake-drug-discovery.github.io/cheng_tan.html), [Zhangyang Gao](https://westlake-drug-discovery.github.io/zhangyang_gao.html), [Stan Z. Li](https://scholar.google.com/citations?user=Y-nyLGIAAAAJ&hl).
 
 ## Introduction
 
-This is the journal version of our previous conference work (SimVP: Simpler yet Better Video Prediction, In CVPR 2022).
+This is the journal version of our previous conference work ([SimVP: Simpler yet Better Video Prediction](https://arxiv.org/abs/2206.05099), In CVPR 2022).
 
 It is worth noticing that the hidden Translator $h$ in SimVP can be replaced by any [MetaFormer](https://arxiv.org/abs/2111.11418) block (satisfying the macro design of `token mixing` and `channel mixing`).
 <p align="center">
@@ -35,18 +35,27 @@ Quantitative results of different methods on the Moving MNIST dataset ($10 \righ
 
 ## Overview
 
-* `api/` contains dataloaders and metrics.
-* `methods/` contains training methods for various video prediction methods.
-* `models/` contains the main network architectures of various video prediction methods.
-* `modules/` contains network modules and layers.
-* `main.py` is the executable python file with possible arguments for training, validating, and testing pipelines.
+* `simvp/api` contains an experiment runner.
+* `simvp/core` contains core training plugins and metrics.
+* `simvp/datasets` contains datasets and dataloaders.
+* `simvp/methods/` contains training methods for various video prediction methods.
+* `simvp/models/` contains the main network architectures of various video prediction methods.
+* `simvp/modules/` contains network modules and layers.
+* `tools/non_dist_train.py` is the executable python file with possible arguments for training, validating, and testing pipelines.
+
+## News and Updates
+
+[2023-02-18] `SimVP` v0.1.0 is released.
 
 ## Installation
 
 This project has provided an environment setting file of conda, users can easily reproduce the environment by the following commands:
 ```shell
+git clone https://github.com/chengtan9907/SimVPv2
+cd SimVPv2
 conda env create -f environment.yml
 conda activate SimVP
+python setup.py develop
 ```
 
 <details close>
@@ -63,12 +72,10 @@ conda activate SimVP
 
 ## Getting Started
 
-An example of training SimVP+gSTA on Moving MNIST dataset.
+An example of single GPU training SimVP+gSTA on Moving MNIST dataset.
 ```shell
-cd ./data/moving_mnist
-bash download_mmnist.sh
-cd ../..
-python main.py -d mmnist -m SimVP --model_type gsta --lr 1e-3 --ex_name mmnist_simvp_gsta
+bash tools/prepare_data/download_mmnist.sh
+python tools/non_dist_train.py -d mmnist -m SimVP --model_type gsta --lr 1e-3 --ex_name mmnist_simvp_gsta
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -91,6 +98,7 @@ We support various video prediction methods and will provide benchmarks on vario
     - [x] [PhyDNet](https://arxiv.org/abs/2003.01460) (CVPR'2020)
     - [x] [PredRNN.V2](https://arxiv.org/abs/2103.09504v4) (TPAMI'2022)
     - [x] [SimVP](https://arxiv.org/abs/2206.05099) (CVPR'2022)
+    - [x] [SimVP.V2](https://arxiv.org/abs/2211.12509) (ArXiv'2022)
 
     </details>
 
@@ -118,7 +126,7 @@ We support various video prediction methods and will provide benchmarks on vario
     <summary>Currently supported datasets</summary>
 
     - [ ] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004)  [[download](https://www.csc.kth.se/cvap/actions/)]
-    - [ ] [KITTI Cityscapes](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://figshare.com/articles/dataset/KITTI_hkl_files/7985684)]
+    - [x] [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://figshare.com/articles/dataset/KITTI_hkl_files/7985684)]
     - [x] [Moving MNIST](http://arxiv.org/abs/1502.04681) (ICML'2015) [[download](http://www.cs.toronto.edu/~nitish/unsupervised_video/)]
     - [ ] [TaxiBJ](https://arxiv.org/abs/1610.00081) (AAAI'2017) [[download](https://github.com/TolicWang/DeepST/tree/master/data/TaxiBJ)]
 

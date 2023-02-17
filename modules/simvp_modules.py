@@ -147,7 +147,7 @@ class ConvNeXtSubBlock(ConvNeXtBlock):
     """A block of ConvNeXt."""
 
     def __init__(self, dim, mlp_ratio=4., drop=0., drop_path=0.1):
-        super().__init__(dim=dim, mlp_ratio=mlp_ratio,
+        super().__init__(dim, mlp_ratio=mlp_ratio,
                          drop_path=drop_path, ls_init_value=1e-6, conv_mlp=True)
         self.apply(self._init_weights)
 

@@ -30,6 +30,8 @@ def output_namespace(namespace):
 def check_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
+        return False
+    return True
 
 
 def get_dataset(dataname, config):
@@ -51,3 +53,17 @@ def load_config(filename:str = None):
     configfile = Config(filename=filename)
     config = configfile._cfg_dict
     return config
+
+
+def update_config(args, config):
+    '''
+    update config with a new args dict
+    '''
+    assert isinstance(args, dict) and isinstance(config, dict)
+    for k in config.keys():
+        if args.get(k, False):
+            if args[k] != config[k]:
+                print(f'overwrite config key -- {k}: {config[k]} -> {args[k]}')
+        else:
+            args[k] = config[k]
+    return args

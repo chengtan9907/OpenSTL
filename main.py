@@ -18,7 +18,8 @@ except ImportError:
 
 from api import metric, Recorder
 from constants import method_maps
-from utils import create_parser, set_seed, print_log, output_namespace, check_dir, get_dataset, load_config
+from utils import (create_parser, set_seed, print_log, output_namespace, check_dir,
+                   get_dataset, load_config, update_config)
 
 
 class Exp(object):
@@ -30,39 +31,42 @@ class Exp(object):
         self._preparation()
         print_log(output_namespace(self.args))
 
+        method = self.args.method.lower()
         T, C, H, W = self.args.in_shape
-        if self.args.method == 'SimVP':
+        if method == 'simvp':
             _tmp_input = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
             flops = FlopCountAnalysis(self.method.model, _tmp_input)
-        elif self.args.method == 'CrevNet':
+        elif method == 'crevnet':
             # crevnet must use the batchsize rather than 1
             _tmp_input = torch.ones(self.args.batch_size, 20, C, H, W).to(self.device)
             flops = FlopCountAnalysis(self.method.model, _tmp_input)
-        elif self.args.method == 'PhyDNet':
+        elif method == 'phydnet':
             _tmp_input1 = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
             _tmp_input2 = torch.ones(1, self.args.aft_seq_length, C, H, W).to(self.device)
             _tmp_constraints = torch.zeros((49, 7, 7)).to(self.device)
             flops = FlopCountAnalysis(self.method.model, (_tmp_input1, _tmp_input2, _tmp_constraints))
-        elif self.args.method in ['ConvLSTM', 'PredRNNpp', 'PredRNN', 'MIM', 'E3DLSTM', 'MAU']:
+        elif method in ['convlstm', 'predrnnpp', 'predrnn', 'mim', 'e3dlstm', 'mau']:
             Hp, Wp = H // self.args.patch_size, W // self.args.patch_size
             Cp = self.args.patch_size ** 2 * C
             _tmp_input = torch.ones(1, self.args.total_length, Hp, Wp, Cp).to(self.device)
             _tmp_flag = torch.ones(1, self.args.aft_seq_length - 1, Hp, Wp, Cp).to(self.device)
             flops = FlopCountAnalysis(self.method.model, (_tmp_input, _tmp_flag))
-        elif self.args.method == 'PredRNNv2':
+        elif method == 'predrnnv2':
             Hp, Wp = H // self.args.patch_size, W // self.args.patch_size
             Cp = self.args.patch_size ** 2 * C
             _tmp_input = torch.ones(1, self.args.total_length, Hp, Wp, Cp).to(self.device)
             _tmp_flag = torch.ones(1, self.args.total_length - 2, Hp, Wp, Cp).to(self.device)
             flops = FlopCountAnalysis(self.method.model, (_tmp_input, _tmp_flag))
+        else:
+            raise ValueError(f'Invalid method name {self.args.method}')
+
         print_log(self.method.model)
         print_log(flop_count_table(flops))
 
     def _acquire_device(self):
         if self.args.use_gpu:
-            # os.environ["CUDA_VISIBLE_DEVICES"] = str(self.args.gpu)
             device = torch.device('cuda:0')
-            print('Use GPU:',device)
+            print('Use GPU:', device)
         else:
             device = torch.device('cpu')
             print('Use CPU')
@@ -139,13 +143,16 @@ class Exp(object):
                     epoch + 1, len(self.train_loader), cur_lr, loss_mean, vali_loss))
                 recorder(vali_loss, self.method.model, self.path)
 
+        if not check_dir(self.path):  # exit training when work_dir is removed
+            assert False and "Exit training because work_dir is removed"
         best_model_path = osp.join(self.path, 'checkpoint.pth')
         self.method.model.load_state_dict(torch.load(best_model_path))
 
     def vali(self, vali_loader):
         preds, trues, val_loss = self.method.vali_one_epoch(self.vali_loader)
 
-        mae, mse = metric(preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std, return_ssim_psnr=False)
+        mae, mse = metric(
+            preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std, return_ssim_psnr=False)
         print_log('val\t mse:{}, mae:{}'.format(mse, mae))
         if has_nni:
             nni.report_intermediate_result(mse)
@@ -175,8 +182,9 @@ if __name__ == '__main__':
         tuner_params = nni.get_next_parameter()
         config.update(tuner_params)
 
-    default_params = load_config(osp.join('./configs', args.method + '.py') if args.config_file is None else args.config_file)
-    config.update(default_params)
+    cfg_path = osp.join('./configs', args.dataname, f'{args.method}.py') \
+        if args.config_file is None else args.config_file
+    config = update_config(config, load_config(cfg_path))
 
     exp = Exp(args)
     print('>'*35 + ' training ' + '<'*35)
