@@ -24,7 +24,8 @@ class SimVP_Model(nn.Module):
         self.enc = Encoder(C, hid_S, N_S, spatio_kernel_enc)
         self.dec = Decoder(hid_S, C, N_S, spatio_kernel_dec)
 
-        if model_type.lower() == 'incepu':
+        model_type = 'gsta' if model_type is None else model_type.lower()
+        if model_type == 'incepu':
             self.hid = MidIncepNet(T*hid_S, hid_T, N_T)
         else:
             self.hid = MidMetaNet(T*hid_S, hid_T, N_T,

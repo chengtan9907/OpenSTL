@@ -1,17 +1,16 @@
-import logging
-logger = logging.getLogger(__name__)
-
 import os
 import os.path as osp
 import cv2
 import numpy as np
-from torch.utils.data import Dataset
 import torch
+from torch.utils.data import Dataset
+from skimage.transform import resize
+
 try:
     import hickle as hkl
 except ImportError:
     hkl = None
-from skimage.transform import resize
+
 
 # cite the `process_im` code from PredNet, Thanks!
 # https://github.com/coxlab/prednet/blob/master/process_kitti.py
@@ -24,6 +23,8 @@ def process_im(im, desired_sz):
 
 
 class KittiCaltechDataset(Dataset):
+    """KittiCaltech <https://dl.acm.org/doi/10.1177/0278364913491297>`_ Dataset"""
+
     def __init__(self, datas, indices, pre_seq_length, aft_seq_length, require_back=False):
         super(KittiCaltechDataset, self).__init__()
         self.datas = datas.swapaxes(2, 3).swapaxes(1, 2)
@@ -108,7 +109,8 @@ class DataProcess(object):
         return data, indices
 
 
-def load_data(batch_size, val_batch_size, num_workers, data_root, pre_seq_length=10, aft_seq_length=1):
+def load_data(batch_size, val_batch_size, data_root,
+              num_workers=4, pre_seq_length=10, aft_seq_length=1):
 
     if os.path.exists(osp.join(data_root, 'kitti_hkl')):
         input_param = {
@@ -133,9 +135,17 @@ def load_data(batch_size, val_batch_size, num_workers, data_root, pre_seq_length
     test_set = KittiCaltechDataset(
         test_data, test_idx, pre_seq_length, aft_seq_length)
 
-    dataloader_train = torch.utils.data.DataLoader(
-        train_set, batch_size=batch_size, shuffle=True, pin_memory=True, drop_last=True, num_workers=num_workers)
-    dataloader_test = torch.utils.data.DataLoader(
-        test_set, batch_size=val_batch_size, shuffle=False, pin_memory=True, drop_last=True, num_workers=num_workers)
+    dataloader_train = torch.utils.data.DataLoader(train_set,
+                                                   batch_size=batch_size, shuffle=True,
+                                                   pin_memory=True, drop_last=True,
+                                                   num_workers=num_workers)
+    dataloader_vali = torch.utils.data.DataLoader(test_set,
+                                                  batch_size=val_batch_size, shuffle=False,
+                                                  pin_memory=True, drop_last=True,
+                                                  num_workers=num_workers)
+    dataloader_test = torch.utils.data.DataLoader(test_set,
+                                                  batch_size=1, shuffle=False,
+                                                  pin_memory=True, drop_last=True,
+                                                  num_workers=num_workers)
 
-    return dataloader_train, dataloader_test, dataloader_test
+    return dataloader_train, dataloader_vali, dataloader_test

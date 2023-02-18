@@ -37,8 +37,8 @@ def check_dir(path):
 
 
 def get_dataset(dataname, config):
-    from constants import dataset_parameters
-    from api.dataloader import load_data
+    from simvp.datasets import dataset_parameters
+    from simvp.datasets import load_data
     config.update(dataset_parameters[dataname])
     return load_data(**config)
 

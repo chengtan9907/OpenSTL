@@ -3,7 +3,7 @@ import numpy as np
 import os
 import random
 import torch
-import torch.utils.data as data
+from torch.utils.data import Dataset
 
 
 def load_mnist(root):
@@ -23,9 +23,11 @@ def load_fixed_set(root):
     return dataset
 
 
-class MovingMNIST(data.Dataset):
-    def __init__(self, root, is_train=True, n_frames_input=10, n_frames_output=10, num_objects=[2],
-                 transform=None):
+class MovingMNIST(Dataset):
+    """Moving MNIST <http://arxiv.org/abs/1502.04681>`_ Dataset"""
+
+    def __init__(self, root, is_train=True, n_frames_input=10, n_frames_output=10,
+                 num_objects=[2], transform=None):
         super(MovingMNIST, self).__init__()
 
         self.dataset = None
@@ -148,18 +150,27 @@ class MovingMNIST(data.Dataset):
         return self.length
 
 
-def load_data(batch_size, val_batch_size, num_workers, data_root, pre_seq_length=10, aft_seq_length=10):
+def load_data(batch_size, val_batch_size, data_root,
+              num_workers=4, pre_seq_length=10, aft_seq_length=10):
 
     train_set = MovingMNIST(root=data_root, is_train=True,
-                            n_frames_input=pre_seq_length, n_frames_output=aft_seq_length, num_objects=[2])
+                            n_frames_input=pre_seq_length,
+                            n_frames_output=aft_seq_length, num_objects=[2])
     test_set = MovingMNIST(root=data_root, is_train=False,
-                           n_frames_input=pre_seq_length, n_frames_output=aft_seq_length, num_objects=[2])
+                           n_frames_input=pre_seq_length,
+                           n_frames_output=aft_seq_length, num_objects=[2])
 
-    dataloader_train = torch.utils.data.DataLoader(
-        train_set, batch_size=batch_size, shuffle=True, pin_memory=True, drop_last=True, num_workers=num_workers)
-    dataloader_validation = torch.utils.data.DataLoader(
-        test_set, batch_size=val_batch_size, shuffle=False, pin_memory=True, drop_last=True, num_workers=num_workers)
-    dataloader_test = torch.utils.data.DataLoader(
-        test_set, batch_size=1, shuffle=False, pin_memory=True, drop_last=True, num_workers=num_workers)
+    dataloader_train = torch.utils.data.DataLoader(train_set,
+                                                   batch_size=batch_size, shuffle=True,
+                                                   pin_memory=True, drop_last=True,
+                                                   num_workers=num_workers)
+    dataloader_vali = torch.utils.data.DataLoader(test_set,
+                                                  batch_size=val_batch_size, shuffle=False,
+                                                  pin_memory=True, drop_last=True,
+                                                  num_workers=num_workers)
+    dataloader_test = torch.utils.data.DataLoader(test_set,
+                                                  batch_size=1, shuffle=False,
+                                                  pin_memory=True, drop_last=True,
+                                                  num_workers=num_workers)
 
-    return dataloader_train, dataloader_validation, dataloader_test
+    return dataloader_train, dataloader_vali, dataloader_test

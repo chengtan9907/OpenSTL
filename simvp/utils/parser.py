@@ -22,7 +22,7 @@ def create_parser():
     parser.add_argument('--num_workers', default=8, type=int)
     parser.add_argument('--data_root', default='./data/')
     parser.add_argument('--dataname', '-d', default='mmnist', type=str,
-                        choices=['mmnist', 'kitticaltech'],
+                        choices=['mmnist', 'kitticaltech', 'kth', 'kth40', 'taxibj', 'weather'],
                         help='Dataset name (default: "mmnist")')
     parser.add_argument('--pre_seq_length', default=None, type=int, help="Sequence length before prediction")
     parser.add_argument('--aft_seq_length', default=None, type=int, help="Sequence length after prediction")

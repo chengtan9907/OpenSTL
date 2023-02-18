@@ -11,12 +11,12 @@ dataset_parameters = {
         'aft_seq_length': 4,
         'total_length': 8
     },
-    'kth20': {
+    **dict.fromkeys(['kth20', 'kth'], {
         'in_shape': [10, 1, 128, 128],
         'pre_seq_length': 10,
         'aft_seq_length': 20,
         'total_length': 30
-    },
+    }),
     'kth40': {
         'in_shape': [10, 1, 128, 128],
         'pre_seq_length': 10,
