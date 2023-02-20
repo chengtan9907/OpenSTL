@@ -7,6 +7,10 @@
     <img src="https://img.shields.io/badge/license-Apache--2.0-%23B7A800" /></a>
 </p>
 
+[🛠️Installation](docs/en/install.md) |
+[🚀Model Zoo](docs/en/model_zoos/video_benchmarks.md) |
+[🆕News](docs/en/changelog.md)
+
 This repository is an open-source project for video prediction benchmarks, which contains the implementation code for paper:
 
 **SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning**  
@@ -125,10 +129,11 @@ We support various video prediction methods and will provide benchmarks on vario
     <details open>
     <summary>Currently supported datasets</summary>
 
-    - [x] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004)  [[download](https://www.csc.kth.se/cvap/actions/)]
-    - [x] [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://figshare.com/articles/dataset/KITTI_hkl_files/7985684)]
-    - [x] [Moving MNIST](http://arxiv.org/abs/1502.04681) (ICML'2015) [[download](http://www.cs.toronto.edu/~nitish/unsupervised_video/)]
-    - [x] [TaxiBJ](https://arxiv.org/abs/1610.00081) (AAAI'2017) [[download](https://github.com/TolicWang/DeepST/tree/master/data/TaxiBJ)]
+    - [x] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004)  [[download](https://www.csc.kth.se/cvap/actions/)] [[config](https://github.com/chengtan9907/SimVPv2/configs/kth)]
+    - [x] [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://figshare.com/articles/dataset/KITTI_hkl_files/7985684)] [[config](https://github.com/chengtan9907/SimVPv2/configs/kitticaltech)]
+    - [x] [Moving MNIST](http://arxiv.org/abs/1502.04681) (ICML'2015) [[download](http://www.cs.toronto.edu/~nitish/unsupervised_video/)] [[config](https://github.com/chengtan9907/SimVPv2/configs/mmnist)]
+    - [x] [TaxiBJ](https://arxiv.org/abs/1610.00081) (AAAI'2017) [[download](https://github.com/TolicWang/DeepST/tree/master/data/TaxiBJ)] [[config](https://github.com/chengtan9907/SimVPv2/configs/taxibj)]
+    - [x] [WeatherBench](https://arxiv.org/abs/2002.00469) (ArXiv'2020) [[download](https://github.com/pangeo-data/WeatherBench)] [[config](https://github.com/chengtan9907/SimVPv2/configs/weather)]
 
     </details>
 

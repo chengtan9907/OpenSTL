@@ -47,6 +47,35 @@ def count_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
+def measure_throughput(model, input_dummy):
+    bs = 100
+    repetitions = 100
+    if isinstance(input_dummy, tuple):
+        input_dummy = list(input_dummy)
+        _, T, C, H, W = input_dummy[0].shape
+        _input = torch.rand(bs, T, C, H, W).to(input_dummy[0].device)
+        input_dummy[0] = _input
+        input_dummy = tuple(input_dummy)
+    else:
+        _, T, C, H, W = input_dummy.shape
+        input_dummy = torch.rand(bs, T, C, H, W).to(input_dummy.device)
+    total_time = 0
+    with torch.no_grad():
+        for _ in range(repetitions):
+            starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(enable_timing=True)
+            starter.record()
+            if isinstance(input_dummy, tuple):
+                _ = model(*input_dummy)
+            else:
+                _ = model(input_dummy)
+            ender.record()
+            torch.cuda.synchronize()
+            curr_time = starter.elapsed_time(ender) / 1000
+            total_time += curr_time
+    Throughput = (repetitions * bs) / total_time
+    return Throughput
+
+
 def load_config(filename:str = None):
     '''
     load and print config

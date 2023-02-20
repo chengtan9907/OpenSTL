@@ -514,6 +514,7 @@ class ViTSubBlock(ViTBlock):
     def __init__(self, dim, mlp_ratio=4., drop=0., drop_path=0.1):
         super().__init__(dim=dim, num_heads=8, mlp_ratio=mlp_ratio, qkv_bias=True,
                          drop=drop, drop_path=drop_path, act_layer=nn.GELU, norm_layer=nn.LayerNorm)
+        self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
         self.apply(self._init_weights)
 
     def _init_weights(self, m):

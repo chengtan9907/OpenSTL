@@ -12,7 +12,7 @@ from fvcore.nn import FlopCountAnalysis, flop_count_table
 from simvp.core import metric, Recorder
 from simvp.methods import method_maps
 from simvp.utils import (set_seed, print_log, output_namespace, check_dir,
-                         get_dataset)
+                         get_dataset, measure_throughput)
 
 try:
     import nni
@@ -35,34 +35,36 @@ class NodDistExperiment(object):
 
         T, C, H, W = self.args.in_shape
         if self.args.method == 'simvp':
-            _tmp_input = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
-            flops = FlopCountAnalysis(self.method.model, _tmp_input)
+            input_dummy = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
         elif self.args.method == 'crevnet':
             # crevnet must use the batchsize rather than 1
-            _tmp_input = torch.ones(self.args.batch_size, 20, C, H, W).to(self.device)
-            flops = FlopCountAnalysis(self.method.model, _tmp_input)
+            input_dummy = torch.ones(self.args.batch_size, 20, C, H, W).to(self.device)
         elif self.args.method == 'phydnet':
             _tmp_input1 = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
             _tmp_input2 = torch.ones(1, self.args.aft_seq_length, C, H, W).to(self.device)
             _tmp_constraints = torch.zeros((49, 7, 7)).to(self.device)
-            flops = FlopCountAnalysis(self.method.model, (_tmp_input1, _tmp_input2, _tmp_constraints))
+            input_dummy = (_tmp_input1, _tmp_input2, _tmp_constraints)
         elif self.args.method in ['convlstm', 'predrnnpp', 'predrnn', 'mim', 'e3dlstm', 'mau']:
             Hp, Wp = H // self.args.patch_size, W // self.args.patch_size
             Cp = self.args.patch_size ** 2 * C
             _tmp_input = torch.ones(1, self.args.total_length, Hp, Wp, Cp).to(self.device)
             _tmp_flag = torch.ones(1, self.args.aft_seq_length - 1, Hp, Wp, Cp).to(self.device)
-            flops = FlopCountAnalysis(self.method.model, (_tmp_input, _tmp_flag))
+            input_dummy = (_tmp_input, _tmp_flag)
         elif self.args.method == 'predrnnv2':
             Hp, Wp = H // self.args.patch_size, W // self.args.patch_size
             Cp = self.args.patch_size ** 2 * C
             _tmp_input = torch.ones(1, self.args.total_length, Hp, Wp, Cp).to(self.device)
             _tmp_flag = torch.ones(1, self.args.total_length - 2, Hp, Wp, Cp).to(self.device)
-            flops = FlopCountAnalysis(self.method.model, (_tmp_input, _tmp_flag))
+            input_dummy = (_tmp_input, _tmp_flag)
         else:
             raise ValueError(f'Invalid method name {self.args.method}')
 
         print_log(self.method.model)
+        flops = FlopCountAnalysis(self.method.model, input_dummy)
         print_log(flop_count_table(flops))
+        if args.fps:
+            fps = measure_throughput(self.method.model, input_dummy)
+            print_log('Throughputs of {}: {:.3f}'.format(self.args.method, fps))
 
     def _acquire_device(self):
         if self.args.use_gpu:
