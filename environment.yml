@@ -10,9 +10,9 @@ dependencies:
   - pip
   - python
   - pytorch
+  - xarray
   - pip:
     - scikit-image
     - timm
     - tqdm
-    - xarray
 prefix: /opt/anaconda3/envs/simvp

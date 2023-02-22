@@ -156,24 +156,32 @@ class NodDistExperiment(object):
     def vali(self, vali_loader):
         preds, trues, val_loss = self.method.vali_one_epoch(self.vali_loader)
 
-        mae, mse = metric(
-            preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std, return_ssim_psnr=False)
-        print_log('val\t mse:{}, mae:{}'.format(mse, mae))
+        if self.args.dataname=='weather':
+            metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
+        else:
+            metric_list, spatial_norm = ['mse', 'mae'], False
+        eval_res, eval_log = metric(preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std,
+                                    metrics=metric_list, spatial_norm=spatial_norm)
+        print_log('val\t '+eval_log)
         if has_nni:
-            nni.report_intermediate_result(mse)
+            nni.report_intermediate_result(eval_res['mse'])
 
         return val_loss
 
     def test(self):
         inputs, trues, preds = self.method.test_one_epoch(self.test_loader)
-        mae, mse, ssim, psnr = metric(
-            preds, trues, self.test_loader.dataset.mean, self.test_loader.dataset.std, return_ssim_psnr=True)
-        metrics = np.array([mae, mse])
-        print_log('mse:{}, mae:{}, ssim:{}, psnr:{}'.format(mse, mae, ssim, psnr))
-        
+        if self.args.dataname=='weather':
+            metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
+        else:
+            metric_list, spatial_norm = ['mse', 'mae', 'ssim', 'psnr'], False
+        eval_res, eval_log = metric(preds, trues, self.test_loader.dataset.mean, self.test_loader.dataset.std,
+                                    metrics=metric_list, spatial_norm=spatial_norm)
+        metrics = np.array([eval_res['mae'], eval_res['mse']])
+        print_log(eval_log)
+
         folder_path = osp.join(self.path, 'saved')
         check_dir(folder_path)
 
         for np_data in ['metrics', 'inputs', 'trues', 'preds']:
             np.save(osp.join(folder_path, np_data + '.npy'), vars()[np_data])
-        return mse
+        return eval_res['mse']
