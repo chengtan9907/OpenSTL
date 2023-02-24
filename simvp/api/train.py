@@ -21,7 +21,7 @@ except ImportError:
     has_nni = False
 
 
-class NodDistExperiment(object):
+class NonDistExperiment(object):
     """ Experiment with non-dist PyTorch training and evaluation """
 
     def __init__(self, args):
@@ -92,8 +92,9 @@ class NodDistExperiment(object):
         for handler in logging.root.handlers[:]:
             logging.root.removeHandler(handler)
         timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+        prefix = 'train' if not self.args.test else 'test'
         logging.basicConfig(level=logging.INFO,
-                            filename=osp.join(self.path, 'train_{}.log'.format(timestamp)),
+                            filename=osp.join(self.path, '{}_{}.log'.format(prefix, timestamp)),
                             filemode='a', format='%(asctime)s - %(message)s')
         # prepare data
         self._get_data()
@@ -156,7 +157,7 @@ class NodDistExperiment(object):
     def vali(self, vali_loader):
         preds, trues, val_loss = self.method.vali_one_epoch(self.vali_loader)
 
-        if self.args.dataname=='weather':
+        if 'weather' in self.args.dataname:
             metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
         else:
             metric_list, spatial_norm = ['mse', 'mae'], False
@@ -170,7 +171,7 @@ class NodDistExperiment(object):
 
     def test(self):
         inputs, trues, preds = self.method.test_one_epoch(self.test_loader)
-        if self.args.dataname=='weather':
+        if 'weather' in self.args.dataname:
             metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
         else:
             metric_list, spatial_norm = ['mse', 'mae', 'ssim', 'psnr'], False

@@ -61,7 +61,7 @@ class SimVP(Base_method):
             loss = self.criterion(pred_y, batch_y)
             loss.backward()
             self.model_optim.step()
-            self.scheduler.step()
+            self.scheduler.step(epoch)
             
             num_updates += 1
             loss_mean += loss.item()

@@ -51,7 +51,7 @@ class PredRNN(Base_method):
             img_gen, loss = self.model(ims, real_input_flag)
             loss.backward()
             self.model_optim.step()
-            self.scheduler.step()
+            self.scheduler.step(epoch)
             
             num_updates += 1
             loss_mean += loss.item()

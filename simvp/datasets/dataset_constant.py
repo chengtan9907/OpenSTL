@@ -35,10 +35,14 @@ dataset_parameters = {
         'aft_seq_length': 1,
         'total_length': 11
     },
-    'weather':{
+    **dict.fromkeys(['weather', 'weather_t2m'], {
         'in_shape': [12, 1, 32, 64],
         'pre_seq_length': 12,
         'aft_seq_length': 12,
-        'total_length': 24
-    }
+        'total_length': 24,
+        'data_name': 't2m',
+        'train_time': ['2010', '2015'],
+        'val_time': ['2016', '2016'],
+        'test_time': ['2017', '2018']
+    })
 }

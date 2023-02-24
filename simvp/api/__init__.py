@@ -1,5 +1,5 @@
 # Copyright (c) CAIRI AI Lab. All rights reserved
 
-from .train import NodDistExperiment
+from .train import NonDistExperiment
 
-__all__ = ['NodDistExperiment']
+__all__ = ['NonDistExperiment']

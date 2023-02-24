@@ -53,7 +53,7 @@ class PredRNNv2(PredRNN):
             num_updates += 1
             loss_mean += loss.item()
             losses_m.update(loss.item(), batch_x.size(0))
-            self.scheduler.step()            
+            self.scheduler.step(epoch)
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item()))
 
         if hasattr(self.model_optim, 'sync_lookahead'):

@@ -155,7 +155,8 @@ def load_data(batch_size,
               test_time=['2017', '2018'],
               idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
               idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-              step=1):
+              step=1,
+              **kwargs):
 
     weather_dataroot = osp.join(data_root, 'weather')
 
@@ -191,7 +192,7 @@ def load_data(batch_size,
                                                   pin_memory=True, drop_last=True,
                                                   num_workers=num_workers)
     dataloader_test = torch.utils.data.DataLoader(test_set,
-                                                  batch_size=1, shuffle=False,
+                                                  batch_size=val_batch_size, shuffle=False,
                                                   pin_memory=True, drop_last=True,
                                                   num_workers=num_workers)
 

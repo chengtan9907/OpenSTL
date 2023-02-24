@@ -22,14 +22,12 @@ if __name__ == '__main__':
         tuner_params = nni.get_next_parameter()
         config.update(tuner_params)
 
-    cfg_path = osp.join('./configs', args.dataname, f'{args.method}.py') \
-        if args.config_file is None else args.config_file
-    config = update_config(config, load_config(cfg_path),
+    assert args.config_file is not None, "Config file is required for testing"
+    config = update_config(config, load_config(args.config_file),
                            exclude_keys=['batch_size', 'val_batch_size'])
+    config['test'] = True
 
     exp = NonDistExperiment(args)
-    print('>'*35 + ' training ' + '<'*35)
-    exp.train()
 
     print('>'*35 + ' testing  ' + '<'*35)
     mse = exp.test()

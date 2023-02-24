@@ -40,7 +40,7 @@ def load_data(batch_size, val_batch_size, data_root,
                                                   pin_memory=True, drop_last=True,
                                                   num_workers=num_workers)
     dataloader_test = torch.utils.data.DataLoader(test_set,
-                                                  batch_size=1, shuffle=False,
+                                                  batch_size=val_batch_size, shuffle=False,
                                                   pin_memory=True, drop_last=True,
                                                   num_workers=num_workers)
 

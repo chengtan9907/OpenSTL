@@ -53,8 +53,8 @@ class CrevNet(Base_method):
             num_updates += 1
             loss_mean += loss.item()
             losses_m.update(loss.item(), batch_x.size(0))
-            self.scheduler.step()
-            self.scheduler2.step()
+            self.scheduler.step(epoch)
+            self.scheduler2.step(epoch)
             train_pbar.set_description('train loss: {:.4f}'.format(
                 loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
 

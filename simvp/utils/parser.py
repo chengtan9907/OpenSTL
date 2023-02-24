@@ -17,6 +17,7 @@ def create_parser():
     parser.add_argument('--seed', default=42, type=int)
     parser.add_argument('--fps', action='store_true', default=False,
                         help='Whether to measure inference speed (FPS)')
+    parser.add_argument('--test', action='store_true', default=False, help='Only performs testing')
 
     # dataset parameters
     parser.add_argument('--batch_size', '-b', default=16, type=int, help='Training batch size')
