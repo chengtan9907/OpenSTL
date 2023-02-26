@@ -5,8 +5,11 @@
     <img src="https://img.shields.io/badge/arXiv-2211.12509-b31b1b.svg?style=flat" /></a>
 <a href="https://github.com/Westlake-AI/MogaNet/blob/main/LICENSE" alt="license">
     <img src="https://img.shields.io/badge/license-Apache--2.0-%23B7A800" /></a>
+<a href="https://simvpv2.readthedocs.io/en/latest/" alt="docs">
+    <img src="https://readthedocs.org/projects/simvpv2/badge/?version=latest" /></a>
 </p>
 
+[📘Documentation](https://simvpv2.readthedocs.io/en/latest/) |
 [🛠️Installation](docs/en/install.md) |
 [🚀Model Zoo](docs/en/model_zoos/video_benchmarks.md) |
 [🆕News](docs/en/changelog.md)

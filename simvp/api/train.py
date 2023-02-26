@@ -12,7 +12,7 @@ from fvcore.nn import FlopCountAnalysis, flop_count_table
 from simvp.core import metric, Recorder
 from simvp.methods import method_maps
 from simvp.utils import (set_seed, print_log, output_namespace, check_dir,
-                         get_dataset, measure_throughput)
+                         get_dataset, measure_throughput, weights_to_cpu)
 
 try:
     import nni
@@ -29,6 +29,7 @@ class NonDistExperiment(object):
         self.config = self.args.__dict__
         self.device = self._acquire_device()
         self.args.method = self.args.method.lower()
+        self._epoch = 0
 
         self._preparation()
         print_log(output_namespace(self.args))
@@ -100,6 +101,11 @@ class NonDistExperiment(object):
         self._get_data()
         # build the method
         self._build_method()
+        # resume traing
+        if self.args.auto_resume:
+            self.args.resume_from = osp.join(self.checkpoints_path, 'latest.pth')
+        if self.args.resume_from is not None:
+            self._load(name=self.args.resume_from)
 
     def _build_method(self):
         steps_per_epoch = len(self.train_loader)
@@ -111,23 +117,34 @@ class NonDistExperiment(object):
             self.vali_loader = self.test_loader
 
     def _save(self, name=''):
-        torch.save(self.method.model.state_dict(), osp.join(self.checkpoints_path, name + '.pth'))
-        fw = open(osp.join(self.checkpoints_path, name + '.pkl'), 'wb')
-        state = self.method.scheduler.state_dict()
-        pickle.dump(state, fw)
+        checkpoint = {
+            'epoch': self._epoch + 1,
+            'optimizer': self.method.model_optim.state_dict(),
+            'state_dict': weights_to_cpu(self.method.model.state_dict()),
+            'scheduler': self.method.scheduler.state_dict()}
+        torch.save(checkpoint, osp.join(self.checkpoints_path, name + '.pth'))
 
-    def _load(self, epoch):
-        self.method.model.load_state_dict(torch.load(osp.join(self.checkpoints_path, str(epoch) + '.pth')))
-        fw = open(osp.join(self.checkpoints_path, str(epoch) + '.pkl'), 'rb')
-        state = pickle.load(fw)
-        self.method.scheduler.load_state_dict(state)
+    def _load(self, name=''):
+        filename = name if osp.isfile(name) else osp.join(self.checkpoints_path, name + '.pth')
+        try:
+            checkpoint = torch.load(filename)
+        except:
+            return
+        # OrderedDict is a subclass of dict
+        if not isinstance(checkpoint, dict):
+            raise RuntimeError(f'No state_dict found in checkpoint file {filename}')
+        self.method.model.load_state_dict(checkpoint['state_dict'])
+        if checkpoint.get('epoch', None) is not None:
+            self._epoch = checkpoint['epoch']
+            self.method.model_optim.load_state_dict(checkpoint['optimizer'])
+            self.method.scheduler.load_state_dict(checkpoint['scheduler'])
 
     def train(self):
         recorder = Recorder(verbose=True)
         num_updates = 0
         # constants for other methods:
         eta = 1.0  # PredRNN
-        for epoch in range(self.config['epoch']):
+        for epoch in range(self._epoch, self.config['epoch']):
             loss_mean = 0.0
 
             if self.args.method in ['simvp', 'crevnet', 'phydnet']:
@@ -139,6 +156,7 @@ class NonDistExperiment(object):
             else:
                 raise ValueError(f'Invalid method name {self.args.method}')
 
+            self._epoch = epoch
             if epoch % self.args.log_step == 0:
                 cur_lr = self.method.current_lr()
                 cur_lr = sum(cur_lr) / len(cur_lr)
@@ -148,6 +166,7 @@ class NonDistExperiment(object):
                 print_log('Epoch: {0}, Steps: {1} | Lr: {2:.7f} | Train Loss: {3:.7f} | Vali Loss: {4:.7f}\n'.format(
                     epoch + 1, len(self.train_loader), cur_lr, loss_mean, vali_loss))
                 recorder(vali_loss, self.method.model, self.path)
+                self._save(name='latest')
 
         if not check_dir(self.path):  # exit training when work_dir is removed
             assert False and "Exit training because work_dir is removed"
@@ -170,6 +189,10 @@ class NonDistExperiment(object):
         return val_loss
 
     def test(self):
+        if self.args.test:
+            best_model_path = osp.join(self.path, 'checkpoint.pth')
+            self.method.model.load_state_dict(torch.load(best_model_path))
+
         inputs, trues, preds = self.method.test_one_epoch(self.test_loader)
         if 'weather' in self.args.dataname:
             metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True

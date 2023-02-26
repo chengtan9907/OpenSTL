@@ -187,7 +187,7 @@ def load_data(batch_size,
                                                    batch_size=batch_size, shuffle=True,
                                                    pin_memory=True, drop_last=True,
                                                    num_workers=num_workers)
-    dataloader_vali = torch.utils.data.DataLoader(validation_set,
+    dataloader_vali = torch.utils.data.DataLoader(test_set, # validation_set,
                                                   batch_size=val_batch_size, shuffle=False,
                                                   pin_memory=True, drop_last=True,
                                                   num_workers=num_workers)

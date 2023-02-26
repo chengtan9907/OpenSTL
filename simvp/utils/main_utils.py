@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import random 
 import torch.backends.cudnn as cudnn
+from collections import OrderedDict
 from .config_utils import Config
 
 
@@ -77,9 +78,7 @@ def measure_throughput(model, input_dummy):
 
 
 def load_config(filename:str = None):
-    '''
-    load and print config
-    '''
+    """load and print config"""
     print('loading config from ' + filename + ' ...')
     try:
         configfile = Config(filename=filename)
@@ -91,9 +90,7 @@ def load_config(filename:str = None):
 
 
 def update_config(args, config, exclude_keys=list()):
-    '''
-    update the args dict with a new config
-    '''
+    """update the args dict with a new config"""
     assert isinstance(args, dict) and isinstance(config, dict)
     for k in config.keys():
         if args.get(k, False):
@@ -104,3 +101,21 @@ def update_config(args, config, exclude_keys=list()):
         else:
             args[k] = config[k]
     return args
+
+
+def weights_to_cpu(state_dict: OrderedDict) -> OrderedDict:
+    """Copy a model state_dict to cpu.
+
+    Args:
+        state_dict (OrderedDict): Model weights on GPU.
+
+    Returns:
+        OrderedDict: Model weights on GPU.
+    """
+    state_dict_cpu = OrderedDict()
+    for key, val in state_dict.items():
+        state_dict_cpu[key] = val.cpu()
+    # Keep metadata in state_dict
+    state_dict_cpu._metadata = getattr(  # type: ignore
+        state_dict, '_metadata', OrderedDict())
+    return state_dict_cpu
