@@ -77,9 +77,11 @@ python setup.py develop
 * tqdm
 </details>
 
+Please refer to [install.md](docs/en/install.md) for more detailed instructions.
+
 ## Getting Started
 
-An example of single GPU training SimVP+gSTA on Moving MNIST dataset.
+Please see [get_started.md](docs/en/get_started.md) for the basic usage. Here is an example of single GPU training SimVP+gSTA on Moving MNIST dataset.
 ```shell
 bash tools/prepare_data/download_mmnist.sh
 python tools/non_dist_train.py -d mmnist -m SimVP --model_type gsta --lr 1e-3 --ex_name mmnist_simvp_gsta

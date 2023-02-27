@@ -14,3 +14,5 @@ sr_size = 4
 tau = 5
 cell_mode = 'normal'
 model_mode = 'normal'
+# training
+sched = 'onecycle'
