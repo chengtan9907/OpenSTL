@@ -52,7 +52,7 @@ Quantitative results of different methods on the Moving MNIST dataset ($10 \righ
 
 ## News and Updates
 
-[2023-02-18] `SimVP` v0.1.0 is released.
+[2023-02-18] `SimVP` v0.1.0 is released. Benchmark results and config files are updated for MMNIST, TaxiBJ, and WeatherBench datasets.
 
 ## Installation
 

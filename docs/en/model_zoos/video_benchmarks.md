@@ -38,11 +38,11 @@
 
 ## Moving MNIST Benchmarks
 
-We provide benchmark results on popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), inference FPS (s) are also reported for all methods.
+We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler.
 
 ### **Benchmark of Video Prediction Methods**
 
-For fair comparison of different methods, we report final results when models are trained to convergence. We provide config file in [configs/mmnist](https://github.com/chengtan9907/SimVPv2/configs/mmnist).
+For a fair comparison of different methods, we report final results when models are trained to convergence. We provide config files in [configs/mmnist](https://github.com/chengtan9907/SimVPv2/configs/mmnist).
 
 | Method       | Params |  FLOPs | FPS |  MSE  |   MAE  |  SSIM |   Download   |
 |--------------|:------:|:------:|:---:|:-----:|:------:|:-----:|:------------:|
@@ -88,3 +88,50 @@ Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be 
 | VAN              | 2000 epoch |  44.5M |  16.0G | 288s | 16.21 | 53.57 | 0.9646 | 39.26 | model \| log |
 | HorNet           | 2000 epoch |  45.7M |  16.3G | 287s | 17.40 | 55.70 | 0.9624 | 39.19 | model \| log |
 | MogaNet          | 2000 epoch |  46.8M |  16.5G | 255s | 15.67 | 51.84 | 0.9661 | 39.35 | model \| log |
+
+
+## TaxiBJ Benchmarks
+
+We provide traffic benchmark results on the popular [TaxiBJ](https://arxiv.org/abs/1610.00081) dataset using $4\rightarrow 4$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (5 epochs warmup and min lr is 1e-6).
+
+### **Benchmark of MetaFormers on SimVP**
+
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/taxibj/simvp](https://github.com/chengtan9907/SimVPv2/configs/taxibj/simvp/).
+
+| MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE  |  MAE  |  SSIM  |  PSNR |   Download   |
+|------------------|:--------:|:------:|:-----:|:----:|:------:|:-----:|:------:|:-----:|:------------:|
+| IncepU (SimVPv1) | 50 epoch | 13.79M | 3.61G |  533 | 0.3282 | 15.45 | 0.9835 | 39.72 | model \| log |
+| gSTA (SimVPv2)   | 50 epoch |  9.96M | 2.62G | 1217 | 0.3246 | 15.03 | 0.9844 | 39.95 | model \| log |
+| ViT              | 50 epoch |  9.66M | 2.80G | 1301 | 0.3171 | 15.15 | 0.9841 | 39.89 | model \| log |
+| Swin Transformer | 50 epoch |  9.66M | 2.56G | 1506 | 0.3128 | 15.07 | 0.9847 | 39.89 | model \| log |
+| Uniformer        | 50 epoch |  9.52M | 2.71G | 1333 | 0.3268 | 15.16 | 0.9844 | 39.89 | model \| log |
+| MLP-Mixer        | 50 epoch |  8.24M | 2.18G | 1974 | 0.3206 | 15.37 | 0.9841 | 39.78 | model \| log |
+| ConvMixer        | 50 epoch |  0.84M | 0.23G | 4793 | 0.3634 | 15.63 | 0.9831 | 39.69 | model \| log |
+| Poolformer       | 50 epoch |  7.75M | 2.06G | 1827 | 0.3273 | 15.39 | 0.9840 | 39.75 | model \| log |
+| ConvNeXt         | 50 epoch |  7.84M | 2.08G | 1918 | 0.3106 | 14.90 | 0.9845 | 39.99 | model \| log |
+| VAN              | 50 epoch |  9.48M | 2.49G | 1273 | 0.3125 | 14.96 | 0.9848 | 39.95 | model \| log |
+| HorNet           | 50 epoch |  9.68M | 2.54G | 1350 | 0.3186 | 15.01 | 0.9843 | 39.91 | model \| log |
+| MogaNet          | 50 epoch |  9.96M | 2.61G | 1005 | 0.3114 | 15.06 | 0.9847 | 39.92 | model \| log |
+
+## WeatherBench Benchmarks
+
+We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (`t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
+
+### **Benchmark of MetaFormers on SimVP**
+
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp/).
+
+| MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  rMSE |   Download   |
+|------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 1.238 | 0.7037 | 1.113 | model \| log |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 1.105 | 0.6567 | 1.051 | model \| log |
+| ViT              | 50 epoch | 12.41M | 7.99G |  432 |       |        |       | model \| log |
+| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 1.143 | 0.6735 | 1.069 | model \| log |
+| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 |       |        |       | model \| log |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 1.255 | 0.7011 | 1.119 | model \| log |
+| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 1.267 | 0.7073 | 1.126 | model \| log |
+| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 1.156 | 0.6715 | 1.075 | model \| log |
+| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 1.277 | 0.7220 | 1.130 | model \| log |
+| VAN              | 50 epoch | 12.15M | 6.70G |  523 |       |        |       | model \| log |
+| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 1.201 | 0.6906 | 1.096 | model \| log |
+| MogaNet          | 50 epoch | 46.80M | 16.5G |  416 | 1.181 | 0.6865 | 1.087 | model \| log |
