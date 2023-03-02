@@ -35,26 +35,46 @@ dataset_parameters = {
         'aft_seq_length': 1,
         'total_length': 11
     },
-    **dict.fromkeys(['weather', 'weather_t2m'], {
+    **dict.fromkeys(['weather', 'weather_t2m_5_625'], {  # 2m_temperature
         'in_shape': [12, 1, 32, 64],
         'pre_seq_length': 12,
         'aft_seq_length': 12,
         'total_length': 24,
         'data_name': 't2m',
-        'train_time': ['2010', '2015'],
-        'val_time': ['2016', '2016'],
-        'test_time': ['2017', '2018']
+        'train_time': ['2010', '2015'], 'val_time': ['2016', '2016'], 'test_time': ['2017', '2018'],
     }),
-    'weather_t2m_36': {
+    'weather_t2m_5_625_36': {  # 2m_temperature 1->36
         'in_shape': [1, 1, 32, 64],
         'pre_seq_length': 1,
         'aft_seq_length': 1,
         'total_length': 2,
         'data_name': 't2m',
-        'train_time': ['2010', '2015'],
-        'val_time': ['2016', '2016'],
-        'test_time': ['2017', '2018'],
+        'train_time': ['2010', '2015'], 'val_time': ['2016', '2016'], 'test_time': ['2017', '2018'],
         'idx_in': [0,],
         'idx_out': [36,],
+    },
+    'weather_r_5_625': {  # relative_humidity
+        'in_shape': [12, 1, 32, 64],
+        'pre_seq_length': 12,
+        'aft_seq_length': 12,
+        'total_length': 24,
+        'data_name': 'r',
+        'train_time': ['2010', '2015'], 'val_time': ['2016', '2016'], 'test_time': ['2017', '2018'],
+    },
+    'weather_uv10_5_625': {  # u10+v10, component_of_wind
+        'in_shape': [12, 2, 32, 64],
+        'pre_seq_length': 12,
+        'aft_seq_length': 12,
+        'total_length': 24,
+        'data_name': 'uv10',
+        'train_time': ['2010', '2015'], 'val_time': ['2016', '2016'], 'test_time': ['2017', '2018'],
+    },
+    'weather_tcc_5_625': {  # total_cloud_cover
+        'in_shape': [12, 1, 32, 64],
+        'pre_seq_length': 12,
+        'aft_seq_length': 12,
+        'total_length': 24,
+        'data_name': 'tcc',
+        'train_time': ['2010', '2015'], 'val_time': ['2016', '2016'], 'test_time': ['2017', '2018'],
     },
 }

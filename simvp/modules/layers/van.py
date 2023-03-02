@@ -75,29 +75,32 @@ class LKA(nn.Module):
 
 
 class Attention(nn.Module):
-    def __init__(self, d_model):
+    def __init__(self, d_model, attn_shortcut=True):
         super().__init__()
 
         self.proj_1 = nn.Conv2d(d_model, d_model, 1)
         self.activation = nn.GELU()
         self.spatial_gating_unit = LKA(d_model)
         self.proj_2 = nn.Conv2d(d_model, d_model, 1)
+        self.attn_shortcut = attn_shortcut
 
     def forward(self, x):
-        shorcut = x.clone()
+        if self.attn_shortcut:
+            shortcut = x.clone()
         x = self.proj_1(x)
         x = self.activation(x)
         x = self.spatial_gating_unit(x)
         x = self.proj_2(x)
-        x = x + shorcut
+        if self.attn_shortcut:
+            x = x + shortcut
         return x
 
 
 class VANBlock(nn.Module):
-    def __init__(self, dim, mlp_ratio=4., drop=0.,drop_path=0., init_value=1e-2, act_layer=nn.GELU):
+    def __init__(self, dim, mlp_ratio=4., drop=0.,drop_path=0., init_value=1e-2, act_layer=nn.GELU, attn_shortcut=True):
         super().__init__()
         self.norm1 = nn.BatchNorm2d(dim)
-        self.attn = Attention(dim)
+        self.attn = Attention(dim, attn_shortcut=attn_shortcut)
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
 
         self.norm2 = nn.BatchNorm2d(dim)

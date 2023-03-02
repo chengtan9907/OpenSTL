@@ -100,7 +100,8 @@ class ClimateDataset(Dataset):
                         data_root+'/{}/*.nc'.format(data_map[key]), combine='by_coords')
                 except AttributeError:
                     assert False and 'Please install the latest xarray, e.g.,' \
-                                     'pip install  git+https://github.com/pydata/xarray/@v2022.03.0'
+                                     'pip install git+https://github.com/pydata/xarray/@v2022.03.0,' \
+                                     'pip install netcdf4 h5netcdf dask'
                 dataset = dataset.sel(time=slice(*training_time))
                 dataset = dataset.isel(time=slice(None, -1, step))
                 if self.time is None:

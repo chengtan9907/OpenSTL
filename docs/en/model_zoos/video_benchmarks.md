@@ -76,7 +76,7 @@ Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be 
 | VAN              |  200 epoch |  44.5M |  16.0G | 288s | 26.10 | 76.11 | 0.9417 | 38.39 | model \| log |
 | HorNet           |  200 epoch |  45.7M |  16.3G | 287s | 29.64 | 83.26 | 0.9331 | 38.16 | model \| log |
 | MogaNet          |  200 epoch |  46.8M |  16.5G | 255s | 25.57 | 75.19 | 0.9429 | 38.41 | model \| log |
-| IncepU (SimVPv1) | 2000 epoch |  58.0M |  19.4G | 209s |   -   |   -   |    -   |   -   |       -      |
+| IncepU (SimVPv1) | 2000 epoch |  58.0M |  19.4G | 209s | 21.15 | 64.15 | 0.9536 | 38.81 | model \| log |
 | gSTA (SimVPv2)   | 2000 epoch |  46.8M |  16.5G | 282s | 15.05 | 49.80 | 0.9670 |   -   | model \| log |
 | ViT              | 2000 epoch |  46.1M | 16.9.G | 290s | 19.74 | 61.65 | 0.9539 | 38.96 | model \| log |
 | Swin Transformer | 2000 epoch |  46.1M |  16.4G | 294s | 19.11 | 59.84 | 0.9584 | 39.03 | model \| log |
@@ -113,11 +113,12 @@ Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark pop
 | HorNet           | 50 epoch |  9.68M | 2.54G | 1350 | 0.3186 | 15.01 | 0.9843 | 39.91 | model \| log |
 | MogaNet          | 50 epoch |  9.96M | 2.61G | 1005 | 0.3114 | 15.06 | 0.9847 | 39.92 | model \| log |
 
+
 ## WeatherBench Benchmarks
 
-We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (`t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
+We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (temperature prediction `t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
 
-### **Benchmark of MetaFormers on SimVP**
+### **MetaFormers on SimVP for Temperature**
 
 Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp/).
 

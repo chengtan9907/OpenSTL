@@ -153,21 +153,24 @@ class AttentionModule(nn.Module):
 class SpatialAttention(nn.Module):
     """A Spatial Attention block for SimVP"""
 
-    def __init__(self, d_model, kernel_size=21):
+    def __init__(self, d_model, kernel_size=21, attn_shortcut=True):
         super().__init__()
 
         self.proj_1 = nn.Conv2d(d_model, d_model, 1)         # 1x1 conv
         self.activation = nn.GELU()                          # GELU
         self.spatial_gating_unit = AttentionModule(d_model, kernel_size)
         self.proj_2 = nn.Conv2d(d_model, d_model, 1)         # 1x1 conv
+        self.attn_shortcut = attn_shortcut
 
     def forward(self, x):
-        shorcut = x.clone()
+        if self.attn_shortcut:
+            shortcut = x.clone()
         x = self.proj_1(x)
         x = self.activation(x)
         x = self.spatial_gating_unit(x)
         x = self.proj_2(x)
-        x = x + shorcut
+        if self.attn_shortcut:
+            x = x + shortcut
         return x
 
 
