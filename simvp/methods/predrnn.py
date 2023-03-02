@@ -21,7 +21,7 @@ class PredRNN(Base_method):
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.args)
-        self.model_optim, self.scheduler = self._init_optimizer(steps_per_epoch)
+        self.model_optim, self.scheduler, self.by_epoch = self._init_optimizer(steps_per_epoch)
         self.criterion = nn.MSELoss()
 
     def _build_model(self, args):
@@ -32,6 +32,8 @@ class PredRNN(Base_method):
     def train_one_epoch(self, train_loader, epoch, num_updates, loss_mean, eta, **kwargs):
         losses_m = AverageMeter()
         self.model.train()
+        if self.by_epoch:
+            self.scheduler.step(epoch)
 
         train_pbar = tqdm(train_loader)
         for batch_x, batch_y in train_pbar:
@@ -51,12 +53,13 @@ class PredRNN(Base_method):
             img_gen, loss = self.model(ims, real_input_flag)
             loss.backward()
             self.model_optim.step()
-            self.scheduler.step(epoch)
-            
+            if not self.by_epoch:
+                self.scheduler.step(epoch)
+
             num_updates += 1
             loss_mean += loss.item()
             losses_m.update(loss.item(), batch_x.size(0))
-            
+
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item()))
 
         if hasattr(self.model_optim, 'sync_lookahead'):

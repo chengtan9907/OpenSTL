@@ -98,9 +98,10 @@ class MultiOrderDWConv(nn.Module):
 class MultiOrderGatedAggregation(nn.Module):
     """Spatial Block with Multi-order Gated Aggregation in MogaNet."""
 
-    def __init__(self, embed_dims, attn_dw_dilation=[1, 2, 3], attn_channel_split=[1, 3, 4]):
+    def __init__(self, embed_dims, attn_dw_dilation=[1, 2, 3], attn_channel_split=[1, 3, 4], attn_shortcut=True):
         super(MultiOrderGatedAggregation, self).__init__()
         self.embed_dims = embed_dims
+        self.attn_shortcut = attn_shortcut
         self.proj_1 = nn.Conv2d(
             in_channels=embed_dims, out_channels=embed_dims, kernel_size=1)
         self.gate = nn.Conv2d(
@@ -125,7 +126,8 @@ class MultiOrderGatedAggregation(nn.Module):
         return x
 
     def forward(self, x):
-        shortcut = x.clone()
+        if self.attn_shortcut:
+            shortcut = x.clone()
         # proj 1x1
         x = self.feat_decompose(x)
         # gating and value branch
@@ -133,5 +135,6 @@ class MultiOrderGatedAggregation(nn.Module):
         v = self.value(x)
         # aggregation
         x = self.proj_2(self.act_gate(g) * self.act_gate(v))
-        x = x + shortcut
+        if self.attn_shortcut:
+            x = x + shortcut
         return x

@@ -15,7 +15,7 @@ class E3DLSTM(PredRNN):
     def __init__(self, args, device, steps_per_epoch):
         PredRNN.__init__(self, args, device,steps_per_epoch)
         self.model = self._build_model(self.args)
-        self.model_optim, self.scheduler = self._init_optimizer(steps_per_epoch)
+        self.model_optim, self.scheduler, self.by_epoch = self._init_optimizer(steps_per_epoch)
         self.criterion = nn.MSELoss()
 
     def _build_model(self, args):

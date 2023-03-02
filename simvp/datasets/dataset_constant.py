@@ -44,5 +44,17 @@ dataset_parameters = {
         'train_time': ['2010', '2015'],
         'val_time': ['2016', '2016'],
         'test_time': ['2017', '2018']
-    })
+    }),
+    'weather_t2m_36': {
+        'in_shape': [1, 1, 32, 64],
+        'pre_seq_length': 1,
+        'aft_seq_length': 1,
+        'total_length': 2,
+        'data_name': 't2m',
+        'train_time': ['2010', '2015'],
+        'val_time': ['2016', '2016'],
+        'test_time': ['2017', '2018'],
+        'idx_in': [0,],
+        'idx_out': [36,],
+    },
 }

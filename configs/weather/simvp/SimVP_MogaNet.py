@@ -8,8 +8,8 @@ hid_T = 256
 N_T = 8
 N_S = 2
 # training
-lr = 1e-2
+lr = 5e-3
 batch_size = 16
-drop_path = 0.1
+drop_path = 0.2
 sched = 'cosine'
 warmup_epoch = 0

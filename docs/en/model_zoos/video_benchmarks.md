@@ -121,17 +121,17 @@ We provide temperature prediction benchmark results on the popular [WeatherBench
 
 Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp/).
 
-| MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  rMSE |   Download   |
+| MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 1.238 | 0.7037 | 1.113 | model \| log |
 | gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 1.105 | 0.6567 | 1.051 | model \| log |
-| ViT              | 50 epoch | 12.41M | 7.99G |  432 |       |        |       | model \| log |
+| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 1.146 | 0.6712 | 1.070 | model \| log |
 | Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 1.143 | 0.6735 | 1.069 | model \| log |
-| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 |       |        |       | model \| log |
+| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 1.204 | 0.6885 | 1.097 | model \| log |
 | MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 1.255 | 0.7011 | 1.119 | model \| log |
 | ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 1.267 | 0.7073 | 1.126 | model \| log |
 | Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 1.156 | 0.6715 | 1.075 | model \| log |
 | ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 1.277 | 0.7220 | 1.130 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.70G |  523 |       |        |       | model \| log |
+| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 1.150 | 0.6803 | 1.072 | model \| log |
 | HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 1.201 | 0.6906 | 1.096 | model \| log |
-| MogaNet          | 50 epoch | 46.80M | 16.5G |  416 | 1.181 | 0.6865 | 1.087 | model \| log |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 1.152 | 0.6665 | 1.073 | model \| log |

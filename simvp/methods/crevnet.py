@@ -28,14 +28,18 @@ class CrevNet(Base_method):
         return CrevNet_Model(**config).to(self.device)
 
     def _init_optimizer(self, steps_per_epoch):
-        self.model_optim, self.scheduler = get_optim_scheduler(
+        self.model_optim, self.scheduler, self.by_epoch_1 = get_optim_scheduler(
             self.args, self.args.epoch, self.model.frame_predictor, steps_per_epoch)
-        self.model_optim2, self.scheduler2 = get_optim_scheduler(
+        self.model_optim2, self.scheduler2, self.by_epoch_2 = get_optim_scheduler(
             self.args, self.args.epoch, self.model.encoder, steps_per_epoch)
 
     def train_one_epoch(self, train_loader, epoch, num_updates, loss_mean, **kwargs):
         losses_m = AverageMeter()
         self.model.train()
+        if self.by_epoch_1:
+            self.scheduler.step(epoch)
+        if self.by_epoch_2:
+            self.scheduler2.step(epoch)
 
         train_pbar = tqdm(train_loader)
         for batch_x, batch_y in train_pbar:
@@ -53,8 +57,10 @@ class CrevNet(Base_method):
             num_updates += 1
             loss_mean += loss.item()
             losses_m.update(loss.item(), batch_x.size(0))
-            self.scheduler.step(epoch)
-            self.scheduler2.step(epoch)
+            if not self.by_epoch_1:
+                self.scheduler.step()
+            if not self.by_epoch_2:
+                self.scheduler2.step()
             train_pbar.set_description('train loss: {:.4f}'.format(
                 loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
 

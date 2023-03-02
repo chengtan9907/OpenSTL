@@ -21,6 +21,7 @@ class Base_method(object):
         self.config = args.__dict__
         self.criterion = None
         self.model_optim = None
+        self.scheduler = None
 
     def _build_model(self, **kwargs):
         raise NotImplementedError
