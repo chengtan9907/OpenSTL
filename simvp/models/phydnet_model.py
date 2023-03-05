@@ -22,7 +22,7 @@ class PhyDNet_Model(nn.Module):
                                n_layers=1, kernel_size=(7,7), device=device) 
         self.convcell = PhyD_ConvLSTM(input_shape=(16,16), input_dim=64, hidden_dims=[128,128,64],
                                       n_layers=3, kernel_size=(3,3), device=device)   
-        self.encoder = PhyD_EncoderRNN(self.phycell, self.convcell)
+        self.encoder = PhyD_EncoderRNN(self.phycell, self.convcell, in_channel=kwargs.get('in_channel', 1))
         self.k2m = K2M([7,7])
 
         self.criterion = nn.MSELoss()

@@ -269,14 +269,14 @@ class decoder_specific(nn.Module):
         
 class PhyD_EncoderRNN(torch.nn.Module):
 
-    def __init__(self, phycell, convcell):
+    def __init__(self, phycell, convcell, in_channel=1):
         super(PhyD_EncoderRNN, self).__init__()
-        self.encoder_E = encoder_E()   # general encoder 64x64x1 -> 32x32x32
+        self.encoder_E = encoder_E(nc=in_channel)   # general encoder 64x64x1 -> 32x32x32
         self.encoder_Ep = encoder_specific() # specific image encoder 32x32x32 -> 16x16x64
         self.encoder_Er = encoder_specific() 
         self.decoder_Dp = decoder_specific() # specific image decoder 16x16x64 -> 32x32x32 
         self.decoder_Dr = decoder_specific()     
-        self.decoder_D = decoder_D()  # general decoder 32x32x32 -> 64x64x1 
+        self.decoder_D = decoder_D(nc=in_channel)  # general decoder 32x32x32 -> 64x64x1 
 
         # self.encoder_E = self.encoder_E.to(device)
         # self.encoder_Ep = self.encoder_Ep.to(device) 
