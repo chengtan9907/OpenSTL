@@ -29,10 +29,10 @@ python tools/non_dist_train.py \
 An example of single GPU training with SimVP+gSTA on Moving MNIST dataset.
 ```shell
 bash tools/prepare_data/download_mmnist.sh
-python tools/non_dist_train.py -d mmnist -m SimVP --model_type gsta --lr 1e-3 --ex_name mmnist_simvp_gsta
+python tools/non_dist_train.py -d mmnist --lr 1e-3 -c ./configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
 ```
 
 An example of single GPU testing with SimVP+gSTA on Moving MNIST dataset.
 ```shell
-python tools/non_dist_test.py -d mmnist -m SimVP -c configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
+python tools/non_dist_test.py -d mmnist -c configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
 ```

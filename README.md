@@ -17,7 +17,7 @@
 This repository is an open-source project for video prediction benchmarks, which contains the implementation code for paper:
 
 **SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning**  
-[Cheng Tan](https://westlake-drug-discovery.github.io/cheng_tan.html), [Zhangyang Gao](https://westlake-drug-discovery.github.io/zhangyang_gao.html), [Stan Z. Li](https://scholar.google.com/citations?user=Y-nyLGIAAAAJ&hl).
+[Cheng Tan](https://chengtan9907.github.io/), [Zhangyang Gao](https://scholar.google.com/citations?user=4SclT-QAAAAJ&hl=en), [Siyuan Li](https://lupin1998.github.io/), [Stan Z. Li](https://scholar.google.com/citations?user=Y-nyLGIAAAAJ&hl).
 
 ## Introduction
 
@@ -84,7 +84,7 @@ Please refer to [install.md](docs/en/install.md) for more detailed instructions.
 Please see [get_started.md](docs/en/get_started.md) for the basic usage. Here is an example of single GPU training SimVP+gSTA on Moving MNIST dataset.
 ```shell
 bash tools/prepare_data/download_mmnist.sh
-python tools/non_dist_train.py -d mmnist -m SimVP --model_type gsta --lr 1e-3 --ex_name mmnist_simvp_gsta
+python tools/non_dist_train.py -d mmnist --lr 1e-3 -c ./configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
