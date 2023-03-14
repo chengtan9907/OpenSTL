@@ -118,9 +118,9 @@ Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark pop
 
 We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (temperature prediction `t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
 
-### **MetaFormers on SimVP for Temperature**
+### **MetaFormers on SimVP for Temperature (t2m)**
 
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp/).
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_t2m_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_t2m_6_625/) for `6.625` settings ($32\times 64$ resolutions).
 
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
@@ -136,3 +136,60 @@ Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark pop
 | VAN              | 50 epoch | 12.15M | 6.70G |  523 | 1.150 | 0.6803 | 1.072 | model \| log |
 | HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 1.201 | 0.6906 | 1.096 | model \| log |
 | MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 1.152 | 0.6665 | 1.073 | model \| log |
+
+### **MetaFormers on SimVP for Humidity (r)**
+
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_r_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_r_6_625/) for `6.625` settings ($32\times 64$ resolutions).
+
+| MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE   |   MAE  |  RMSE |   Download   |
+|------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:-----:|:------------:|
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 34.355 |  3.994 | 5.861 | model \| log |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 31.426 |  3.765 | 5.606 | model \| log |
+| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 32.616 |  3.852 | 5.711 | model \| log |
+| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 31.332 |  3.776 | 5.597 | model \| log |
+| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 32.199 |  3.864 | 5.674 | model \| log |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 34.467 |  3.950 | 5.871 | model \| log |
+| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 32.829 |  3.909 | 5.730 | model \| log |
+| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 31.989 |  3.803 | 5.656 | model \| log |
+| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 33.179 |  3.928 | 5.760 | model \| log |
+| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 31.712 |  3.812 | 5.631 | model \| log |
+| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 32.081 |  3.826 | 5.664 | model \| log |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 31.795 |  3.816 | 5.639 | model \| log |
+
+### **MetaFormers on SimVP for Wind Component (uv10)**
+
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_uv10_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_uv10_6_625/) for `6.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
+
+| MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE  |   MAE  |  RMSE  |   Download   |
+|------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:------:|:------------:|
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.04G |  154 | 1.9993 | 0.9510 | 1.4140 | model \| log |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.02G |  498 | 1.5069 | 0.8142 | 1.2276 | model \| log |
+| ViT              | 50 epoch | 12.42M |  8.0G |  427 | 1.6262 | 0.8438 | 1.2752 | model \| log |
+| Swin Transformer | 50 epoch | 12.42M | 6.89G |  577 | 1.4996 | 0.8145 | 1.2246 | model \| log |
+| Uniformer        | 50 epoch | 12.03M | 7.46G |  459 | 1.4850 | 0.8085 | 1.2186 | model \| log |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.93G |  707 | 1.6066 | 0.8395 | 1.2675 | model \| log |
+| ConvMixer        | 50 epoch |  1.14M | 0.96G | 1698 | 1.7067 | 0.8714 | 1.3064 | model \| log |
+| Poolformer       | 50 epoch |  9.99M | 5.62G |  717 | 1.6123 | 0.8410 | 1.2698 | model \| log |
+| ConvNeXt         | 50 epoch | 10.09M | 5.67G |  682 | 1.6914 | 0.8698 | 1.3006 | model \| log |
+| VAN              | 50 epoch | 12.15M | 6.71G |  520 | 1.5958 | 0.8371 | 1.2632 | model \| log |
+| HorNet           | 50 epoch | 12.42M | 6.85G |  513 | 1.5539 | 0.8254 | 1.2466 | model \| log |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  411 | 1.6072 | 0.8451 | 1.2678 | model \| log |
+
+### **MetaFormers on SimVP for Cloud Cover (tcc)**
+
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_tcc_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_tcc_6_625/) for `6.625` settings ($32\times 64$ resolutions).
+
+| MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE   |    MAE  |   RMSE  |   Download   |
+|------------------|:--------:|:------:|:-----:|:----:|:-------:|:-------:|:-------:|:------------:|
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 0.04765 | 0.15029 | 0.21829 | model \| log |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 0.04657 | 0.14688 | 0.21580 | model \| log |
+| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 0.04778 | 0.15026 | 0.21859 | model \| log |
+| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 |         |         |         | model \| log |
+| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 0.04680 | 0.14777 | 0.21634 | model \| log |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 0.04925 | 0.15264 | 0.22192 | model \| log |
+| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 0.04717 | 0.14874 | 0.21718 | model \| log |
+| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 0.04694 | 0.14884 | 0.21667 | model \| log |
+| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 0.04742 | 0.14867 | 0.21775 | model \| log |
+| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 0.04694 | 0.14725 | 0.21665 | model \| log |
+| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 0.04692 | 0.14751 | 0.21661 | model \| log |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 0.04699 | 0.14802 | 0.21676 | model \| log |
