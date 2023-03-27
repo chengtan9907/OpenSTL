@@ -48,7 +48,7 @@ class SimVP(Base_method):
             pred_y = torch.cat(pred_y, dim=1)
         return pred_y
 
-    def train_one_epoch(self, train_loader, epoch, num_updates, loss_mean, **kwargs):
+    def train_one_epoch(self, runner, train_loader, epoch, num_updates, loss_mean, **kwargs):
         losses_m = AverageMeter()
         self.model.train()
         if self.by_epoch:
@@ -58,6 +58,7 @@ class SimVP(Base_method):
         for batch_x, batch_y in train_pbar:
             self.model_optim.zero_grad()
             batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+            runner.call_hook('before_train_iter')
             pred_y = self._predict(batch_x)
 
             loss = self.criterion(pred_y, batch_y)
@@ -69,6 +70,8 @@ class SimVP(Base_method):
             num_updates += 1
             loss_mean += loss.item()
             losses_m.update(loss.item(), batch_x.size(0))
+            runner.call_hook('after_train_iter')
+            runner._iter += 1
 
             train_pbar.set_description('train loss: {:.4f}'.format(loss.item()))
 
@@ -77,21 +80,22 @@ class SimVP(Base_method):
 
         return num_updates, loss_mean
 
-    def vali_one_epoch(self, vali_loader, **kwargs):
+    def vali_one_epoch(self, runner, vali_loader, **kwargs):
         self.model.eval()
         preds_lst, trues_lst, total_loss = [], [], []
         vali_pbar = tqdm(vali_loader)
         for i, (batch_x, batch_y) in enumerate(vali_pbar):
             batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+            runner.call_hook('before_val_iter')
             pred_y = self._predict(batch_x)
             loss = self.criterion(pred_y, batch_y)
 
             list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
                                                   ), [pred_y, batch_y], [preds_lst, trues_lst]))
-
+            runner.call_hook('after_val_iter')
             if i * batch_x.shape[0] > 1000:
                 break
-    
+
             vali_pbar.set_description('vali loss: {:.4f}'.format(loss.mean().item()))
             total_loss.append(loss.mean().item())
         
@@ -101,15 +105,17 @@ class SimVP(Base_method):
         trues = np.concatenate(trues_lst, axis=0)
         return preds, trues, total_loss
 
-    def test_one_epoch(self, test_loader, **kwargs):
+    def test_one_epoch(self, runner, test_loader, **kwargs):
         self.model.eval()
         inputs_lst, trues_lst, preds_lst = [], [], []
         test_pbar = tqdm(test_loader)
         for batch_x, batch_y in test_pbar:
+            runner.call_hook('before_val_iter')
             pred_y = self._predict(batch_x.to(self.device))
 
             list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
                  batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
+            runner.call_hook('after_val_iter')
 
         inputs, trues, preds = map(
             lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])

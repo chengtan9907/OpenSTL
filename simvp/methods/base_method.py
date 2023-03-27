@@ -30,7 +30,7 @@ class Base_method(object):
         return get_optim_scheduler(
             self.args, self.args.epoch, self.model, steps_per_epoch)
 
-    def train_one_epoch(self, train_loader, **kwargs): 
+    def train_one_epoch(self, runner, train_loader, **kwargs): 
         '''
         Train the model with train_loader.
         Input params:
@@ -38,7 +38,7 @@ class Base_method(object):
         '''
         raise NotImplementedError
 
-    def vali_one_epoch(self, vali_loader, **kwargs):
+    def vali_one_epoch(self, runner, vali_loader, **kwargs):
         '''
         Evaluate the model with val_loader.
         Input params:
@@ -46,7 +46,7 @@ class Base_method(object):
         '''
         raise NotImplementedError
 
-    def test_one_epoch(self, test_loader, **kwargs):
+    def test_one_epoch(self, runner, test_loader, **kwargs):
         raise NotImplementedError
 
     def current_lr(self) -> Union[List[float], Dict[str, List[float]]]:

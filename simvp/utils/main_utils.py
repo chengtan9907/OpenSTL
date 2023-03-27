@@ -7,7 +7,12 @@ import torch
 import random 
 import torch.backends.cudnn as cudnn
 from collections import OrderedDict
+from typing import Tuple
 from .config_utils import Config
+
+import torch
+import torch.multiprocessing as mp
+from torch import distributed as dist
 
 
 def set_seed(seed):
@@ -119,3 +124,45 @@ def weights_to_cpu(state_dict: OrderedDict) -> OrderedDict:
     state_dict_cpu._metadata = getattr(  # type: ignore
         state_dict, '_metadata', OrderedDict())
     return state_dict_cpu
+
+
+def init_dist(launcher: str, backend: str = 'nccl', **kwargs) -> None:
+    if mp.get_start_method(allow_none=True) is None:
+        mp.set_start_method('spawn')
+    if launcher == 'pytorch':
+        _init_dist_pytorch(backend, **kwargs)
+    elif launcher == 'mpi':
+        _init_dist_mpi(backend, **kwargs)
+    else:
+        raise ValueError(f'Invalid launcher type: {launcher}')
+
+
+def _init_dist_pytorch(backend: str, **kwargs) -> None:
+    # TODO: use local_rank instead of rank % num_gpus
+    rank = int(os.environ['RANK'])
+    num_gpus = torch.cuda.device_count()
+    torch.cuda.set_device(rank % num_gpus)
+    dist.init_process_group(backend=backend, **kwargs)
+
+
+def _init_dist_mpi(backend: str, **kwargs) -> None:
+    local_rank = int(os.environ['OMPI_COMM_WORLD_LOCAL_RANK'])
+    torch.cuda.set_device(local_rank)
+    if 'MASTER_PORT' not in os.environ:
+        # 29500 is torch.distributed default port
+        os.environ['MASTER_PORT'] = '29500'
+    if 'MASTER_ADDR' not in os.environ:
+        raise KeyError('The environment variable MASTER_ADDR is not set')
+    os.environ['WORLD_SIZE'] = os.environ['OMPI_COMM_WORLD_SIZE']
+    os.environ['RANK'] = os.environ['OMPI_COMM_WORLD_RANK']
+    dist.init_process_group(backend=backend, **kwargs)
+
+
+def get_dist_info() -> Tuple[int, int]:
+    if dist.is_available() and dist.is_initialized():
+        rank = dist.get_rank()
+        world_size = dist.get_world_size()
+    else:
+        rank = 0
+        world_size = 1
+    return rank, world_size

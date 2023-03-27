@@ -69,7 +69,7 @@ class CrevNet(Base_method):
 
         return num_updates, loss_mean
 
-    def vali_one_epoch(self, vali_loader, **kwargs):
+    def vali_one_epoch(self, runner, vali_loader, **kwargs):
         self.model.eval()
         preds_lst, trues_lst, total_loss = [], [], []
         vali_pbar = tqdm(vali_loader)
@@ -92,7 +92,7 @@ class CrevNet(Base_method):
         trues = np.concatenate(trues_lst, axis=0)
         return preds, trues, total_loss
 
-    def test_one_epoch(self, test_loader, **kwargs):
+    def test_one_epoch(self, runner, test_loader, **kwargs):
         self.model.eval()
         inputs_lst, trues_lst, preds_lst = [], [], []
         test_pbar = tqdm(test_loader)

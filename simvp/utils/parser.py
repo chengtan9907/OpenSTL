@@ -8,6 +8,8 @@ def create_parser():
     # Set-up parameters
     parser.add_argument('--device', default='cuda', type=str,
                         help='Name of device to use for tensor computations (cuda/cpu)')
+    parser.add_argument('--dist', action='store_true', default=False,
+                        help='Whether to use distributed training (DDP)')
     parser.add_argument('--display_step', default=10, type=int,
                         help='Interval in batches between display of training metrics')
     parser.add_argument('--res_dir', default='./results', type=str)

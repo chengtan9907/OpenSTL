@@ -27,7 +27,7 @@ class PredRNNv2(PredRNN):
         num_layers = len(num_hidden)
         return PredRNNv2_Model(num_layers, num_hidden, args).to(self.device)
 
-    def train_one_epoch(self, train_loader, epoch, num_updates, loss_mean, eta, **kwargs):
+    def train_one_epoch(self, runner, train_loader, epoch, num_updates, loss_mean, eta, **kwargs):
         losses_m = AverageMeter()
         self.model.train()
         if self.by_epoch:

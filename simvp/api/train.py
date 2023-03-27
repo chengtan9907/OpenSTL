@@ -2,17 +2,17 @@
 
 import time
 import logging
-import pickle
 import json
 import torch
 import numpy as np
 import os.path as osp
+from typing import Dict, List
 from fvcore.nn import FlopCountAnalysis, flop_count_table
 
-from simvp.core import metric, Recorder
+from simvp.core import Hook, metric, Recorder, get_priority, hook_maps
 from simvp.methods import method_maps
 from simvp.utils import (set_seed, print_log, output_namespace, check_dir,
-                         get_dataset, measure_throughput, weights_to_cpu)
+                         get_dataset, get_dist_info, measure_throughput, weights_to_cpu)
 
 try:
     import nni
@@ -30,6 +30,11 @@ class NonDistExperiment(object):
         self.device = self._acquire_device()
         self.args.method = self.args.method.lower()
         self._epoch = 0
+        self._iter = 0
+        self._inner_iter = 0
+        self._max_epochs = self.config['epoch']
+        self._max_iters = None
+        self._hooks: List[Hook] = []
 
         self._preparation()
         print_log(output_namespace(self.args))
@@ -69,8 +74,13 @@ class NonDistExperiment(object):
 
     def _acquire_device(self):
         if self.args.use_gpu:
-            device = torch.device('cuda:0')
-            print('Use GPU:', device)
+            if self.args.dist:
+                self._rank, self._world_size = get_dist_info()
+                self.device = f'cuda:{self._rank}'
+                print(f'Use GPU: local rank={self._rank}')
+            else:
+                device = torch.device('cuda:0')
+                print('Use GPU:', device)
         else:
             device = torch.device('cpu')
             print('Use CPU')
@@ -101,20 +111,67 @@ class NonDistExperiment(object):
         self._get_data()
         # build the method
         self._build_method()
+        # build hooks
+        self._build_hook()
         # resume traing
         if self.args.auto_resume:
             self.args.resume_from = osp.join(self.checkpoints_path, 'latest.pth')
         if self.args.resume_from is not None:
             self._load(name=self.args.resume_from)
+        self.call_hook('before_run')
 
     def _build_method(self):
         steps_per_epoch = len(self.train_loader)
         self.method = method_maps[self.args.method](self.args, self.device, steps_per_epoch)
 
+    def _build_hook(self):
+        for k in self.args.__dict__:
+            if k.lower().endswith('hook'):
+                hook_cfg = self.args.__dict__[k].copy()
+                priority = get_priority(hook_cfg.pop('priority', 'NORMAL'))
+                hook = hook_maps[k.lower()](**hook_cfg)
+                if hasattr(hook, 'priority'):
+                    raise ValueError('"priority" is a reserved attribute for hooks')
+                hook.priority = priority  # type: ignore
+                # insert the hook to a sorted list
+                inserted = False
+                for i in range(len(self._hooks) - 1, -1, -1):
+                    if priority >= self._hooks[i].priority:  # type: ignore
+                        self._hooks.insert(i + 1, hook)
+                        inserted = True
+                        break
+                if not inserted:
+                    self._hooks.insert(0, hook)
+
+    def call_hook(self, fn_name: str) -> None:
+        for hook in self._hooks:
+            getattr(hook, fn_name)(self)
+
     def _get_data(self):
         self.train_loader, self.vali_loader, self.test_loader = get_dataset(self.args.dataname, self.config)
         if self.vali_loader is None:
             self.vali_loader = self.test_loader
+        self._max_iters = self._max_epochs * len(self.train_loader)
+
+    def _get_hook_info(self):
+        # Get hooks info in each stage
+        stage_hook_map: Dict[str, list] = {stage: [] for stage in Hook.stages}
+        for hook in self.hooks:
+            priority = hook.priority  # type: ignore
+            classname = hook.__class__.__name__
+            hook_info = f'({priority:<12}) {classname:<35}'
+            for trigger_stage in hook.get_triggered_stages():
+                stage_hook_map[trigger_stage].append(hook_info)
+
+        stage_hook_infos = []
+        for stage in Hook.stages:
+            hook_infos = stage_hook_map[stage]
+            if len(hook_infos) > 0:
+                info = f'{stage}:\n'
+                info += '\n'.join(hook_infos)
+                info += '\n -------------------- '
+                stage_hook_infos.append(info)
+        return '\n'.join(stage_hook_infos)
 
     def _save(self, name=''):
         checkpoint = {
@@ -142,17 +199,18 @@ class NonDistExperiment(object):
     def train(self):
         recorder = Recorder(verbose=True)
         num_updates = 0
+        self.call_hook('before_train_epoch')
         # constants for other methods:
         eta = 1.0  # PredRNN
-        for epoch in range(self._epoch, self.config['epoch']):
+        for epoch in range(self._epoch, self._max_epochs):
             loss_mean = 0.0
 
             if self.args.method in ['simvp', 'crevnet', 'phydnet']:
                 num_updates, loss_mean = self.method.train_one_epoch(
-                    self.train_loader, epoch, num_updates, loss_mean)
+                    self, self.train_loader, epoch, num_updates, loss_mean)
             elif self.args.method in ['convlstm', 'predrnnpp', 'predrnn', 'predrnnv2', 'mim', 'e3dlstm', 'mau']:
                 num_updates, loss_mean, eta = self.method.train_one_epoch(
-                    self.train_loader, epoch, num_updates, loss_mean, eta)
+                    self, self.train_loader, epoch, num_updates, loss_mean, eta)
             else:
                 raise ValueError(f'Invalid method name {self.args.method}')
 
@@ -172,9 +230,13 @@ class NonDistExperiment(object):
             assert False and "Exit training because work_dir is removed"
         best_model_path = osp.join(self.path, 'checkpoint.pth')
         self.method.model.load_state_dict(torch.load(best_model_path))
+        time.sleep(1)  # wait for some hooks like loggers to finish
+        self.call_hook('after_run')
 
     def vali(self, vali_loader):
-        preds, trues, val_loss = self.method.vali_one_epoch(self.vali_loader)
+        self.call_hook('before_val_epoch')
+        preds, trues, val_loss = self.method.vali_one_epoch(self, self.vali_loader)
+        self.call_hook('after_val_epoch')
 
         if 'weather' in self.args.dataname:
             metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
@@ -193,7 +255,10 @@ class NonDistExperiment(object):
             best_model_path = osp.join(self.path, 'checkpoint.pth')
             self.method.model.load_state_dict(torch.load(best_model_path))
 
-        inputs, trues, preds = self.method.test_one_epoch(self.test_loader)
+        self.call_hook('before_val_epoch')
+        inputs, trues, preds = self.method.test_one_epoch(self, self.test_loader)
+        self.call_hook('after_val_epoch')
+
         if 'weather' in self.args.dataname:
             metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
         else:
