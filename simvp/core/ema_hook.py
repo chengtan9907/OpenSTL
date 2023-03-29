@@ -108,7 +108,6 @@ class EMAHook(Hook):
                 buffer_parameter = self.model_buffers[buffer_name]
                 buffer_parameter.mul_(self.regular_momentum).add_(
                     parameter.data, alpha=1. - self.regular_momentum)
-            print('update EMA model')
 
     def after_train_epoch(self, runner):
         """We load parameter values from ema backup to model before the
@@ -129,12 +128,14 @@ class EMAHook(Hook):
         """
         if self.evaluate_on_ema:
             # Swap when evaluate on ema
+            print('switch to EMA params')
             self._swap_ema_parameters()
 
     def after_val_epoch(self, runner):
         """We recover source model's parameter from ema model after validation."""
         if self.evaluate_on_ema:
             # Swap when evaluate on ema
+            print('switch back to ori params')
             self._swap_ema_parameters()
 
     def _swap_ema_parameters(self):
@@ -274,6 +275,19 @@ class SwitchEMAHook(Hook):
             if self.switch_start < runner._epoch:
                 if not self.every_n_epochs(runner, self.switch_interval):
                     self._switch_ema_parameters()
+
+    def before_val_epoch(self, runner):
+        """We load parameter values from ema model to source model before
+        validation.
+
+        Args:
+            runner (Runner): The runner of the training process.
+        """
+        self._swap_ema_parameters()
+
+    def after_val_epoch(self, runner):
+        """We recover source model's parameter from ema model after validation."""
+        self._swap_ema_parameters()
 
     def _swap_ema_parameters(self):
         """Swap the parameter of model with parameter in ema_buffer."""

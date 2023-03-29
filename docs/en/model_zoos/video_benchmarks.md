@@ -120,7 +120,7 @@ We provide temperature prediction benchmark results on the popular [WeatherBench
 
 ### **MetaFormers on SimVP for Temperature (t2m)**
 
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_t2m_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_t2m_6_625/) for `6.625` settings ($32\times 64$ resolutions).
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_t2m_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_t2m_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
@@ -139,7 +139,7 @@ Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark pop
 
 ### **MetaFormers on SimVP for Humidity (r)**
 
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_r_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_r_6_625/) for `6.625` settings ($32\times 64$ resolutions).
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_r_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_r_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE   |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:-----:|:------------:|
@@ -158,7 +158,7 @@ Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark pop
 
 ### **MetaFormers on SimVP for Wind Component (uv10)**
 
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_uv10_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_uv10_6_625/) for `6.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_uv10_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_uv10_5_625/) for `5.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
 
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE  |   MAE  |  RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:------:|:------------:|
@@ -177,14 +177,14 @@ Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark pop
 
 ### **MetaFormers on SimVP for Cloud Cover (tcc)**
 
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_tcc_6_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_tcc_6_625/) for `6.625` settings ($32\times 64$ resolutions).
+Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/weather/simvp_tcc_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_tcc_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE   |    MAE  |   RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-------:|:-------:|:-------:|:------------:|
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 0.04765 | 0.15029 | 0.21829 | model \| log |
 | gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 0.04657 | 0.14688 | 0.21580 | model \| log |
 | ViT              | 50 epoch | 12.41M | 7.99G |  432 | 0.04778 | 0.15026 | 0.21859 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 |         |         |         | model \| log |
+| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 0.04639 | 0.14729 | 0.21539 | model \| log |
 | Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 0.04680 | 0.14777 | 0.21634 | model \| log |
 | MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 0.04925 | 0.15264 | 0.22192 | model \| log |
 | ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 0.04717 | 0.14874 | 0.21718 | model \| log |
