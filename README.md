@@ -4,9 +4,13 @@
 <a href="https://arxiv.org/abs/2211.12509" alt="arXiv">
     <img src="https://img.shields.io/badge/arXiv-2211.12509-b31b1b.svg?style=flat" /></a>
 <a href="https://github.com/Westlake-AI/MogaNet/blob/main/LICENSE" alt="license">
-    <img src="https://img.shields.io/badge/license-Apache--2.0-%23B7A800" /></a>
+    <img src="https://img.shields.io/badge/license-Apache--2.0-%23002FA7" /></a>
 <a href="https://simvpv2.readthedocs.io/en/latest/" alt="docs">
     <img src="https://readthedocs.org/projects/simvpv2/badge/?version=latest" /></a>
+<a href="https://simvpv2.readthedocs.io/en/latest/" alt="docs">
+    <img src="https://img.shields.io/github/issues-raw/chengtan9907/SimVPv2?color=%23FF9600" /></a>
+<a href="https://github.com/chengtan9907/SimVPv2/issues" alt="resolution">
+    <img src="https://img.shields.io/badge/issue%20resolution-1%20d-%23B7A800" /></a>
 </p>
 
 [📘Documentation](https://simvpv2.readthedocs.io/en/latest/) |
@@ -69,9 +73,11 @@ python setup.py develop
 <summary>Dependencies</summary>
 
 * argparse
+* fvcore
 * numpy
 * hickle
 * scikit-image=0.16.2
+* scikit-learn
 * torch
 * timm
 * tqdm
@@ -142,6 +148,16 @@ We support various video prediction methods and will provide benchmarks on vario
 
     </details>
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+## License
+
+This project is released under the [Apache 2.0 license](LICENSE). See `LICENSE` for more information.
+
+## Acknowledgement
+
+SimVPv2 is an open-source project for video prediction methods created by researchers in **CAIRI AI Lab**. We encourage researchers interested in video and weather prediction to contribute to SimVPv2! We borrow the official implementations of [ConvLSTM](https://arxiv.org/abs/1506.04214), [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) variants, [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX), [MAU](https://arxiv.org/abs/1811.07490), [CrevNet](https://openreview.net/forum?id=B1lKS2AqtX), and [PhyDNet](https://arxiv.org/abs/2003.01460).
+
 ## Citation
 
 If you are interested in our repository and our paper, please cite the following paper:
@@ -155,9 +171,9 @@ If you are interested in our repository and our paper, please cite the following
 }
 ```
 
-## Contact
+## Contribution and Contact
 
-If you have any questions, feel free to contact us through email. Enjoy!
+For adding new features, looking for helps, or reporting bugs associated with SimVPv2, please open a [GitHub issue](https://github.com/chengtan9907/SimVPv2/issues) and [pull request](https://github.com/chengtan9907/SimVPv2/pulls) with the tag "help wanted" or "enhancement". Feel free to contact us through email if you have any questions. Enjoy!
 
 - Cheng Tan (tancheng@westlake.edu.cn), Westlake University & Zhejiang University
 - Siyuan Li (lisiyuan@westlake.edu.cn), Westlake University & Zhejiang University
