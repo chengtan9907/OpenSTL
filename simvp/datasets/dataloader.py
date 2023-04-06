@@ -18,5 +18,8 @@ def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, **kw
     elif 'weather' in dataname:  # 'weather', 'weather_t2m', etc.
         from .dataloader_weather import load_data
         return load_data(batch_size, val_batch_size, data_root, num_workers, **kwargs)
+    elif dataname == 'cracks':
+        from .dataloader_cracks import load_data
+        return load_data(batch_size, val_batch_size, data_root, num_workers, pre_seq_length, aft_seq_length)
     else:
         raise ValueError(f'Dataname {dataname} is unsupported')
