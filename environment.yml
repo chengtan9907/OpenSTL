@@ -4,7 +4,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - nni
   - numpy
   - hickle
   - pip
@@ -14,5 +13,6 @@ dependencies:
   - pip:
     - scikit-image
     - timm
+    - nni
     - tqdm
 prefix: /opt/anaconda3/envs/simvp
