@@ -4,10 +4,10 @@ This page provides basic tutorials about the usage of SimVP. For installation in
 
 ## Training and Testing with a Single GPU
 
-You can perform single GPU training and testing with `tools/non_dist_train.py` and `tools/non_dist_test.py`. We provide descriptions of some essential arguments.
+You can perform single/multiple GPU training and testing with `tools/train.py` and `tools/test.py`. We provide descriptions of some essential arguments.
 
 ```bash
-python tools/non_dist_train.py \
+python tools/train.py \
     --dataname ${DATASET_NAME} \
     --method ${METHOD_NAME} \
     --config_file ${CONFIG_FILE} \
@@ -29,10 +29,10 @@ python tools/non_dist_train.py \
 An example of single GPU training with SimVP+gSTA on Moving MNIST dataset.
 ```shell
 bash tools/prepare_data/download_mmnist.sh
-python tools/non_dist_train.py -d mmnist --lr 1e-3 -c ./configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
+python tools/train.py -d mmnist --lr 1e-3 -c ./configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
 ```
 
 An example of single GPU testing with SimVP+gSTA on Moving MNIST dataset.
 ```shell
-python tools/non_dist_test.py -d mmnist -c configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
+python tools/test.py -d mmnist -c configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
 ```

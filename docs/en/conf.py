@@ -79,7 +79,7 @@ html_theme_options = {
     'menu': [
         {
             'name': 'GitHub',
-            'url': 'https://github.com/chengtan9907/SimVPv2'
+            'url': 'https://github.com/chengtan9907/OpenSTL'
         },
         {
             'name':

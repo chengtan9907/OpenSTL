@@ -19,4 +19,4 @@ Release version to V0.1.0 with code refactoring.
 
 * Upload `readthedocs` documents. Summarize video prediction benchmark results on MMNIST in [video_benchmarks.md](https://github.com/chengtan9907/SimVPv2/docs/en/model_zoos/video_benchmarks.md).
 * Update benchmark results of video prediction baselines and MetaFormer architectures based on SimVP on MMNIST, TaxiBJ, and WeatherBench datasets.
-* Update README and add license.
+* Update README and add a license.

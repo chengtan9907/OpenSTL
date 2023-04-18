@@ -9,7 +9,7 @@ def readme():
 
 
 def get_version():
-    version_file = 'simvp/version.py'
+    version_file = 'openstl/version.py'
     with open(version_file, 'r', encoding='utf-8') as f:
         exec(compile(f.read(), version_file, 'exec'))
     return locals()['__version__']
@@ -96,15 +96,16 @@ def parse_requirements(fname='requirements.txt', with_version=True):
 
 if __name__ == '__main__':
     setup(
-        name='SimVP',
+        name='OpenSTL',
         version=get_version(),
-        description='SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning',
+        description='OpenSTL: Open-source Toolbox for SpatioTemporal Predictive Learning',
         long_description=readme(),
         long_description_content_type='text/markdown',
         author='CAIRI Westlake University Contributors',
         author_email='lisiyuan@westlake.edu.com',
-        keywords='video prediction, unsupervised spatiotemporal learning',
-        url='https://github.com/chengtan9907/SimVPv2',
+        keywords='spatiotemporal predictive learning, video prediction, '
+        'unsupervised spatiotemporal learning',
+        url='https://github.com/chengtan9907/OpenSTL',
         packages=find_packages(exclude=('configs', 'tools', 'demo')),
         classifiers=[
             'Development Status :: 4 - Beta',
@@ -114,6 +115,9 @@ if __name__ == '__main__':
             'Programming Language :: Python :: 3.7',
             'Programming Language :: Python :: 3.8',
             'Programming Language :: Python :: 3.9',
+            'Programming Language :: Python :: 3.10',
+            'Programming Language :: Python :: 3.11',
+            'Topic :: Scientific/Engineering :: Artificial Intelligence',
         ],
         license='Apache License 2.0',
         tests_require=parse_requirements('requirements/tests.txt'),
@@ -121,5 +125,6 @@ if __name__ == '__main__':
         extras_require={
             'all': parse_requirements('requirements.txt'),
             'tests': parse_requirements('requirements/tests.txt'),
+            'optional': parse_requirements('requirements/optional.txt'),
         },
         zip_safe=False)
