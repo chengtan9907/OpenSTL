@@ -6,7 +6,7 @@ import torch
 from torch.utils.data import Dataset
 from skimage.transform import resize
 
-from .utils import create_loader
+from openstl.datasets.utils import create_loader
 
 try:
     import hickle as hkl

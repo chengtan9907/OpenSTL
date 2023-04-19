@@ -26,7 +26,7 @@ class SimVP(Base_method):
     def _build_model(self, config):
         return SimVP_Model(**config).to(self.device)
 
-    def _predict(self, batch_x):
+    def _predict(self, batch_x, batch_y=None, **kwargs):
         """Forward the model."""
         if self.args.aft_seq_length == self.args.pre_seq_length:
             pred_y = self.model(batch_x)
@@ -75,6 +75,8 @@ class SimVP(Base_method):
                 losses_m.update(loss.item(), batch_x.size(0))
 
             if self.loss_scaler is not None:
+                if torch.any(torch.isnan(loss)) or torch.any(torch.isinf(loss)):
+                    raise ValueError("Inf or nan loss value. Please use fp32 training instead!")
                 self.loss_scaler(
                     loss, self.model_optim,
                     clip_grad=self.args.clip_grad, clip_mode=self.args.clip_mode,

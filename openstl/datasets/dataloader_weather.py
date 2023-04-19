@@ -5,7 +5,7 @@ import numpy as np
 import os.path as osp
 import torch
 from torch.utils.data import Dataset
-from .utils import create_loader
+from openstl.datasets.utils import create_loader
 
 try:
     import xarray as xr
@@ -52,11 +52,12 @@ data_map = {'z': 'geopotential_500',
 class ClimateDataset(Dataset):
 
     def __init__(self, data_root, data_name, training_time,
-                 idx_in, idx_out, step,
+                 idx_in, idx_out, step, data_split='5_625',
                  mean=None, std=None,
                  transform_data=None, transform_labels=None):
         super().__init__()
         self.dataname = data_name
+        self.data_split = data_split
         self.training_time = training_time
         self.idx_in = np.array(idx_in)
         self.idx_out = np.array(idx_out)
@@ -67,17 +68,25 @@ class ClimateDataset(Dataset):
         self.transform_labels = transform_labels
 
         self.time = None
+        shape = int(32 * 5.625 / float(data_split.replace('_', '.')))
+        self.shape = (shape, shape * 2)
 
         if isinstance(data_name, list):
             data_name = data_name[0]
 
         if data_name != 'uv10':
             try:
+                # dataset = xr.open_mfdataset(
+                #     data_root+'/{}/*.nc'.format(data_map[data_name]), combine='by_coords')
+                print("OSError: Invalid path {}/{}/*.nc".format(data_root, data_map[data_name]))
                 dataset = xr.open_mfdataset(
-                    data_root+'/{}/*.nc'.format(data_map[data_name]), combine='by_coords')
+                    data_root+'/{}/*.nc'.format(data_map[data_name]), combine='by_coords', parallel=False, chunks={'time':168})
             except AttributeError:
                 assert False and 'Please install the latest xarray, e.g.,' \
                                  'pip install  git+https://github.com/pydata/xarray/@v2022.03.0'
+            except OSError:
+                print("OSError: Invalid path {}/{}/*.nc".format(data_root, data_map[data_name]))
+                assert False
             dataset = dataset.sel(time=slice(*training_time))
             dataset = dataset.isel(time=slice(None, -1, step))
             if self.time is None:
@@ -89,10 +98,11 @@ class ClimateDataset(Dataset):
                 lon, lat = np.meshgrid(
                     (dataset.lon-180) * d2r, dataset.lat*d2r)
                 x, y, z = latlon2xyz(lat, lon)
-                self.V = np.stack([x, y, z]).reshape(3, 32*64).T
+                self.V = np.stack([x, y, z]).reshape(3, self.shape[0]*self.shape[1]).T
                 # input_datasets.append(dataset.get(key).values[:, np.newaxis, :, :])
             # self.data = np.concatenate(input_datasets, axis=1)
             self.data = dataset.get(data_name).values[:, np.newaxis, :, :]
+
         elif data_name == 'uv10':
             input_datasets = []
             for key in ['u10', 'v10']:
@@ -103,6 +113,9 @@ class ClimateDataset(Dataset):
                     assert False and 'Please install the latest xarray, e.g.,' \
                                      'pip install git+https://github.com/pydata/xarray/@v2022.03.0,' \
                                      'pip install netcdf4 h5netcdf dask'
+                except OSError:
+                    print("OSError: Invalid path {}/{}/*.nc".format(data_root, data_map[data_name]))
+                    assert False
                 dataset = dataset.sel(time=slice(*training_time))
                 dataset = dataset.isel(time=slice(None, -1, step))
                 if self.time is None:
@@ -114,7 +127,7 @@ class ClimateDataset(Dataset):
                     lon, lat = np.meshgrid(
                         (dataset.lon-180) * d2r, dataset.lat*d2r)
                     x, y, z = latlon2xyz(lat, lon)
-                    self.V = np.stack([x, y, z]).reshape(3, 32*64).T
+                    self.V = np.stack([x, y, z]).reshape(3, self.shape[0]*self.shape[1]).T
                 input_datasets.append(dataset.get(key).values[:, np.newaxis, :, :])
             self.data = np.concatenate(input_datasets, axis=1)
 
@@ -151,6 +164,7 @@ def load_data(batch_size,
               val_batch_size,
               data_root,
               num_workers=4,
+              data_split='5_625',
               data_name='t2m',
               train_time=['1979', '2015'],
               val_time=['2016', '2016'],
@@ -161,28 +175,30 @@ def load_data(batch_size,
               distributed=False,
               **kwargs):
 
-    weather_dataroot = osp.join(data_root, 'weather')
+    assert data_split in ['5_625', '2_8125', '1_40625']
+    _dataroot = osp.join(data_root, f'weather_{data_split}deg')
+    weather_dataroot = _dataroot if osp.exists(_dataroot) else osp.join(data_root, 'weather')
 
     train_set = ClimateDataset(data_root=weather_dataroot,
-                               data_name=data_name,
+                               data_name=data_name, data_split=data_split,
                                training_time=train_time,
                                idx_in=idx_in,
                                idx_out=idx_out,
                                step=step)
     vali_set = ClimateDataset(weather_dataroot,
-                              data_name,
-                              val_time,
-                              idx_in,
-                              idx_out,
-                              step,
+                              data_name=data_name, data_split=data_split,
+                              training_time=val_time,
+                              idx_in=idx_in,
+                              idx_out=idx_out,
+                              step=step,
                               mean=train_set.mean,
                               std=train_set.std)
     test_set = ClimateDataset(weather_dataroot,
-                              data_name,
-                              test_time,
-                              idx_in,
-                              idx_out,
-                              step,
+                              data_name, data_split=data_split,
+                              training_time=test_time,
+                              idx_in=idx_in,
+                              idx_out=idx_out,
+                              step=step,
                               mean=train_set.mean,
                               std=train_set.std)
 
@@ -206,15 +222,21 @@ def load_data(batch_size,
 
 
 if __name__ == '__main__':
-    dataloader_train, _, _ = load_data(batch_size=128,
-                                       val_batch_size=128,
-                                       data_root='../../data',
-                                       num_workers=4, data_name='t2m',
-                                       train_time=['1979', '2015'],
-                                       val_time=['2016', '2016'],
-                                       test_time=['2017', '2018'],
-                                       idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
-                                       idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], step=24)
+    dataloader_train, _, dataloader_test = \
+        load_data(batch_size=128,
+                  val_batch_size=32,
+                  data_root='../../data',
+                  num_workers=2, data_name='t2m',
+                  data_split='1_40625',
+                  train_time=['1979', '2015'],
+                  val_time=['2016', '2016'],
+                  test_time=['2017', '2018'],
+                  idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
+                  idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], step=24)
+
     for item in dataloader_train:
+        print(item[0].shape)
+        break
+    for item in dataloader_test:
         print(item[0].shape)
         break

@@ -1,4 +1,5 @@
 from typing import Dict, List, Union
+import numpy as np
 
 import torch
 from torch.nn.parallel import DistributedDataParallel as NativeDDP
@@ -7,7 +8,7 @@ from timm.utils import NativeScaler
 from timm.utils.agc import adaptive_clip_grad
 
 from openstl.core.optim_scheduler import get_optim_scheduler
-from openstl.utils import dist_forward_collect, nondist_forward_collect
+from openstl.utils import gather_tensors_batch, get_dist_info, ProgressBar
 
 has_native_amp = False
 try:
@@ -37,9 +38,10 @@ class Base_method(object):
         self.model_optim = None
         self.scheduler = None
         if self.dist:
-            self.rank = int(device.split(':')[-1])
+            self.rank, self.world_size = get_dist_info()
+            assert self.rank == int(device.split(':')[-1])
         else:
-            self.rank = 0
+            self.rank, self.world_size = 0, 1
         self.clip_value = self.args.clip_grad
         self.clip_mode = self.args.clip_mode if self.clip_value is not None else None
         # setup automatic mixed-precision (AMP) loss scaling and op casting
@@ -73,7 +75,7 @@ class Base_method(object):
         """
         raise NotImplementedError
 
-    def _predict(self, **kwargs):
+    def _predict(self, batch_x, batch_y, **kwargs):
         """Forward the model.
 
         Args:
@@ -81,22 +83,72 @@ class Base_method(object):
         """
         raise NotImplementedError
 
-    def forward_test(self, batch_x, batch_y):
-        """Evaluate the model.
+    def _dist_forward_collect(self, data_loader, length=None):
+        """Forward and collect predictios in a distributed manner.
 
         Args:
-            batch_x, batch_y: testing samples and groung truth.
+            data_loader: dataloader of evaluation.
+            length (int): Expected length of output arrays.
 
         Returns:
-            dict(tensor): The concatenated outputs with keys.
+            results_all (dict(np.ndarray)): The concatenated outputs.
         """
-        batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+        results = []
+        length = len(data_loader.dataset) if length is None else length
+        if self.rank == 0:
+            prog_bar = ProgressBar(len(data_loader))
 
-        with self.amp_autocast():
-            pred_y = self._predict(batch_x)
+        for idx, (batch_x, batch_y) in enumerate(data_loader):
+            if idx == 0:
+                part_size = batch_x.shape[0]
+            with torch.no_grad():
+                batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+                pred_y = self._predict(batch_x, batch_y)
+            results.append(dict(zip(['inputs', 'preds', 'trues'],
+                                    [batch_x.cpu(), pred_y.cpu(), batch_y.cpu()])))
+            if self.args.empty_cache:
+                torch.cuda.empty_cache()
+            if self.rank == 0:
+                prog_bar.update()
 
-        return dict(zip(['inputs', 'preds', 'trues'],
-                        [batch_x, pred_y, batch_y]))
+        results_all = {}
+        for k in results[0].keys():
+            results_cat = np.concatenate([
+                batch[k].cpu().numpy() for batch in results], axis=0)
+            # gether tensors by GPU (it's no need to empty cache)
+            results_gathered = gather_tensors_batch(results_cat, part_size=min(part_size*8, 16))
+            results_strip = np.concatenate(results_gathered, axis=0)[:length]
+            results_all[k] = results_strip
+        return results_all
+
+    def _nondist_forward_collect(self, data_loader, length=None):
+        """Forward and collect predictios.
+
+        Args:
+            data_loader: dataloader of evaluation.
+            length (int): Expected length of output arrays.
+
+        Returns:
+            results_all (dict(np.ndarray)): The concatenated outputs.
+        """
+        results = []
+        prog_bar = ProgressBar(len(data_loader))
+        length = len(data_loader.dataset) if length is None else length
+        for i, (batch_x, batch_y) in enumerate(data_loader):
+            with torch.no_grad():
+                batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+                pred_y = self._predict(batch_x, batch_y)
+            results.append(dict(zip(['inputs', 'preds', 'trues'],
+                                    [batch_x.cpu().numpy(), pred_y.cpu().numpy(), batch_y.cpu().numpy()])))
+            prog_bar.update()
+            if self.args.empty_cache:
+                torch.cuda.empty_cache()
+
+        results_all = {}
+        for k in results[0].keys():
+            results_all[k] = np.concatenate(
+                [batch[k] for batch in results], axis=0)
+        return results_all
 
     def vali_one_epoch(self, runner, vali_loader, **kwargs):
         """Evaluate the model with val_loader.
@@ -109,13 +161,10 @@ class Base_method(object):
             list(tensor, ...): The list of predictions and losses.
         """
         self.model.eval()
-        func = lambda *x: self.forward_test(*x)
-        if self.dist:
-            results = dist_forward_collect(func, vali_loader, self.rank,
-                                           len(vali_loader.dataset), to_numpy=True)
+        if self.dist and self.world_size > 1:
+            results = self._dist_forward_collect(vali_loader, len(vali_loader.dataset))
         else:
-            results = nondist_forward_collect(func, vali_loader,
-                                              len(vali_loader.dataset), to_numpy=True)
+            results = self._nondist_forward_collect(vali_loader, len(vali_loader.dataset))
 
         preds = torch.tensor(results['preds']).to(self.device)
         trues = torch.tensor(results['trues']).to(self.device)
@@ -133,13 +182,10 @@ class Base_method(object):
             list(tensor, ...): The list of inputs and predictions.
         """
         self.model.eval()
-        func = lambda *x: self.forward_test(*x)
-        if self.dist:
-            results = dist_forward_collect(func, test_loader, self.rank,
-                                           len(test_loader.dataset), to_numpy=True)
+        if self.dist and self.world_size > 1:
+            results = self._dist_forward_collect(test_loader,)
         else:
-            results = nondist_forward_collect(func, test_loader,
-                                              len(test_loader.dataset), to_numpy=True)
+            results = self._nondist_forward_collect(test_loader)
 
         return results['inputs'], results['preds'], results['trues']
 

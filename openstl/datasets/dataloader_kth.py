@@ -7,7 +7,7 @@ import torch
 from torch.utils.data import Dataset
 from PIL import Image
 
-from .utils import create_loader
+from openstl.datasets.utils import create_loader
 
 logger = logging.getLogger(__name__)
 

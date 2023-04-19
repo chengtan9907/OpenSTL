@@ -2,7 +2,7 @@ import torch
 import numpy as np
 from torch.utils.data import Dataset
 
-from .utils import create_loader
+from openstl.datasets.utils import create_loader
 
 
 class TaxibjDataset(Dataset):

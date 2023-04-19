@@ -5,7 +5,7 @@ import random
 import torch
 from torch.utils.data import Dataset
 
-from .utils import create_loader
+from openstl.datasets.utils import create_loader
 
 
 def load_mnist(root):

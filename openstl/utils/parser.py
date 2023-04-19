@@ -25,6 +25,8 @@ def create_parser():
                         help='Whether or not set different seeds for different ranks')
     parser.add_argument('--fps', action='store_true', default=False,
                         help='Whether to measure inference speed (FPS)')
+    parser.add_argument('--empty_cache', action='store_true', default=True,
+                        help='Whether to empty cuda cache after training')
     parser.add_argument('--resume_from', type=str, default=None, help='the checkpoint file to resume from')
     parser.add_argument('--auto_resume', action='store_true', default=False,
                         help='When training was interupted, resume from the latest checkpoint')

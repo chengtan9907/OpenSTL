@@ -53,6 +53,7 @@ class BaseExperiment(object):
     def _acquire_device(self):
         """Setup devices"""
         if self.args.use_gpu:
+            self._use_gpu = True
             if self.args.dist:
                 device = f'cuda:{self._rank}'
                 torch.cuda.set_device(self._rank)
@@ -61,6 +62,7 @@ class BaseExperiment(object):
                 device = torch.device('cuda:0')
                 print('Use non-distributed mode with GPU:', device)
         else:
+            self._use_gpu = False
             device = torch.device('cpu')
             print('Use CPU')
             if self.args.dist:
@@ -173,7 +175,7 @@ class BaseExperiment(object):
     def _get_hook_info(self):
         # Get hooks info in each stage
         stage_hook_map: Dict[str, list] = {stage: [] for stage in Hook.stages}
-        for hook in self.hooks:
+        for hook in self._hooks:
             priority = hook.priority  # type: ignore
             classname = hook.__class__.__name__
             hook_info = f'({priority:<12}) {classname:<35}'
@@ -267,7 +269,6 @@ class BaseExperiment(object):
 
         eta = 1.0  # PredRNN variants
         for epoch in range(self._epoch, self._max_epochs):
-
             num_updates, loss_mean, eta = self.method.train_one_epoch(self, self.train_loader,
                                                                       epoch, num_updates, eta)
 
@@ -283,6 +284,8 @@ class BaseExperiment(object):
                         epoch + 1, len(self.train_loader), cur_lr, loss_mean.avg, vali_loss))
                     recorder(vali_loss, self.method.model, self.path)
                     self._save(name='latest')
+            if self._use_gpu and self.args.empty_cache:
+                torch.cuda.empty_cache()
 
         if not check_dir(self.path):  # exit training when work_dir is removed
             assert False and "Exit training because work_dir is removed"
