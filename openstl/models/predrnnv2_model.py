@@ -41,7 +41,8 @@ class PredRNNv2_Model(nn.Module):
         self.adapter = nn.Conv2d(
             adapter_num_hidden, adapter_num_hidden, 1, stride=1, padding=0, bias=False)
 
-    def forward(self, frames_tensor, mask_true):
+    def forward(self, frames_tensor, mask_true, **kwargs):
+        return_loss = kwargs.get('return_loss', True)
         # [batch, length, height, width, channel] -> [batch, length, channel, height, width]
         frames = frames_tensor.permute(0, 1, 4, 2, 3).contiguous()
         mask_true = mask_true.permute(0, 1, 4, 2, 3).contiguous()
@@ -102,16 +103,22 @@ class PredRNNv2_Model(nn.Module):
 
             x_gen = self.conv_last(h_t[self.num_layers - 1])
             next_frames.append(x_gen)
-            # decoupling loss
-            for i in range(0, self.num_layers):
-                decouple_loss.append(torch.mean(torch.abs(
-                    torch.cosine_similarity(delta_c_list[i], delta_m_list[i], dim=2))))
 
-        decouple_loss = torch.mean(torch.stack(decouple_loss, dim=0))
+            # decoupling loss
+            if return_loss:
+                for i in range(0, self.num_layers):
+                    decouple_loss.append(torch.mean(torch.abs(
+                        torch.cosine_similarity(delta_c_list[i], delta_m_list[i], dim=2))))
+
+        if return_loss:
+            decouple_loss = torch.mean(torch.stack(decouple_loss, dim=0))
 
         # [length, batch, channel, height, width] -> [batch, length, height, width, channel]
         next_frames = torch.stack(next_frames, dim=0).permute(1, 0, 3, 4, 2).contiguous()
-        loss = self.MSE_criterion(next_frames, frames_tensor[:, 1:]) + \
-            self.configs.decouple_beta * decouple_loss
+        if return_loss:
+            loss = self.MSE_criterion(next_frames, frames_tensor[:, 1:]) + \
+                self.configs.decouple_beta * decouple_loss
+        else:
+            loss = None
 
         return next_frames, loss

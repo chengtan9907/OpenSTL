@@ -70,7 +70,7 @@ class BaseExperiment(object):
         return device
 
     def _preparation(self):
-        """Preparation of basic experiment setups"""
+        """Preparation of environment and basic experiment setups"""
         if 'LOCAL_RANK' not in os.environ:
             os.environ['LOCAL_RANK'] = str(self.args.local_rank)
 
@@ -173,7 +173,7 @@ class BaseExperiment(object):
             getattr(hook, fn_name)(self)
 
     def _get_hook_info(self):
-        # Get hooks info in each stage
+        """Get hook information in each stage"""
         stage_hook_map: Dict[str, list] = {stage: [] for stage in Hook.stages}
         for hook in self._hooks:
             priority = hook.priority  # type: ignore
@@ -193,6 +193,7 @@ class BaseExperiment(object):
         return '\n'.join(stage_hook_infos)
 
     def _get_data(self):
+        """Prepare datasets and dataloaders"""
         self.train_loader, self.vali_loader, self.test_loader = \
             get_dataset(self.args.dataname, self.config)
         if self.vali_loader is None:
@@ -255,14 +256,19 @@ class BaseExperiment(object):
         else:
             raise ValueError(f'Invalid method name {self.args.method}')
 
-        print_log(self.method.model)
+        dash_line = '-' * 80 + '\n'
+        info = self.method.model.__repr__()
         flops = FlopCountAnalysis(self.method.model, input_dummy)
-        print_log(flop_count_table(flops))
+        flops = flop_count_table(flops)
         if self.args.fps:
             fps = measure_throughput(self.method.model, input_dummy)
-            print_log('Throughputs of {}: {:.3f}'.format(self.args.method, fps))
+            fps = 'Throughputs of {}: {:.3f}\n'.format(self.args.method, fps)
+        else:
+            fps = ''
+        print_log('Model info:\n' + info+'\n' + flops+'\n' + fps + dash_line)
 
     def train(self):
+        """Training loops of STL methods"""
         recorder = Recorder(verbose=True)
         num_updates = self._epoch * self.steps_per_epoch
         self.call_hook('before_train_epoch')
@@ -298,6 +304,7 @@ class BaseExperiment(object):
         self.call_hook('after_run')
 
     def vali(self, vali_loader):
+        """A validation loop during training"""
         self.call_hook('before_val_epoch')
         preds, trues, val_loss = self.method.vali_one_epoch(self, self.vali_loader)
         self.call_hook('after_val_epoch')
@@ -310,13 +317,14 @@ class BaseExperiment(object):
             eval_res, eval_log = metric(preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std,
                                         metrics=metric_list, spatial_norm=spatial_norm)
 
-            print_log('val\t '+eval_log)
+            print_log('\nval\t '+eval_log)
             if has_nni:
                 nni.report_intermediate_result(eval_res['mse'])
 
         return val_loss
 
     def test(self):
+        """A testing loop of STL methods"""
         if self.args.test:
             best_model_path = osp.join(self.path, 'checkpoint.pth')
             if self._dist:

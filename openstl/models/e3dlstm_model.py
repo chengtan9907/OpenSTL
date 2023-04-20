@@ -41,7 +41,7 @@ class E3DLSTM_Model(nn.Module):
                                    kernel_size=(self.window_length, 1, 1),
                                    stride=(self.window_length, 1, 1), padding=0, bias=False)
 
-    def forward(self, frames_tensor, mask_true):
+    def forward(self, frames_tensor, mask_true, **kwargs):
         # [batch, length, height, width, channel] -> [batch, length, channel, height, width]
         frames = frames_tensor.permute(0, 1, 4, 2, 3).contiguous()
         mask_true = mask_true.permute(0, 1, 4, 2, 3).contiguous()
@@ -104,7 +104,10 @@ class E3DLSTM_Model(nn.Module):
 
         # [length, batch, channel, height, width] -> [batch, length, height, width, channel]
         next_frames = torch.stack(next_frames, dim=0).permute(1, 0, 3, 4, 2).contiguous()
-        loss = self.MSE_criterion(
-            next_frames, frames_tensor[:, 1:]) + self.L1_criterion(next_frames, frames_tensor[:, 1:])
+        if kwargs.get('return_loss', True):
+            loss = self.MSE_criterion(next_frames, frames_tensor[:, 1:]) + \
+                self.L1_criterion(next_frames, frames_tensor[:, 1:])
+        else:
+            loss = None
 
         return next_frames, loss

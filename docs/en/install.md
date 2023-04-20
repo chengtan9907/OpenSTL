@@ -12,6 +12,16 @@ python setup.py develop  # or `pip install -e .`
 ```
 
 <details close>
+<summary>Requirements</summary>
+* Linux (Windows is not officially supported)
+* Python 3.7+
+* PyTorch 1.8 or higher
+* CUDA 10.1 or higher
+* NCCL 2
+* GCC 4.9 or higher
+</details>
+
+<details close>
 <summary>Dependencies</summary>
 
 * argparse
@@ -23,12 +33,12 @@ python setup.py develop  # or `pip install -e .`
 * torch
 * timm
 * tqdm
-* xarray
+* xarray==0.19.0
 </details>
 
 **Note:**
 
-1. Some errors might occur with `hickle` and `xarray` when using KittiCaltech and WeatherBench datasets. As for KittiCaltech, you can solve the issues by installing additional pacakges according to the output messeage. As for WeatherBench, you can install the latest version of `xarray` to solve the errors, i.e., `pip install git+https://github.com/pydata/xarray/@v2022.03.0` and then installing required pacakges according to error messages.
+1. Some errors might occur with `hickle` and `xarray` when using KittiCaltech and WeatherBench datasets. As for KittiCaltech, you can solve the issues by installing additional pacakges according to the output messeage. As for WeatherBench, you can install the latest version of `xarray` to solve the errors, i.e., `pip install xarray==0.19.0` and then installing required pacakges according to error messages.
 
 2. Following the above instructions, OpenSTL is installed on `dev` mode, any local modifications made to the code will take effect. You can install it by `pip install .` to use it as a PyPi package, and you should reinstall it to make the local modifications effect.
 
@@ -59,6 +69,9 @@ OpenSTL
     |── taxibj
     |   ├── dataset.npz
     |── weather
+    |   ├── 2m_temperature
+    |   ├── ...
+    |── weather_1_40625deg
     |   ├── 2m_temperature
     |   ├── ...
 ```

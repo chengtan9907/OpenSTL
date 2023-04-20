@@ -76,14 +76,12 @@ class ClimateDataset(Dataset):
 
         if data_name != 'uv10':
             try:
-                # dataset = xr.open_mfdataset(
-                #     data_root+'/{}/*.nc'.format(data_map[data_name]), combine='by_coords')
-                print("OSError: Invalid path {}/{}/*.nc".format(data_root, data_map[data_name]))
-                dataset = xr.open_mfdataset(
-                    data_root+'/{}/*.nc'.format(data_map[data_name]), combine='by_coords', parallel=False, chunks={'time':168})
-            except AttributeError:
-                assert False and 'Please install the latest xarray, e.g.,' \
-                                 'pip install  git+https://github.com/pydata/xarray/@v2022.03.0'
+                dataset = xr.open_mfdataset(data_root+'/{}/{}*.nc'.format(
+                    data_map[data_name], data_map[data_name]), combine='by_coords')
+            except (AttributeError, ValueError):
+                assert False and 'Please install xarray and its dependency (e.g., netcdf4), ' \
+                                    'pip install xarray==0.19.0,' \
+                                    'pip install netcdf4 h5netcdf dask'
             except OSError:
                 print("OSError: Invalid path {}/{}/*.nc".format(data_root, data_map[data_name]))
                 assert False
@@ -107,14 +105,14 @@ class ClimateDataset(Dataset):
             input_datasets = []
             for key in ['u10', 'v10']:
                 try:
-                    dataset = xr.open_mfdataset(
-                        data_root+'/{}/*.nc'.format(data_map[key]), combine='by_coords')
-                except AttributeError:
-                    assert False and 'Please install the latest xarray, e.g.,' \
-                                     'pip install git+https://github.com/pydata/xarray/@v2022.03.0,' \
+                    dataset = xr.open_mfdataset(data_root+'/{}/{}*.nc'.format(
+                        data_map[key], data_map[key]), combine='by_coords')
+                except (AttributeError, ValueError):
+                    assert False and 'Please install xarray and its dependency (e.g., netcdf4), ' \
+                                     'pip install xarray==0.19.0,' \
                                      'pip install netcdf4 h5netcdf dask'
                 except OSError:
-                    print("OSError: Invalid path {}/{}/*.nc".format(data_root, data_map[data_name]))
+                    print("OSError: Invalid path {}/{}/*.nc".format(data_root, data_map[key]))
                     assert False
                 dataset = dataset.sel(time=slice(*training_time))
                 dataset = dataset.isel(time=slice(None, -1, step))
@@ -222,21 +220,25 @@ def load_data(batch_size,
 
 
 if __name__ == '__main__':
-    dataloader_train, _, dataloader_test = \
-        load_data(batch_size=128,
-                  val_batch_size=32,
-                  data_root='../../data',
-                  num_workers=2, data_name='t2m',
-                  data_split='1_40625',
-                  train_time=['1979', '2015'],
-                  val_time=['2016', '2016'],
-                  test_time=['2017', '2018'],
-                  idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
-                  idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], step=24)
+    data_split=['5_625', '1_40625']
+    data_name = 't2m'
 
-    for item in dataloader_train:
-        print(item[0].shape)
-        break
-    for item in dataloader_test:
-        print(item[0].shape)
-        break
+    for _split in data_split:
+        dataloader_train, _, dataloader_test = \
+            load_data(batch_size=128,
+                    val_batch_size=32,
+                    data_root='../../data',
+                    num_workers=4, data_name=data_name,
+                    data_split=_split,
+                    train_time=['1979', '2015'],
+                    val_time=['2016', '2016'],
+                    test_time=['2017', '2018'],
+                    idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
+                    idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], step=24)
+
+        for item in dataloader_train:
+            print(item[0].shape)
+            break
+        for item in dataloader_test:
+            print(item[0].shape)
+            break

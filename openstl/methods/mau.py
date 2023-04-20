@@ -1,11 +1,11 @@
+import time
 import torch
 import torch.nn as nn
-import numpy as np
 from timm.utils import AverageMeter
 from tqdm import tqdm
 
 from openstl.models import MAU_Model
-from openstl.utils import schedule_sampling
+from openstl.utils import reduce_tensor, schedule_sampling
 from .base_method import Base_method
 
 
@@ -28,102 +28,82 @@ class MAU(Base_method):
         num_layers = len(num_hidden)
         return MAU_Model(num_layers, num_hidden, args).to(self.device)
 
-    def train_one_epoch(self, runner, train_loader, epoch, num_updates, loss_mean, eta, **kwargs):
+    def _predict(self, batch_x, batch_y, **kwargs):
+        """Forward the model."""
+        _, img_channel, img_height, img_width = self.args.in_shape
+
+        # preprocess
+        test_ims = torch.cat([batch_x, batch_y], dim=1).permute(0, 1, 3, 4, 2).contiguous()
+        real_input_flag = torch.zeros(
+            (batch_x.shape[0],
+            self.args.total_length - self.args.pre_seq_length - 1,
+            img_height // self.args.patch_size,
+            img_width // self.args.patch_size,
+            self.args.patch_size ** 2 * img_channel)).to(self.device)
+
+        img_gen, _ = self.model(test_ims, real_input_flag, return_loss=False)
+        pred_y = img_gen[:, -self.args.aft_seq_length:, :]
+
+        return pred_y
+
+    def train_one_epoch(self, runner, train_loader, epoch, num_updates, eta=None, **kwargs):
+        """Train the model with train_loader."""
+        data_time_m = AverageMeter()
         losses_m = AverageMeter()
         self.model.train()
         if self.by_epoch:
             self.scheduler.step(epoch)
+        train_pbar = tqdm(train_loader) if self.rank == 0 else train_loader
 
-        train_pbar = tqdm(train_loader)
+        end = time.time()
         for batch_x, batch_y in train_pbar:
+            data_time_m.update(time.time() - end)
             self.model_optim.zero_grad()
+
             batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+            runner.call_hook('before_train_iter')
 
             # preprocess
             ims = torch.cat([batch_x, batch_y], dim=1).permute(0, 1, 3, 4, 2).contiguous()
             eta, real_input_flag = schedule_sampling(eta, num_updates, ims.shape[0], self.args)
 
-            img_gen, loss = self.model(ims, real_input_flag)
-            loss.backward()
-            self.model_optim.step()
+            with self.amp_autocast():
+                img_gen, loss = self.model(ims, real_input_flag)
 
+            if not self.dist:
+                losses_m.update(loss.item(), batch_x.size(0))
+
+            if self.loss_scaler is not None:
+                if torch.any(torch.isnan(loss)) or torch.any(torch.isinf(loss)):
+                    raise ValueError("Inf or nan loss value. Please use fp32 training!")
+                self.loss_scaler(
+                    loss, self.model_optim,
+                    clip_grad=self.args.clip_grad, clip_mode=self.args.clip_mode,
+                    parameters=self.model.parameters())
+            else:
+                loss.backward()
+                self.clip_grads(self.model.parameters())
+
+            self.model_optim.step()
+            torch.cuda.synchronize()
             num_updates += 1
-            loss_mean += loss.item()
-            losses_m.update(loss.item(), batch_x.size(0))
+
+            if self.dist:
+                losses_m.update(reduce_tensor(loss), batch_x.size(0))
+
             if not self.by_epoch:
                 self.scheduler.step()
+            runner.call_hook('after_train_iter')
+            runner._iter += 1
 
-            train_pbar.set_description('train loss: {:.4f}'.format(loss.item()))
+            if self.rank == 0:
+                log_buffer = 'train loss: {:.4f}'.format(loss.item())
+                log_buffer += ' | data time: {:.4f}'.format(data_time_m.avg)
+                train_pbar.set_description(log_buffer)
+
+            end = time.time()  # end for
 
         if hasattr(self.model_optim, 'sync_lookahead'):
             self.model_optim.sync_lookahead()
 
-        return num_updates, loss_mean, eta
-
-    def vali_one_epoch(self, runner, vali_loader, **kwargs):
-        self.model.eval()
-        preds_lst, trues_lst, total_loss = [], [], []
-        vali_pbar = tqdm(vali_loader)
-
-        _, img_channel, img_height, img_width = self.args.in_shape
-
-        for i, (batch_x, batch_y) in enumerate(vali_pbar):
-            batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
-
-            # preprocess
-            test_ims = torch.cat([batch_x, batch_y], dim=1).permute(0, 1, 3, 4, 2).contiguous()
-
-            real_input_flag = torch.zeros(
-                (batch_x.shape[0],
-                self.args.total_length - self.args.pre_seq_length - 1,
-                img_height // self.args.patch_size,
-                img_width // self.args.patch_size,
-                self.args.patch_size ** 2 * img_channel)).to(self.device)
-
-            img_gen, loss = self.model(test_ims, real_input_flag)
-            pred_y = img_gen[:, -self.args.aft_seq_length:, :]
-          
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
-                                                  ), [pred_y, batch_y], [preds_lst, trues_lst]))
-
-            if i * batch_x.shape[0] > 1000:
-                break
-    
-            vali_pbar.set_description('vali loss: {:.4f}'.format(loss.mean().item()))
-            total_loss.append(loss.mean().item())
-        
-        total_loss = np.average(total_loss)
-
-        preds = np.concatenate(preds_lst, axis=0)
-        trues = np.concatenate(trues_lst, axis=0)
-        return preds, trues, total_loss
-
-    def test_one_epoch(self, runner, test_loader, **kwargs):
-        self.model.eval()
-        inputs_lst, trues_lst, preds_lst = [], [], []
-        test_pbar = tqdm(test_loader)
-
-        _, img_channel, img_height, img_width = self.args.in_shape
-
-        for batch_x, batch_y in test_pbar:
-            batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
-
-            # preprocess
-            test_ims = torch.cat([batch_x, batch_y], dim=1).permute(0, 1, 3, 4, 2).contiguous()
-
-            real_input_flag = torch.zeros(
-                (batch_x.shape[0],
-                self.args.total_length - self.args.pre_seq_length - 1,
-                img_height // self.args.patch_size,
-                img_width // self.args.patch_size,
-                self.args.patch_size ** 2 * img_channel)).to(self.device)
-                
-            img_gen, _ = self.model(test_ims, real_input_flag)
-            pred_y = img_gen[:, -self.args.aft_seq_length:, :]
-
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
-                 batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
-
-        inputs, trues, preds = map(
-            lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
-        return inputs, trues, preds
+        return num_updates, losses_m, eta

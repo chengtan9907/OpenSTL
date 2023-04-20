@@ -1,3 +1,4 @@
+import time
 import torch
 import torch.nn as nn
 import numpy as np
@@ -5,6 +6,7 @@ from timm.utils import AverageMeter
 from tqdm import tqdm
 
 from openstl.models import PhyDNet_Model
+from openstl.utils import reduce_tensor
 from .base_method import Base_method
 
 
@@ -36,71 +38,68 @@ class PhyDNet(Base_method):
                 ind +=1
         return constraints 
 
-    def train_one_epoch(self, runner, train_loader, epoch, num_updates, loss_mean, eta=None, **kwargs):
+    def _predict(self, batch_x, batch_y, **kwargs):
+        """Forward the model"""
+        pred_y, _ = self.model.inference(batch_x, batch_y, self.constraints, return_loss=False)
+        return pred_y
+
+    def train_one_epoch(self, runner, train_loader, epoch, num_updates, eta=None, **kwargs):
+        """Train the model with train_loader."""
+        data_time_m = AverageMeter()
         losses_m = AverageMeter()
         self.model.train()
         if self.by_epoch:
             self.scheduler.step(epoch)
+        train_pbar = tqdm(train_loader) if self.rank == 0 else train_loader
 
         teacher_forcing_ratio = np.maximum(0 , 1 - epoch * 0.003) 
 
-        train_pbar = tqdm(train_loader)
+        end = time.time()
         for batch_x, batch_y in train_pbar:
+            data_time_m.update(time.time() - end)
             self.model_optim.zero_grad()
+
             batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
-            pred_y = self.model(batch_x, batch_y, self.constraints, teacher_forcing_ratio)
-            loss = self.criterion(pred_y, batch_y)  
-            loss.backward()
+            runner.call_hook('before_train_iter')
+
+            with self.amp_autocast():
+                pred_y = self.model(batch_x, batch_y, self.constraints, teacher_forcing_ratio)
+                loss = self.criterion(pred_y, batch_y)
+
+            if not self.dist:
+                losses_m.update(loss.item(), batch_x.size(0))
+
+            if self.loss_scaler is not None:
+                if torch.any(torch.isnan(loss)) or torch.any(torch.isinf(loss)):
+                    raise ValueError("Inf or nan loss value. Please use fp32 training!")
+                self.loss_scaler(
+                    loss, self.model_optim,
+                    clip_grad=self.args.clip_grad, clip_mode=self.args.clip_mode,
+                    parameters=self.model.parameters())
+            else:
+                loss.backward()
+                self.clip_grads(self.model.parameters())
+
             self.model_optim.step()
-            
+            torch.cuda.synchronize()
             num_updates += 1
-            loss_mean += loss.item()
-            losses_m.update(loss.item(), batch_x.size(0))
+
+            if self.dist:
+                losses_m.update(reduce_tensor(loss), batch_x.size(0))
+
             if not self.by_epoch:
                 self.scheduler.step()
-            train_pbar.set_description('train loss: {:.4f}'.format(
-                loss.item() / (self.args.pre_seq_length + self.args.aft_seq_length)))
+            runner.call_hook('after_train_iter')
+            runner._iter += 1
+
+            if self.rank == 0:
+                log_buffer = 'train loss: {:.4f}'.format(loss.item())
+                log_buffer += ' | data time: {:.4f}'.format(data_time_m.avg)
+                train_pbar.set_description(log_buffer)
+
+            end = time.time()  # end for
 
         if hasattr(self.model_optim, 'sync_lookahead'):
             self.model_optim.sync_lookahead()
 
-        return num_updates, loss_mean, eta
-
-    def vali_one_epoch(self, runner, vali_loader, **kwargs):
-        self.model.eval()
-        preds_lst, trues_lst, total_loss = [], [], []
-        vali_pbar = tqdm(vali_loader)
-        for i, (batch_x, batch_y) in enumerate(vali_pbar):
-            batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
-            pred_y, loss = self.model.inference(batch_x, batch_y, self.constraints)
-            loss = self.criterion(pred_y, batch_y)
-
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()
-                                                  ), [pred_y, batch_y], [preds_lst, trues_lst]))
-
-            if i * batch_x.shape[0] > 1000:
-                break
-    
-            vali_pbar.set_description('vali loss: {:.4f}'.format(loss.mean().item()))
-            total_loss.append(loss.mean().item())
-        
-        total_loss = np.average(total_loss)
-
-        preds = np.concatenate(preds_lst, axis=0)
-        trues = np.concatenate(trues_lst, axis=0)
-        return preds, trues, total_loss
-
-    def test_one_epoch(self, runner, test_loader, **kwargs):
-        self.model.eval()
-        inputs_lst, trues_lst, preds_lst = [], [], []
-        test_pbar = tqdm(test_loader)
-        for batch_x, batch_y in test_pbar:
-            batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
-            pred_y, _ = self.model.inference(batch_x, batch_y, self.constraints)
-
-            list(map(lambda data, lst: lst.append(data.detach().cpu().numpy()), [
-                 batch_x, batch_y, pred_y], [inputs_lst, trues_lst, preds_lst]))
-
-        inputs, trues, preds = map(
-            lambda data: np.concatenate(data, axis=0), [inputs_lst, trues_lst, preds_lst])
-        return inputs, trues, preds
+        return num_updates, losses_m, eta

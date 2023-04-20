@@ -1,7 +1,9 @@
+dask
 future
 fvcore
 matplotlib
 nni
+netcdf4
 numpy
 hickle
 packaging
@@ -10,4 +12,4 @@ six
 scikit-learn
 timm
 tqdm
-xarray
+xarray==0.19.0

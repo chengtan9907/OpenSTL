@@ -10,6 +10,8 @@ class CrevNet_Model(nn.Module):
 
     Implementation of `Efficient and Information-Preserving Future Frame Prediction
     and Beyond <https://openreview.net/forum?id=B1eY_pVYvB>`_.
+
+    Notice: CrevNet Model requires `batch_size` == `val_batch_size`, or it will raise
     """
 
     def __init__(self, in_shape, rnn_size, batch_size, predictor_rnn_layers,
@@ -31,7 +33,7 @@ class CrevNet_Model(nn.Module):
                             mult=2)
         self.criterion = nn.MSELoss()
 
-    def forward(self, x, training=True):
+    def forward(self, x, training=True, **kwargs):
         B, T, C, H, W = x.shape
 
         input = []
@@ -46,9 +48,13 @@ class CrevNet_Model(nn.Module):
         memo = Variable(torch.zeros(B, self.rnn_size, 3, H // 8, W // 8).cuda())
         for i in range(1, self.pre_seq_length + self.aft_seq_length):
             h = self.encoder(input[i - 1], True)
-            h_pred, memo = self.frame_predictor((h, memo))
+            try:
+                h_pred, memo = self.frame_predictor((h, memo))
+            except RuntimeError:
+                assert False and "CrevNet Model requires `batch_size` == `val_batch_size`"
             x_pred = self.encoder(h_pred, False)
-            loss += (self.criterion(x_pred, input[i]))
+            if kwargs.get('return_loss', True):
+                loss += (self.criterion(x_pred, input[i]))
 
         if training is True:
             return loss

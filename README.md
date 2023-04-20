@@ -44,7 +44,7 @@ This is the journal version of our previous conference work ([SimVP: Simpler yet
 
 ## News and Updates
 
-[2023-04-19] `OpenSTL` v0.2.0 is released.
+[2023-04-19] `OpenSTL` v0.2.0 is released. The training loop and dataloaders are fixed.
 
 ## Installation
 
@@ -69,17 +69,17 @@ python setup.py develop
 * torch
 * timm
 * tqdm
-* xarray
+* xarray==0.19.0
 </details>
 
 Please refer to [install.md](docs/en/install.md) for more detailed instructions.
 
 ## Getting Started
 
-Please see [get_started.md](docs/en/get_started.md) for the basic usage. Here is an example of single GPU non-dist training SimVP+gSTA on Moving MNIST dataset.
+Please see [get_started.md](docs/en/get_started.md) for the basic usage. Here is an example of single GPU non-distributed training SimVP+gSTA on Moving MNIST dataset.
 ```shell
 bash tools/prepare_data/download_mmnist.sh
-python tools/train.py -d mmnist --lr 1e-3 -c ./configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
+python tools/train.py -d mmnist --lr 1e-3 -c configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>

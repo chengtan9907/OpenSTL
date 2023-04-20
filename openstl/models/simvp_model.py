@@ -32,7 +32,7 @@ class SimVP_Model(nn.Module):
                 input_resolution=(H, W), model_type=model_type,
                 mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
 
-    def forward(self, x_raw):
+    def forward(self, x_raw, **kwargs):
         B, T, C, H, W = x_raw.shape
         x = x_raw.view(B*T, C, H, W)
 

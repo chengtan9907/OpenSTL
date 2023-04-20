@@ -64,7 +64,8 @@ class Base_method(object):
                print('Using native PyTorch AMP. Training in mixed precision (fp16).')
         else:
             print('AMP not enabled. Training in float32.')
-        self.model = NativeDDP(self.model, device_ids=[self.rank], broadcast_buffers=True)
+        self.model = NativeDDP(self.model, device_ids=[self.rank], broadcast_buffers=True,
+                               find_unused_parameters=self.args.find_unused_parameters)
 
     def train_one_epoch(self, runner, train_loader, **kwargs): 
         """Train the model with train_loader.
@@ -166,8 +167,8 @@ class Base_method(object):
         else:
             results = self._nondist_forward_collect(vali_loader, len(vali_loader.dataset))
 
-        preds = torch.tensor(results['preds']).to(self.device)
-        trues = torch.tensor(results['trues']).to(self.device)
+        preds = torch.tensor(results['preds'])
+        trues = torch.tensor(results['trues'])
         losses_m = self.criterion(preds, trues).cpu().numpy()
         return results['preds'], results['trues'], losses_m
 

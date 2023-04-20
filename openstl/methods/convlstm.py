@@ -10,6 +10,7 @@ class ConvLSTM(PredRNN):
     Implementation of `Convolutional LSTM Network: A Machine Learning Approach
     for Precipitation Nowcasting <https://arxiv.org/abs/1506.04214>`_.
 
+    Notice: ConvLSTM requires `find_unused_parameters=True` for DDP training.
     """
 
     def __init__(self, args, device, steps_per_epoch):

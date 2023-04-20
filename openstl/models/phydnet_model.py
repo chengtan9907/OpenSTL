@@ -51,12 +51,14 @@ class PhyDNet_Model(nn.Module):
 
         return loss
 
-    def inference(self, input_tensor, target_tensor, constraints):
+    def inference(self, input_tensor, target_tensor, constraints, **kwargs):
         with torch.no_grad():
             loss = 0
             for ei in range(self.pre_seq_length - 1):
-                encoder_output, encoder_hidden, output_image, _, _  = self.encoder(input_tensor[:,ei,:,:,:], (ei==0))
-                loss += self.criterion(output_image, input_tensor[:,ei+1,:,:,:])
+                encoder_output, encoder_hidden, output_image, _, _  = \
+                    self.encoder(input_tensor[:,ei,:,:,:], (ei==0))
+                if kwargs.get('return_loss', True):
+                    loss += self.criterion(output_image, input_tensor[:,ei+1,:,:,:])
 
             decoder_input = input_tensor[:,-1,:,:,:]
             predictions = []
@@ -65,12 +67,13 @@ class PhyDNet_Model(nn.Module):
                 _, _, output_image, _, _ = self.encoder(decoder_input, False, False)
                 decoder_input = output_image
                 predictions.append(output_image)
-
-                loss += self.criterion(output_image, target_tensor[:,di,:,:,:])
+                if kwargs.get('return_loss', True):
+                    loss += self.criterion(output_image, target_tensor[:,di,:,:,:])
 
             for b in range(0, self.encoder.phycell.cell_list[0].input_dim):
                 filters = self.encoder.phycell.cell_list[0].F.conv1.weight[:,b,:,:]
                 m = self.k2m(filters.double()).float()
-                loss += self.criterion(m, constraints)
-            
+                if kwargs.get('return_loss', True):
+                    loss += self.criterion(m, constraints)
+
             return torch.stack(predictions, dim=1), loss
