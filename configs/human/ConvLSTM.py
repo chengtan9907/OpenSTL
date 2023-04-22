@@ -1,6 +1,6 @@
-method = 'PredRNNv2'
+method = 'ConvLSTM'
 # reverse scheduled sampling
-reverse_scheduled_sampling = 1
+reverse_scheduled_sampling = 0
 r_sampling_step_1 = 25000
 r_sampling_step_2 = 50000
 r_exp_alpha = 5000
@@ -13,6 +13,5 @@ sampling_changing_rate = 0.00002
 num_hidden = '128,128,128,128'
 filter_size = 5
 stride = 1
-patch_size = 2
+patch_size = 4
 layer_norm = 0
-decouple_beta = 0.01

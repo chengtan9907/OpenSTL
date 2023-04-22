@@ -37,7 +37,7 @@ def PSNR(pred, true):
     return 20 * np.log10(255) - 10 * np.log10(mse)
 
 
-def metric(pred, true, mean, std, metrics=['mae', 'mse'],
+def metric(pred, true, mean=None, std=None, metrics=['mae', 'mse'],
            clip_range=[0, 1], spatial_norm=False):
     """The evaluation function to output metrics.
 
@@ -52,8 +52,9 @@ def metric(pred, true, mean, std, metrics=['mae', 'mse'],
     Returns:
         dict: evaluation results
     """
-    pred = pred * std + mean
-    true = true * std + mean
+    if mean is not None and std is not None:
+        pred = pred * std + mean
+        true = true * std + mean
     eval_res = {}
     eval_log = ""
     allowed_metrics = ['mae', 'mse', 'rmse', 'ssim', 'psnr',]

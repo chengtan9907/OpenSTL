@@ -40,7 +40,10 @@ class PhyDNet(Base_method):
 
     def _predict(self, batch_x, batch_y, **kwargs):
         """Forward the model"""
-        pred_y, _ = self.model.inference(batch_x, batch_y, self.constraints, return_loss=False)
+        if not self.dist:
+            pred_y, _ = self.model.inference(batch_x, batch_y, self.constraints, return_loss=False)
+        else:
+            pred_y, _ = self.model.module.inference(batch_x, batch_y, self.constraints, return_loss=False)
         return pred_y
 
     def train_one_epoch(self, runner, train_loader, epoch, num_updates, eta=None, **kwargs):

@@ -25,7 +25,7 @@ class TaxibjDataset(Dataset):
 
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
-              pre_seq_length=None, aft_seq_length=None, distributed=False):
+              pre_seq_length=None, aft_seq_length=None, in_shape=None, distributed=False):
 
     dataset = np.load(data_root+'taxibj/dataset.npz')
     X_train, Y_train, X_test, Y_test = dataset['X_train'], dataset[
@@ -41,12 +41,12 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
     dataloader_vali = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=True,
+                                    pin_memory=True, drop_last=False,
                                     num_workers=num_workers, distributed=distributed)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=True,
+                                    pin_memory=True, drop_last=False,
                                     num_workers=num_workers, distributed=distributed)
 
     return dataloader_train, dataloader_vali, dataloader_test

@@ -29,7 +29,7 @@ class MovingMNIST(Dataset):
     """Moving MNIST <http://arxiv.org/abs/1502.04681>`_ Dataset"""
 
     def __init__(self, root, is_train=True, n_frames_input=10, n_frames_output=10,
-                 num_objects=[2], transform=None):
+                 image_size=64, num_objects=[2], transform=None):
         super(MovingMNIST, self).__init__()
 
         self.dataset = None
@@ -49,7 +49,7 @@ class MovingMNIST(Dataset):
         self.n_frames_total = self.n_frames_input + self.n_frames_output
         self.transform = transform
         # For generating data
-        self.image_size_ = 64
+        self.image_size_ = image_size
         self.digit_size_ = 28
         self.step_length_ = 0.1
 
@@ -153,14 +153,15 @@ class MovingMNIST(Dataset):
 
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
-              pre_seq_length=10, aft_seq_length=10, distributed=False):
+              pre_seq_length=10, aft_seq_length=10, in_shape=[10, 1, 64, 64], distributed=False):
 
+    image_size = in_shape[-1] if in_shape is not None else 64
     train_set = MovingMNIST(root=data_root, is_train=True,
                             n_frames_input=pre_seq_length,
-                            n_frames_output=aft_seq_length, num_objects=[2])
+                            n_frames_output=aft_seq_length, num_objects=[2], image_size=image_size)
     test_set = MovingMNIST(root=data_root, is_train=False,
                            n_frames_input=pre_seq_length,
-                           n_frames_output=aft_seq_length, num_objects=[2])
+                           n_frames_output=aft_seq_length, num_objects=[2], image_size=image_size)
 
     dataloader_train = create_loader(train_set,
                                      batch_size=batch_size,
@@ -170,12 +171,29 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
     dataloader_vali = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=True,
+                                    pin_memory=True, drop_last=False,
                                     num_workers=num_workers, distributed=distributed)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=True,
+                                    pin_memory=True, drop_last=False,
                                     num_workers=num_workers, distributed=distributed)
 
     return dataloader_train, dataloader_vali, dataloader_test
+
+
+if __name__ == '__main__':
+    dataloader_train, _, dataloader_test = \
+        load_data(batch_size=16,
+                  val_batch_size=4,
+                  data_root='../../data/',
+                  num_workers=4,
+                  pre_seq_length=10, aft_seq_length=10)
+
+    print(len(dataloader_train), len(dataloader_test))
+    for item in dataloader_train:
+        print(item[0].shape, item[1].shape)
+        break
+    for item in dataloader_test:
+        print(item[0].shape, item[1].shape)
+        break

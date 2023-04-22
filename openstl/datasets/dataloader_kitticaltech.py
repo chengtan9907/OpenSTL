@@ -54,6 +54,7 @@ class DataProcess(object):
     def __init__(self, input_param):
         self.paths = input_param['paths']
         self.seq_len = input_param['seq_length']
+        self.input_shape = input_param['input_shape']  # (128, 160)
 
     def load_data(self, mode='train'):
         """Loads the dataset.
@@ -95,7 +96,7 @@ class DataProcess(object):
                             break
                         cnt_frames += 1
                         if cnt_frames % 3 == 0:
-                            frame = process_im(frame, (128, 160)) / 255.0
+                            frame = process_im(frame, self.input_shape) / 255.0
                             data.append(frame)
                             fileidx.append(seq_id + item)
             data = np.asarray(data)
@@ -112,7 +113,7 @@ class DataProcess(object):
 
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
-              pre_seq_length=10, aft_seq_length=1, distributed=False):
+              pre_seq_length=10, aft_seq_length=1, in_shape=[10, 3, 128, 160], distributed=False):
 
     if os.path.exists(osp.join(data_root, 'kitti_hkl')):
         input_param = {
@@ -120,6 +121,7 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
                     'caltech': osp.join(data_root, 'caltech')},
             'seq_length': (pre_seq_length + aft_seq_length),
             'input_data_type': 'float32',
+            'input_shape': (in_shape[-2], in_shape[-1]) if in_shape is not None else (128, 160),
         }
         input_handle = DataProcess(input_param)
         train_data, train_idx = input_handle.load_data('train')
@@ -146,7 +148,24 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=True,
+                                    pin_memory=True, drop_last=False,
                                     num_workers=num_workers, distributed=distributed)
 
     return dataloader_train, dataloader_vali, dataloader_test
+
+
+if __name__ == '__main__':
+    dataloader_train, _, dataloader_test = \
+        load_data(batch_size=16,
+                val_batch_size=4,
+                data_root='../../data/',
+                num_workers=4,
+                pre_seq_length=12, aft_seq_length=1)
+
+    print(len(dataloader_train), len(dataloader_test))
+    for item in dataloader_train:
+        print(item[0].shape, item[1].shape)
+        break
+    for item in dataloader_test:
+        print(item[0].shape, item[1].shape)
+        break

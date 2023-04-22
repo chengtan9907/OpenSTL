@@ -227,9 +227,9 @@ class DataProcess(object):
 
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
-              pre_seq_length=10, aft_seq_length=20, distributed=False):
+              pre_seq_length=10, aft_seq_length=20, in_shape=[10, 1, 128, 128], distributed=False):
 
-    img_width = 128
+    img_width = in_shape[-1] if in_shape is not None else 128
     # pre_seq_length, aft_seq_length = 10, 10
     input_param = {
         'paths': os.path.join(data_root, 'kth'),
@@ -255,13 +255,15 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
     dataloader_train = create_loader(train_set,
                                      batch_size=batch_size,
                                      shuffle=True, is_training=True,
-                                     pin_memory=True, num_workers=num_workers,
+                                     pin_memory=True, drop_last=True,
+                                     num_workers=num_workers,
                                      distributed=distributed)
     dataloader_vali = None
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, num_workers=num_workers,
+                                    pin_memory=True, drop_last=False,
+                                    num_workers=num_workers,
                                     distributed=distributed)
 
     return dataloader_train, dataloader_vali, dataloader_test

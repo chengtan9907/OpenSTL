@@ -317,7 +317,7 @@ class BaseExperiment(object):
             eval_res, eval_log = metric(preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std,
                                         metrics=metric_list, spatial_norm=spatial_norm)
 
-            print_log('\nval\t '+eval_log)
+            print_log('val\t '+eval_log)
             if has_nni:
                 nni.report_intermediate_result(eval_res['mse'])
 

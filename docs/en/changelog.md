@@ -11,7 +11,8 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 
 #### New Features
 
-* Update the Weather Bench dataloader with `5.625deg`, `2.8125deg`, and `1.40625deg` settings.
+* Update the Weather Bench dataloader with `5.625deg`, `2.8125deg`, and `1.40625deg` settings. Add Human3.6M dataloader and config files.
+* Update tools for dataset preparation.
 
 #### Update Documents
 

@@ -129,6 +129,7 @@ We support various video prediction methods and will provide benchmarks on vario
     <details open>
     <summary>Currently supported datasets</summary>
 
+    - [x] [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) (TPAMI'2014)  [[download](http://vision.imar.ro/human3.6m/description.php)] [[config](configs/human)]
     - [x] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004)  [[download](https://www.csc.kth.se/cvap/actions/)] [[config](configs/kth)]
     - [x] [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://figshare.com/articles/dataset/KITTI_hkl_files/7985684)] [[config](configs/kitticaltech)]
     - [x] [Moving MNIST](http://arxiv.org/abs/1502.04681) (ICML'2015) [[download](http://www.cs.toronto.edu/~nitish/unsupervised_video/)] [[config](configs/mmnist)]

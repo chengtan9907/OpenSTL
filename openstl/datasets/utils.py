@@ -25,9 +25,9 @@ def worker_init(worker_id, worker_seeding='all'):
             np.random.seed(worker_info.seed % (2 ** 32 - 1))
 
 
-def fast_collate(batch):
-    """ A fast collation function optimized for uint8 images (np array or torch)
-        and int64 targets (labels)"""
+def fast_collate_for_prediction(batch):
+    """ A fast collation function optimized for float32 images (np array or torch)
+        and float32 targets (video prediction labels) in video prediction tasks"""
     assert isinstance(batch[0], tuple)
     batch_size = len(batch)
     if isinstance(batch[0][0], tuple):
@@ -36,8 +36,8 @@ def fast_collate(batch):
         # in a torch.split(tensor, batch_size) in nth position
         inner_tuple_size = len(batch[0][0])
         flattened_batch_size = batch_size * inner_tuple_size
-        targets = torch.zeros(flattened_batch_size, dtype=torch.int64)
-        tensor = torch.zeros((flattened_batch_size, *batch[0][0][0].shape), dtype=torch.uint8)
+        targets = torch.zeros(flattened_batch_size, dtype=torch.float32)
+        tensor = torch.zeros((flattened_batch_size, *batch[0][0][0].shape), dtype=torch.float32)
         for i in range(batch_size):
             # all input tensor tuples must be same length
             assert len(batch[i][0]) == inner_tuple_size
@@ -46,16 +46,16 @@ def fast_collate(batch):
                 tensor[i + j * batch_size] += torch.from_numpy(batch[i][0][j])
         return tensor, targets
     elif isinstance(batch[0][0], np.ndarray):
-        targets = torch.tensor([b[1] for b in batch], dtype=torch.int64)
+        targets = torch.tensor([b[1] for b in batch], dtype=torch.float32)
         assert len(targets) == batch_size
-        tensor = torch.zeros((batch_size, *batch[0][0].shape), dtype=torch.uint8)
+        tensor = torch.zeros((batch_size, *batch[0][0].shape), dtype=torch.float32)
         for i in range(batch_size):
             tensor[i] += torch.from_numpy(batch[i][0])
         return tensor, targets
     elif isinstance(batch[0][0], torch.Tensor):
-        targets = torch.tensor([b[1] for b in batch], dtype=torch.int64)
+        targets = torch.zeros((batch_size, *batch[1][0].shape), dtype=torch.float32)
         assert len(targets) == batch_size
-        tensor = torch.zeros((batch_size, *batch[0][0].shape), dtype=torch.uint8)
+        tensor = torch.zeros((batch_size, *batch[0][0].shape), dtype=torch.float32)
         for i in range(batch_size):
             tensor[i].copy_(batch[i][0])
         return tensor, targets
@@ -77,22 +77,25 @@ class PrefetchLoader:
 
     def __init__(self,
                  loader,
-                 mean,
-                 std,
+                 mean=None,
+                 std=None,
                  channels=3,
                  fp16=False):
 
-        mean = expand_to_chs(mean, channels)
-        std = expand_to_chs(std, channels)
-        normalization_shape = (1, channels, 1, 1)
-
-        self.loader = loader
-        self.mean = torch.tensor([x * 255 for x in mean]).cuda().view(normalization_shape)
-        self.std = torch.tensor([x * 255 for x in std]).cuda().view(normalization_shape)
         self.fp16 = fp16
-        if fp16:
-            self.mean = self.mean.half()
-            self.std = self.std.half()
+        self.loader = loader
+        if mean is not None and std is not None:
+            mean = expand_to_chs(mean, channels)
+            std = expand_to_chs(std, channels)
+            normalization_shape = (1, channels, 1, 1)
+
+            self.mean = torch.tensor([x * 255 for x in mean]).cuda().view(normalization_shape)
+            self.std = torch.tensor([x * 255 for x in std]).cuda().view(normalization_shape)        
+            if fp16:
+                self.mean = self.mean.half()
+                self.std = self.std.half()
+        else:
+            self.mean, self.std = None, None
 
     def __iter__(self):
         stream = torch.cuda.Stream()
@@ -103,9 +106,15 @@ class PrefetchLoader:
                 next_input = next_input.cuda(non_blocking=True)
                 next_target = next_target.cuda(non_blocking=True)
                 if self.fp16:
-                    next_input = next_input.half().sub_(self.mean).div_(self.std)
+                    if self.mean is not None:
+                        next_input = next_input.half().sub_(self.mean).div_(self.std)
+                    else:
+                        next_input = next_input.half()
                 else:
-                    next_input = next_input.float().sub_(self.mean).div_(self.std)
+                    if self.mean is not None:
+                        next_input = next_input.float().sub_(self.mean).div_(self.std)
+                    else:
+                        next_input = next_input.float()
 
             if not first:
                 yield input, target
@@ -162,7 +171,7 @@ def create_loader(dataset,
         assert num_aug_repeats==0, "RepeatAugment is not supported in non-distributed or IterableDataset"
 
     if collate_fn is None:
-        collate_fn = fast_collate if use_prefetcher else torch.utils.data.dataloader.default_collate
+        collate_fn = fast_collate_for_prediction if use_prefetcher else torch.utils.data.dataloader.default_collate
     loader_class = torch.utils.data.DataLoader
 
     loader_args = dict(
@@ -192,3 +201,64 @@ def create_loader(dataset,
         )
 
     return loader
+
+
+def reshape_patch(img_tensor, patch_size):
+    assert 4 == img_tensor.ndim
+    seq_length = np.shape(img_tensor)[0]
+    img_height = np.shape(img_tensor)[1]
+    img_width = np.shape(img_tensor)[2]
+    num_channels = np.shape(img_tensor)[3]
+    a = np.reshape(img_tensor, [seq_length,
+                                img_height // patch_size, patch_size,
+                                img_width // patch_size, patch_size,
+                                num_channels])
+    b = np.transpose(a, [0, 1, 3, 2, 4, 5])
+    patch_tensor = np.reshape(b, [seq_length,
+                                  img_height // patch_size,
+                                  img_width // patch_size,
+                                  patch_size * patch_size * num_channels])
+    return patch_tensor
+
+
+def reshape_patch_back(patch_tensor, patch_size):
+    # B L H W C
+    assert 5 == patch_tensor.ndim
+    batch_size = np.shape(patch_tensor)[0]
+    seq_length = np.shape(patch_tensor)[1]
+    patch_height = np.shape(patch_tensor)[2]
+    patch_width = np.shape(patch_tensor)[3]
+    channels = np.shape(patch_tensor)[4]
+    img_channels = channels // (patch_size * patch_size)
+    a = np.reshape(patch_tensor, [batch_size, seq_length,
+                                  patch_height, patch_width,
+                                  patch_size, patch_size,
+                                  img_channels])
+    b = np.transpose(a, [0, 1, 2, 4, 3, 5, 6])
+    img_tensor = np.reshape(b, [batch_size, seq_length,
+                                patch_height * patch_size,
+                                patch_width * patch_size,
+                                img_channels])
+    return img_tensor
+
+
+def reshape_patch_back_tensor(patch_tensor, patch_size):
+    # B L H W C
+    assert 5 == patch_tensor.ndim
+    patch_narray = patch_tensor.detach().cpu().numpy()
+    batch_size = np.shape(patch_narray)[0]
+    seq_length = np.shape(patch_narray)[1]
+    patch_height = np.shape(patch_narray)[2]
+    patch_width = np.shape(patch_narray)[3]
+    channels = np.shape(patch_narray)[4]
+    img_channels = channels // (patch_size * patch_size)
+    a = torch.reshape(patch_tensor, [batch_size, seq_length,
+                                     patch_height, patch_width,
+                                     patch_size, patch_size,
+                                     img_channels])
+    b = a.permute([0, 1, 2, 4, 3, 5, 6])
+    img_tensor = torch.reshape(b, [batch_size, seq_length,
+                                   patch_height * patch_size,
+                                   patch_width * patch_size,
+                                   img_channels])
+    return img_tensor.permute(0, 1, 4, 2, 3)

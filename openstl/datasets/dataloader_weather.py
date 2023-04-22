@@ -50,6 +50,17 @@ data_map = {'z': 'geopotential_500',
 
 
 class ClimateDataset(Dataset):
+    """Wheather Bench Dataset
+
+    Args:
+        data_root (str): Path to the dataset.
+        data_name (str): Name of the weather modality in Wheather Bench.
+        training_time (list): The arrange of years for training.
+        idx_in (list): The list of input indices.
+        idx_out (list): The list of output indices to predict.
+        step (int): Sampling step in the time dimension.
+        data_split (str): The resolution (degree) of Wheather Bench splits.
+    """
 
     def __init__(self, data_root, data_name, training_time,
                  idx_in, idx_out, step, data_split='5_625',
@@ -208,12 +219,12 @@ def load_data(batch_size,
     dataloader_vali = create_loader(test_set, # validation_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=True,
+                                    pin_memory=True, drop_last=False,
                                     num_workers=num_workers, distributed=distributed)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=True,
+                                    pin_memory=True, drop_last=False,
                                     num_workers=num_workers, distributed=distributed)
 
     return dataloader_train, dataloader_vali, dataloader_test
@@ -224,6 +235,7 @@ if __name__ == '__main__':
     data_name = 't2m'
 
     for _split in data_split:
+        print(len(dataloader_train), len(dataloader_test))
         dataloader_train, _, dataloader_test = \
             load_data(batch_size=128,
                     val_batch_size=32,

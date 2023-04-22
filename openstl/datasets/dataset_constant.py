@@ -11,6 +11,12 @@ dataset_parameters = {
         'aft_seq_length': 4,
         'total_length': 8
     },
+    'human': {
+        'in_shape': [4, 3, 256, 256],
+        'pre_seq_length': 4,
+        'aft_seq_length': 4,
+        'total_length': 8
+    },
     **dict.fromkeys(['kth20', 'kth'], {
         'in_shape': [10, 1, 128, 128],
         'pre_seq_length': 10,
@@ -22,12 +28,6 @@ dataset_parameters = {
         'pre_seq_length': 10,
         'aft_seq_length': 40,
         'total_length': 50
-    },
-    'human': {
-        'in_shape': [4, 3, 128, 128],
-        'pre_seq_length': 4,
-        'aft_seq_length': 4,
-        'total_length': 8
     },
     'kitticaltech': {
         'in_shape': [10, 3, 128, 160],
