@@ -181,7 +181,7 @@ def load_data(batch_size,
               idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
               idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
               step=1,
-              distributed=False,
+              distributed=False, use_prefetcher=False,
               **kwargs):
 
     assert data_split in ['5_625', '2_8125', '1_40625']
@@ -215,17 +215,20 @@ def load_data(batch_size,
                                      batch_size=batch_size,
                                      shuffle=True, is_training=True,
                                      pin_memory=True, drop_last=True,
-                                     num_workers=num_workers, distributed=distributed)
+                                     num_workers=num_workers,
+                                     distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_vali = create_loader(test_set, # validation_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
                                     pin_memory=True, drop_last=False,
-                                    num_workers=num_workers, distributed=distributed)
+                                    num_workers=num_workers,
+                                    distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
                                     pin_memory=True, drop_last=False,
-                                    num_workers=num_workers, distributed=distributed)
+                                    num_workers=num_workers,
+                                    distributed=distributed, use_prefetcher=use_prefetcher)
 
     return dataloader_train, dataloader_vali, dataloader_test
 
@@ -235,7 +238,6 @@ if __name__ == '__main__':
     data_name = 't2m'
 
     for _split in data_split:
-        print(len(dataloader_train), len(dataloader_test))
         dataloader_train, _, dataloader_test = \
             load_data(batch_size=128,
                     val_batch_size=32,
@@ -248,6 +250,7 @@ if __name__ == '__main__':
                     idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
                     idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], step=24)
 
+        print(len(dataloader_train), len(dataloader_test))
         for item in dataloader_train:
             print(item[0].shape)
             break

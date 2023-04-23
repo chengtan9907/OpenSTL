@@ -11,7 +11,7 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 
 #### New Features
 
-* Update the Weather Bench dataloader with `5.625deg`, `2.8125deg`, and `1.40625deg` settings. Add Human3.6M dataloader and config files.
+* Update the Weather Bench dataloader with `5.625deg`, `2.8125deg`, and `1.40625deg` settings. Add Human3.6M dataloader (supporting augmentations) and config files.
 * Update tools for dataset preparation.
 
 #### Update Documents
@@ -23,6 +23,7 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 
 * Fix bugs in training loops and validation loops to save GPU memory.
 * There might be some bugs in not using all parameters for calculating losses in ConvLSTM CrevNet, which should use `--find_unused_parameters` for DDP training.
+* Fig bugs of building distributed dataloaders and preparation of DDP training.
 
 ### v0.1.0 (18/02/2023)
 

@@ -25,11 +25,13 @@ class TaxibjDataset(Dataset):
 
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
-              pre_seq_length=None, aft_seq_length=None, in_shape=None, distributed=False):
+              pre_seq_length=None, aft_seq_length=None, in_shape=None,
+              distributed=False, use_prefetcher=False):
 
     dataset = np.load(data_root+'taxibj/dataset.npz')
     X_train, Y_train, X_test, Y_test = dataset['X_train'], dataset[
         'Y_train'], dataset['X_test'], dataset['Y_test']
+    assert X_train.shape[1] == pre_seq_length and Y_train.shape[1] == aft_seq_length
     train_set = TaxibjDataset(X=X_train, Y=Y_train)
     test_set = TaxibjDataset(X=X_test, Y=Y_test)
 
@@ -37,16 +39,36 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
                                      batch_size=batch_size,
                                      shuffle=True, is_training=True,
                                      pin_memory=True, drop_last=True,
-                                     num_workers=num_workers, distributed=distributed)
+                                     num_workers=num_workers,
+                                     distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_vali = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
                                     pin_memory=True, drop_last=False,
-                                    num_workers=num_workers, distributed=distributed)
+                                    num_workers=num_workers,
+                                    distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
                                     pin_memory=True, drop_last=False,
-                                    num_workers=num_workers, distributed=distributed)
+                                    num_workers=num_workers,
+                                    distributed=distributed, use_prefetcher=use_prefetcher)
 
     return dataloader_train, dataloader_vali, dataloader_test
+
+
+if __name__ == '__main__':
+    dataloader_train, _, dataloader_test = \
+        load_data(batch_size=16,
+                  val_batch_size=4,
+                  data_root='../../data/',
+                  num_workers=4,
+                  pre_seq_length=4, aft_seq_length=4)
+
+    print(len(dataloader_train), len(dataloader_test))
+    for item in dataloader_train:
+        print(item[0].shape, item[1].shape)
+        break
+    for item in dataloader_test:
+        print(item[0].shape, item[1].shape)
+        break

@@ -74,27 +74,6 @@ class BaseExperiment(object):
         if 'LOCAL_RANK' not in os.environ:
             os.environ['LOCAL_RANK'] = str(self.args.local_rank)
 
-        # log and checkpoint
-        base_dir = self.args.res_dir if self.args.res_dir is not None else 'work_dirs'
-        self.path = osp.join(base_dir, self.args.ex_name if not self.args.ex_name.startswith(self.args.res_dir) \
-            else self.args.ex_name.split(self.args.res_dir+'/')[-1])
-        check_dir(self.path)
-
-        self.checkpoints_path = osp.join(self.path, 'checkpoints')
-        check_dir(self.checkpoints_path)
-
-        sv_param = osp.join(self.path, 'model_param.json')
-        with open(sv_param, 'w') as file_obj:
-            json.dump(self.args.__dict__, file_obj)
-
-        for handler in logging.root.handlers[:]:
-            logging.root.removeHandler(handler)
-        timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-        prefix = 'train' if not self.args.test else 'test'
-        logging.basicConfig(level=logging.INFO,
-                            filename=osp.join(self.path, '{}_{}.log'.format(prefix, timestamp)),
-                            filemode='a', format='%(asctime)s - %(message)s')
-
         # init distributed env first, since logger depends on the dist info.
         if self.args.launcher != 'none' or self.args.dist:
             self._dist = True
@@ -108,6 +87,28 @@ class BaseExperiment(object):
             # re-set gpu_ids with distributed training mode
             self._gpu_ids = range(self._world_size)
         self.device = self._acquire_device()
+
+        # log and checkpoint
+        base_dir = self.args.res_dir if self.args.res_dir is not None else 'work_dirs'
+        self.path = osp.join(base_dir, self.args.ex_name if not self.args.ex_name.startswith(self.args.res_dir) \
+            else self.args.ex_name.split(self.args.res_dir+'/')[-1])
+        self.checkpoints_path = osp.join(self.path, 'checkpoints')
+        if self._rank == 0:
+            check_dir(self.path)
+            check_dir(self.checkpoints_path)
+
+        sv_param = osp.join(self.path, 'model_param.json')
+        if self._rank == 0:
+            with open(sv_param, 'w') as file_obj:
+                json.dump(self.args.__dict__, file_obj)
+
+            for handler in logging.root.handlers[:]:
+                logging.root.removeHandler(handler)
+            timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
+            prefix = 'train' if not self.args.test else 'test'
+            logging.basicConfig(level=logging.INFO,
+                                filename=osp.join(self.path, '{}_{}.log'.format(prefix, timestamp)),
+                                filemode='a', format='%(asctime)s - %(message)s')
 
         # log env info
         env_info_dict = collect_env()

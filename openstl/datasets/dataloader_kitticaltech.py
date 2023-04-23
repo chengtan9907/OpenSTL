@@ -113,7 +113,8 @@ class DataProcess(object):
 
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
-              pre_seq_length=10, aft_seq_length=1, in_shape=[10, 3, 128, 160], distributed=False):
+              pre_seq_length=10, aft_seq_length=1, in_shape=[10, 3, 128, 160],
+              distributed=False, use_prefetcher=False):
 
     if os.path.exists(osp.join(data_root, 'kitti_hkl')):
         input_param = {
@@ -143,13 +144,15 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
                                      batch_size=batch_size,
                                      shuffle=True, is_training=True,
                                      pin_memory=True, drop_last=True,
-                                     num_workers=num_workers, distributed=distributed)
+                                     num_workers=num_workers,
+                                     distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_vali = None
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
                                     pin_memory=True, drop_last=False,
-                                    num_workers=num_workers, distributed=distributed)
+                                    num_workers=num_workers,
+                                    distributed=distributed, use_prefetcher=use_prefetcher)
 
     return dataloader_train, dataloader_vali, dataloader_test
 

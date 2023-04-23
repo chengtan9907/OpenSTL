@@ -176,7 +176,7 @@ def create_loader(dataset,
 
     loader_args = dict(
         batch_size=batch_size,
-        shuffle=shuffle and (not isinstance(dataset, torch.utils.data.IterableDataset)) and is_training,
+        shuffle=shuffle and (not isinstance(dataset, torch.utils.data.IterableDataset)) and sampler is None and is_training,
         num_workers=num_workers,
         sampler=sampler,
         collate_fn=collate_fn,

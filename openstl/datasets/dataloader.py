@@ -1,13 +1,14 @@
 # Copyright (c) CAIRI AI Lab. All rights reserved
 
-def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, distributed=False, **kwargs):
+def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, dist=False, **kwargs):
     cfg_dataloader = dict(
         pre_seq_length=kwargs.get('pre_seq_length', 10),
         aft_seq_length=kwargs.get('aft_seq_length', 10),
         in_shape=kwargs.get('in_shape', None),
-        distributed=distributed,
+        distributed=dist,
         use_prefetcher=kwargs.get('use_prefetcher', False),
     )
+    print('load_data', dataname, cfg_dataloader)
     if dataname == 'human':
         from .dataloader_human import load_data
         return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
@@ -31,6 +32,6 @@ def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, dist
             if dataname.find(k) != -1:
                 data_split = k
         return load_data(batch_size, val_batch_size, data_root, num_workers,
-                         distributed=distributed, data_split=data_split, **kwargs)
+                         distributed=dist, data_split=data_split, **kwargs)
     else:
         raise ValueError(f'Dataname {dataname} is unsupported')
