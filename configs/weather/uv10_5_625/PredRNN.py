@@ -17,3 +17,6 @@ patch_size = 2
 layer_norm = 0
 # training
 lr = 5e-4
+batch_size = 16
+sched = 'cosine'
+warmup_epoch = 0

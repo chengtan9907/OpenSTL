@@ -9,5 +9,5 @@ N_T = 8
 N_S = 8
 # training
 lr = 1e-3
-batch_size = 16
+# batch_size = 16
 drop_path = 0.1

@@ -1,9 +1,11 @@
 import warnings
 warnings.filterwarnings("ignore")
 
+import random
 import numpy as np
 import os.path as osp
 import torch
+import torch.nn.functional as F
 from torch.utils.data import Dataset
 from openstl.datasets.utils import create_loader
 
@@ -60,12 +62,13 @@ class ClimateDataset(Dataset):
         idx_out (list): The list of output indices to predict.
         step (int): Sampling step in the time dimension.
         data_split (str): The resolution (degree) of Wheather Bench splits.
+        use_augment (bool): Whether to use augmentations (defaults to False).
     """
 
     def __init__(self, data_root, data_name, training_time,
                  idx_in, idx_out, step, data_split='5_625',
                  mean=None, std=None,
-                 transform_data=None, transform_labels=None):
+                 transform_data=None, transform_labels=None, use_augment=False):
         super().__init__()
         self.dataname = data_name
         self.data_split = data_split
@@ -77,6 +80,7 @@ class ClimateDataset(Dataset):
         self.std = std
         self.transform_data = transform_data
         self.transform_labels = transform_labels
+        self.use_augment = use_augment
 
         self.time = None
         shape = int(32 * 5.625 / float(data_split.replace('_', '.')))
@@ -159,6 +163,20 @@ class ClimateDataset(Dataset):
         self.valid_idx = np.array(
             range(-idx_in[0], self.data.shape[0]-idx_out[-1]-1))
 
+    def _augment_seq(self, seqs, crop_scale=0.96):
+        """Augmentations as a video sequence"""
+        _, _, h, w = seqs.shape  # original shape, e.g., [4, 1, 128, 256]
+        seqs = F.interpolate(seqs, scale_factor=1 / crop_scale, mode='bilinear')
+        _, _, ih, iw = seqs.shape
+        # Random Crop
+        x = np.random.randint(0, ih - h + 1)
+        y = np.random.randint(0, iw - w + 1)
+        seqs = seqs[:, :, x:x+h, y:y+w]
+        # Random Flip
+        if random.randint(0, 1):
+            seqs = torch.flip(seqs, dims=(3, ))  # horizontal flip
+        return seqs
+
     def __len__(self):
         return self.valid_idx.shape[0]
 
@@ -166,6 +184,11 @@ class ClimateDataset(Dataset):
         index = self.valid_idx[index]
         data = torch.tensor(self.data[index+self.idx_in])
         labels = torch.tensor(self.data[index+self.idx_out])
+        if self.use_augment:
+            len_data = self.idx_in.shape[0]
+            seqs = self._augment_seq(torch.cat([data, labels], dim=0), crop_scale=0.96)
+            data = seqs[:len_data, ...]
+            labels = seqs[len_data:, ...]
         return data, labels
 
 
@@ -181,7 +204,7 @@ def load_data(batch_size,
               idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
               idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
               step=1,
-              distributed=False, use_prefetcher=False,
+              distributed=False, use_augment=False, use_prefetcher=False,
               **kwargs):
 
     assert data_split in ['5_625', '2_8125', '1_40625']
@@ -193,13 +216,13 @@ def load_data(batch_size,
                                training_time=train_time,
                                idx_in=idx_in,
                                idx_out=idx_out,
-                               step=step)
+                               step=step, use_augment=use_augment)
     vali_set = ClimateDataset(weather_dataroot,
                               data_name=data_name, data_split=data_split,
                               training_time=val_time,
                               idx_in=idx_in,
                               idx_out=idx_out,
-                              step=step,
+                              step=step, use_augment=False,
                               mean=train_set.mean,
                               std=train_set.std)
     test_set = ClimateDataset(weather_dataroot,
@@ -207,7 +230,7 @@ def load_data(batch_size,
                               training_time=test_time,
                               idx_in=idx_in,
                               idx_out=idx_out,
-                              step=step,
+                              step=step, use_augment=False,
                               mean=train_set.mean,
                               std=train_set.std)
 
@@ -248,7 +271,7 @@ if __name__ == '__main__':
                     val_time=['2016', '2016'],
                     test_time=['2017', '2018'],
                     idx_in=[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0],
-                    idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], step=24)
+                    idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], step=24, use_augment=True)
 
         print(len(dataloader_train), len(dataloader_test))
         for item in dataloader_train:

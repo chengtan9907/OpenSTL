@@ -16,7 +16,7 @@ stride = 1
 patch_size = 2
 layer_norm = 0
 # training
-lr = 5e-4
+lr = 1e-3
 batch_size = 16
 sched = 'cosine'
 warmup_epoch = 0

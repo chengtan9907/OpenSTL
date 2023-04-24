@@ -2,7 +2,9 @@ import gzip
 import numpy as np
 import os
 import random
+
 import torch
+import torch.nn.functional as F
 from torch.utils.data import Dataset
 
 from openstl.datasets.utils import create_loader
@@ -29,7 +31,7 @@ class MovingMNIST(Dataset):
     """Moving MNIST <http://arxiv.org/abs/1502.04681>`_ Dataset"""
 
     def __init__(self, root, is_train=True, n_frames_input=10, n_frames_output=10,
-                 image_size=64, num_objects=[2], transform=None):
+                 image_size=64, num_objects=[2], transform=None, use_augment=False):
         super(MovingMNIST, self).__init__()
 
         self.dataset = None
@@ -48,6 +50,7 @@ class MovingMNIST(Dataset):
         self.n_frames_output = n_frames_output
         self.n_frames_total = self.n_frames_input + self.n_frames_output
         self.transform = transform
+        self.use_augment = use_augment
         # For generating data
         self.image_size_ = image_size
         self.digit_size_ = 28
@@ -123,6 +126,24 @@ class MovingMNIST(Dataset):
         data = data[..., np.newaxis]
         return data
 
+    def _augment_seq(self, imgs, crop_scale=0.94):
+        """Augmentations for video"""
+        _, _, h, w = imgs.shape  # original shape, e.g., [10, 1, 64, 64]
+        imgs = F.interpolate(imgs, scale_factor=1 / crop_scale, mode='bilinear')
+        _, _, ih, iw = imgs.shape
+        # Random Crop
+        x = np.random.randint(0, ih - h + 1)
+        y = np.random.randint(0, iw - w + 1)
+        imgs = imgs[:, :, x:x+h, y:y+w]
+        # Random Flip
+        if random.randint(-2, 1):
+            imgs = torch.flip(imgs, dims=(2,3))  # rotation 180
+        elif random.randint(-2, 1):
+            imgs = torch.flip(imgs, dims=(2, ))  # vertical flip
+        elif random.randint(-2, 1):
+            imgs = torch.flip(imgs, dims=(3, ))  # horizontal flip
+        return imgs
+
     def __getitem__(self, idx):
         length = self.n_frames_input + self.n_frames_output
         if self.is_train or self.num_objects[0] != 2:
@@ -146,6 +167,12 @@ class MovingMNIST(Dataset):
 
         output = torch.from_numpy(output / 255.0).contiguous().float()
         input = torch.from_numpy(input / 255.0).contiguous().float()
+
+        if self.use_augment:
+            imgs = self._augment_seq(torch.cat([input, output], dim=0), crop_scale=0.94)
+            input = imgs[:self.n_frames_input, ...]
+            output = imgs[self.n_frames_input:self.n_frames_input+self.n_frames_output, ...]
+
         return input, output
 
     def __len__(self):
@@ -154,15 +181,17 @@ class MovingMNIST(Dataset):
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
               pre_seq_length=10, aft_seq_length=10, in_shape=[10, 1, 64, 64],
-              distributed=False, use_prefetcher=False):
+              distributed=False, use_augment=False, use_prefetcher=False):
 
     image_size = in_shape[-1] if in_shape is not None else 64
     train_set = MovingMNIST(root=data_root, is_train=True,
                             n_frames_input=pre_seq_length,
-                            n_frames_output=aft_seq_length, num_objects=[2], image_size=image_size)
+                            n_frames_output=aft_seq_length, num_objects=[2],
+                            image_size=image_size, use_augment=use_augment)
     test_set = MovingMNIST(root=data_root, is_train=False,
                            n_frames_input=pre_seq_length,
-                           n_frames_output=aft_seq_length, num_objects=[2], image_size=image_size)
+                           n_frames_output=aft_seq_length, num_objects=[2],
+                           image_size=image_size, use_augment=False)
 
     dataloader_train = create_loader(train_set,
                                      batch_size=batch_size,

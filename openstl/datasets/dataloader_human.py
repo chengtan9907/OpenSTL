@@ -19,7 +19,7 @@ class HumanDataset(Dataset):
         pre_seq_length (int): The input sequence length.
         aft_seq_length (int): The output sequence length for prediction.
         step (int): Sampling step in the time dimension (defaults to 5).
-        use_augment (bool): Whether to use augmentations for training.
+        use_augment (bool): Whether to use augmentations (defaults to False).
     """
 
     def __init__(self, data_root, list_path, image_size=256,
@@ -49,15 +49,15 @@ class HumanDataset(Dataset):
         for i in range(length):
             imgs[i] = imgs[i][x:x+h, y:y+w, :]
         # Random Rotation
-        if random.randint(0, 1):
+        if random.randint(-2, 1):
             for i in range(length):
                 imgs[i] = cv2.rotate(imgs[i], cv2.ROTATE_90_CLOCKWISE)
-        elif random.randint(0, 1):
-            for i in range(length):
-                imgs[i] = cv2.rotate(imgs[i], cv2.ROTATE_180)
-        elif random.randint(0, 1):
+        elif random.randint(-2, 1):
             for i in range(length):
                 imgs[i] = cv2.rotate(imgs[i], cv2.ROTATE_90_COUNTERCLOCKWISE)
+        elif random.randint(-2, 1):
+            for i in range(length):
+                imgs[i] = cv2.flip(imgs[i], flipCode=1)  # horizontal flip
         # to tensor
         for i in range(length):
             imgs[i] = torch.from_numpy(imgs[i].copy()).float()
@@ -77,7 +77,7 @@ class HumanDataset(Dataset):
         end = begin + self.seq_length * self.step
 
         raw_input_shape = self.input_shape if not self.use_augment \
-            else (self.seq_length, int(self.image_size / 0.875), int(self.image_size / 0.875), 3)
+            else (self.seq_length, int(self.image_size / 0.975), int(self.image_size / 0.975), 3)
         img_seq = []
         i = 0
         for j in range(begin, end, self.step):
@@ -106,13 +106,13 @@ class HumanDataset(Dataset):
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
               pre_seq_length=4, aft_seq_length=4, in_shape=[4, 3, 256, 256],
-              distributed=False, use_prefetcher=False):
+              distributed=False, use_augment=False, use_prefetcher=False):
 
     data_root = os.path.join(data_root, 'human')
     image_size = in_shape[-1] if in_shape is not None else 256
     train_set = HumanDataset(data_root, os.path.join(data_root, 'train.txt'), image_size,
                              pre_seq_length=pre_seq_length, aft_seq_length=aft_seq_length,
-                             step=5, use_augment=True)
+                             step=5, use_augment=use_augment)
     test_set = HumanDataset(data_root, os.path.join(data_root, 'test.txt'), image_size,
                             pre_seq_length=pre_seq_length, aft_seq_length=aft_seq_length,
                             step=5, use_augment=False)

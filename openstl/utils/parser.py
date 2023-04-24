@@ -52,6 +52,8 @@ def create_parser():
     parser.add_argument('--pre_seq_length', default=None, type=int, help='Sequence length before prediction')
     parser.add_argument('--aft_seq_length', default=None, type=int, help='Sequence length after prediction')
     parser.add_argument('--total_length', default=None, type=int, help='Total Sequence length for prediction')
+    parser.add_argument('--use_augment', action='store_true', default=False,
+                        help='Whether to use image augmentations for training')
     parser.add_argument('--use_prefetcher', action='store_true', default=False,
                         help='Whether to use prefetcher for faster data loading')
 

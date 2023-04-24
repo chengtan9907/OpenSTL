@@ -2,9 +2,11 @@ import os
 import random
 import cv2
 import numpy as np
-import torch
-from torch.utils.data import Dataset
 from PIL import Image
+
+import torch
+import torch.nn.functional as F
+from torch.utils.data import Dataset
 
 from openstl.datasets.utils import create_loader
 
@@ -12,15 +14,30 @@ from openstl.datasets.utils import create_loader
 class KTHDataset(Dataset):
     """KTH Action <https://ieeexplore.ieee.org/document/1334462>`_ Dataset"""
 
-    def __init__(self, datas, indices, pre_seq_length, aft_seq_length):
+    def __init__(self, datas, indices, pre_seq_length, aft_seq_length, use_augment=False):
         super(KTHDataset,self).__init__()
         self.datas = datas.swapaxes(2, 3).swapaxes(1,2)
         self.indices = indices
         self.pre_seq_length = pre_seq_length
         self.aft_seq_length = aft_seq_length
+        self.use_augment = use_augment
         self.mean = 0
         self.std = 1
-    
+
+    def _augment_seq(self, imgs, crop_scale=0.95):
+        """Augmentations for video"""
+        _, _, h, w = imgs.shape  # original shape, e.g., [10, 3, 128, 128]
+        imgs = F.interpolate(imgs, scale_factor=1 / crop_scale, mode='bilinear')
+        _, _, ih, iw = imgs.shape
+        # Random Crop
+        x = np.random.randint(0, ih - h + 1)
+        y = np.random.randint(0, iw - w + 1)
+        imgs = imgs[:, :, x:x+h, y:y+w]
+        # Random Flip
+        if random.randint(0, 1):
+            imgs = torch.flip(imgs, dims=(3, ))  # horizontal flip
+        return imgs
+
     def __len__(self):
         return len(self.indices)
 
@@ -29,8 +46,12 @@ class KTHDataset(Dataset):
         begin = batch_ind
         end1 = begin + self.pre_seq_length
         end2 = begin + self.pre_seq_length + self.aft_seq_length
-        data = torch.tensor(self.datas[begin:end1,::]).float()
-        labels = torch.tensor(self.datas[end1:end2,::]).float()
+        data = torch.tensor(self.datas[begin:end1, ::]).float()
+        labels = torch.tensor(self.datas[end1:end2, ::]).float()
+        if self.use_augment:
+            imgs = self._augment_seq(torch.cat([data, labels], dim=0), crop_scale=0.95)
+            data = imgs[:self.pre_seq_length, ...]
+            labels = imgs[self.pre_seq_length:self.pre_seq_length+self.aft_seq_length, ...]
         return data, labels
 
 
@@ -208,7 +229,7 @@ class DataProcess(object):
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
               pre_seq_length=10, aft_seq_length=20, in_shape=[10, 1, 128, 128],
-              distributed=False, use_prefetcher=False):
+              distributed=False, use_augment=False, use_prefetcher=False):
 
     img_width = in_shape[-1] if in_shape is not None else 128
     # pre_seq_length, aft_seq_length = 10, 10
@@ -227,11 +248,11 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
     train_set = KTHDataset(train_input_handle.datas,
                            train_input_handle.indices,
                            pre_seq_length,
-                           aft_seq_length)
+                           aft_seq_length, use_augment=use_augment)
     test_set = KTHDataset(test_input_handle.datas,
                           test_input_handle.indices,
                           pre_seq_length,
-                          aft_seq_length)
+                          aft_seq_length, use_augment=False)
 
     dataloader_train = create_loader(train_set,
                                      batch_size=batch_size,
