@@ -1,6 +1,6 @@
 ## Changelog
 
-### v0.1.0 (21/04/2023)
+### v0.2.0 (21/04/2023)
 
 Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenSTL/issues/20).
 

@@ -18,14 +18,14 @@
 [🚀Model Zoo](docs/en/model_zoos/video_benchmarks.md) |
 [🆕News](docs/en/changelog.md)
 
-This repository is an open-source project for video prediction benchmarks, which contains the implementation code for paper:
+This repository is an open-source project for spatiotemporal predictive learning, which provides benchmarks of STL methods in various scenarios. It also contains the implementation code for the paper (noted as [SimVPv2](https://arxiv.org/abs/2211.12509)):
 
 **SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning**  
 [Cheng Tan](https://chengtan9907.github.io/), [Zhangyang Gao](https://scholar.google.com/citations?user=4SclT-QAAAAJ&hl=en), [Siyuan Li](https://lupin1998.github.io/), [Stan Z. Li](https://scholar.google.com/citations?user=Y-nyLGIAAAAJ&hl).
 
 ## Introduction
 
-This is the journal version of our previous conference work ([SimVP: Simpler yet Better Video Prediction](https://arxiv.org/abs/2206.05099), In CVPR 2022). It is worth noticing that the hidden Translator $h$ in SimVP can be replaced by any [MetaFormer](https://arxiv.org/abs/2111.11418) block (satisfying the macro design of `token mixing` and `channel mixing`).
+[SimVPv2](https://arxiv.org/abs/2211.12509) is the journal version of our previous conference work ([SimVP: Simpler yet Better Video Prediction](https://arxiv.org/abs/2206.05099), CVPR 2022). It is worth noticing that the hidden Translator $h$ in SimVP can be replaced by any [MetaFormer](https://arxiv.org/abs/2111.11418) block (satisfying the macro design of `token mixing` and `channel mixing`). Therefore, we can provide benchmarks of popular ConvNets and Vision Transformers based on SimVP.
 <p align="center">
     <img width="75%" src="https://user-images.githubusercontent.com/44519745/219116763-bb4ab408-7f25-47d3-b93e-79834c7b065e.png"> <br>
 </p>
@@ -34,13 +34,32 @@ This is the journal version of our previous conference work ([SimVP: Simpler yet
 
 ## Overview
 
-* `openstl/api` contains an experiment runner.
-* `openstl/core` contains core training plugins and metrics.
-* `openstl/datasets` contains datasets and dataloaders.
-* `openstl/methods/` contains training methods for various video prediction methods.
-* `openstl/models/` contains the main network architectures of various video prediction methods.
-* `openstl/modules/` contains network modules and layers.
-* `tools/train.py` and `tools/train.py` are the executable python file with possible arguments for training, validating, and testing pipelines.
+<details open>
+<summary>Major Features and Plans</summary>
+
+- **Flexable Code Design.**
+  OpenSTL decomposes STL algorithms into `methods` (training and prediction), `models` (network architectures), and `modules`, while providing unified experiment API. Users can develop their own STL algorithms with flexible training strategies and networks for different STL tasks.
+
+- **Standard Benchmarks.**
+  OpenSTL will support standard benchmarks of STL algorithms image with training and evaluation as many open-source projects (e.g., [MMDetection](https://github.com/open-mmlab/mmdetection) and [USE](https://github.com/microsoft/Semi-supervised-learning)). We are working on training benchmarks and will update results synchronizingly.
+
+- **Plans.**
+  We plan to provide benchmarks of various STL methods and MetaFormer architectures based on SimVP in various STL application tasks, e.g., video prediction, weather prediction, traffic prediction, etc. We encourage researchers interested in STL to contribute to OpenSTL or provide valuable advice!
+
+</details>
+
+<details open>
+<summary>Code Structures</summary>
+
+- `openstl/api` contains an experiment runner.
+- `openstl/core` contains core training plugins and metrics.
+- `openstl/datasets` contains datasets and dataloaders.
+- `openstl/methods/` contains training methods for various video prediction methods.
+- `openstl/models/` contains the main network architectures of various video prediction methods.
+- `openstl/modules/` contains network modules and layers.
+- `tools/` contains the executable python files `tools/train.py` and `tools/test.py` with possible arguments for training, validating, and testing pipelines.
+
+</details>
 
 ## News and Updates
 

@@ -206,7 +206,8 @@ class BaseExperiment(object):
         checkpoint = {
             'epoch': self._epoch + 1,
             'optimizer': self.method.model_optim.state_dict(),
-            'state_dict': weights_to_cpu(self.method.model.state_dict()),
+            'state_dict': weights_to_cpu(self.method.model.state_dict()) \
+                if not self._dist else weights_to_cpu(self.method.model.module.state_dict()),
             'scheduler': self.method.scheduler.state_dict()}
         torch.save(checkpoint, osp.join(self.checkpoints_path, name + '.pth'))
 
@@ -220,14 +221,20 @@ class BaseExperiment(object):
         # OrderedDict is a subclass of dict
         if not isinstance(checkpoint, dict):
             raise RuntimeError(f'No state_dict found in checkpoint file {filename}')
-        if self._dist:
-            self.method.model.module.load_state_dict(checkpoint['state_dict'])
-        else:
-            self.method.model.load_state_dict(checkpoint['state_dict'])
+        self._load_from_state_dict(checkpoint['state_dict'])
         if checkpoint.get('epoch', None) is not None:
             self._epoch = checkpoint['epoch']
             self.method.model_optim.load_state_dict(checkpoint['optimizer'])
             self.method.scheduler.load_state_dict(checkpoint['scheduler'])
+
+    def _load_from_state_dict(self, state_dict):
+        if self._dist:
+            try:
+                self.method.model.module.load_state_dict(state_dict)
+            except:
+                self.method.model.load_state_dict(state_dict)
+        else:
+            self.method.model.load_state_dict(state_dict)
 
     def display_method_info(self):
         """Plot the basic infomation of supported methods"""
@@ -297,10 +304,7 @@ class BaseExperiment(object):
         if not check_dir(self.path):  # exit training when work_dir is removed
             assert False and "Exit training because work_dir is removed"
         best_model_path = osp.join(self.path, 'checkpoint.pth')
-        if self._dist:
-            self.method.model.module.load_state_dict(torch.load(best_model_path))
-        else:
-            self.method.model.load_state_dict(torch.load(best_model_path))
+        self._load_from_state_dict(torch.load(best_model_path))
         time.sleep(1)  # wait for some hooks like loggers to finish
         self.call_hook('after_run')
 
@@ -328,10 +332,7 @@ class BaseExperiment(object):
         """A testing loop of STL methods"""
         if self.args.test:
             best_model_path = osp.join(self.path, 'checkpoint.pth')
-            if self._dist:
-                self.method.model.module.load_state_dict(torch.load(best_model_path))
-            else:
-                self.method.model.load_state_dict(torch.load(best_model_path))
+            self._load_from_state_dict(torch.load(best_model_path))
 
         self.call_hook('before_val_epoch')
         inputs, trues, preds = self.method.test_one_epoch(self, self.test_loader)
