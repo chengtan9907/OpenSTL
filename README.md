@@ -41,7 +41,7 @@ This repository is an open-source project for spatiotemporal predictive learning
   OpenSTL decomposes STL algorithms into `methods` (training and prediction), `models` (network architectures), and `modules`, while providing unified experiment API. Users can develop their own STL algorithms with flexible training strategies and networks for different STL tasks.
 
 - **Standard Benchmarks.**
-  OpenSTL will support standard benchmarks of STL algorithms image with training and evaluation as many open-source projects (e.g., [MMDetection](https://github.com/open-mmlab/mmdetection) and [USE](https://github.com/microsoft/Semi-supervised-learning)). We are working on training benchmarks and will update results synchronizingly.
+  OpenSTL will support standard benchmarks of STL algorithms image with training and evaluation as many open-source projects (e.g., [MMDetection](https://github.com/open-mmlab/mmdetection) and [USB](https://github.com/microsoft/Semi-supervised-learning)). We are working on training benchmarks and will update results synchronizingly.
 
 - **Plans.**
   We plan to provide benchmarks of various STL methods and MetaFormer architectures based on SimVP in various STL application tasks, e.g., video prediction, weather prediction, traffic prediction, etc. We encourage researchers interested in STL to contribute to OpenSTL or provide valuable advice!
@@ -103,11 +103,11 @@ python tools/train.py -d mmnist --lr 1e-3 -c configs/mmnist/simvp/SimVP_gSTA.py 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-## Overview of Model Zoo
+## Overview of Model Zoo and Datasets
 
-We support various video prediction methods and will provide benchmarks on various video prediction datasets. We are working on add new methods and collecting experiment results.
+We support various spatiotemporal prediction methods and will provide benchmarks on various STL datasets. We are working on add new methods and collecting experiment results.
 
-* Video Prediction Methods.
+* Spatiotemporal Prediction Methods.
 
     <details open>
     <summary>Currently supported methods</summary>
@@ -143,7 +143,7 @@ We support various video prediction methods and will provide benchmarks on vario
 
     </details>
 
-* Video Prediction Benchmarks.
+* Spatiotemporal Predictive Learning Benchmarks.
 
     <details open>
     <summary>Currently supported datasets</summary>
@@ -165,7 +165,7 @@ This project is released under the [Apache 2.0 license](LICENSE). See `LICENSE` 
 
 ## Acknowledgement
 
-SimVPv2 is an open-source project for video prediction methods created by researchers in **CAIRI AI Lab**. We encourage researchers interested in video and weather prediction to contribute to SimVPv2! We borrow the official implementations of [ConvLSTM](https://arxiv.org/abs/1506.04214), [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) variants, [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX), [MAU](https://arxiv.org/abs/1811.07490), [CrevNet](https://openreview.net/forum?id=B1lKS2AqtX), and [PhyDNet](https://arxiv.org/abs/2003.01460).
+OpenSTL is an open-source project for STL algorithms created by researchers in **CAIRI AI Lab**. We encourage researchers interested in video and weather prediction to contribute to OpenSTL! We borrow the official implementations of [ConvLSTM](https://arxiv.org/abs/1506.04214), [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) variants, [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX), [MAU](https://arxiv.org/abs/1811.07490), [CrevNet](https://openreview.net/forum?id=B1lKS2AqtX), and [PhyDNet](https://arxiv.org/abs/2003.01460).
 
 ## Citation
 
@@ -180,9 +180,9 @@ If you are interested in our repository or our paper, please cite the following 
 }
 ```
 ```
-@misc{tan2023openstl,
+@misc{li2023openstl,
   title={OpenSTL: Open-source Toolbox for SpatioTemporal Predictive Learning},
-  author={Tan, Cheng and Li, Siyuan and Gao, Zhangyang and Li, Stan Z},
+  author={Li, Siyuan and Tan, Cheng and Gao, Zhangyang and Li, Stan Z},
   howpublished = {\url{https://github.com/chengtan9907/OpenSTL}},
   year={2023}
 }
@@ -190,7 +190,7 @@ If you are interested in our repository or our paper, please cite the following 
 
 ## Contribution and Contact
 
-For adding new features, looking for helps, or reporting bugs associated with `OpenSTL`, please open a [GitHub issue](https://github.com/chengtan9907/OpenSTL/issues) and [pull request](https://github.com/chengtan9907/OpenSTL/pulls) with the tag "help wanted" or "enhancement". Feel free to contact us through email if you have any questions. Enjoy!
+For adding new features, looking for helps, or reporting bugs associated with `OpenSTL`, please open a [GitHub issue](https://github.com/chengtan9907/OpenSTL/issues) and [pull request](https://github.com/chengtan9907/OpenSTL/pulls) with the tag "new features", "help wanted", or "enhancement". Feel free to contact us through email if you have any questions.
 
 - Siyuan Li (lisiyuan@westlake.edu.cn), Westlake University & Zhejiang University
 - Cheng Tan (tancheng@westlake.edu.cn), Westlake University & Zhejiang University

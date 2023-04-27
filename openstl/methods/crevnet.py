@@ -57,7 +57,8 @@ class CrevNet(Base_method):
             self.model_optim.zero_grad()
             self.model_optim2.zero_grad()
 
-            batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+            if not self.args.use_prefetcher:
+                batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
             input = torch.cat([batch_x, batch_y], dim=1)
             runner.call_hook('before_train_iter')
 
@@ -74,12 +75,16 @@ class CrevNet(Base_method):
                     loss, self.model_optim,
                     clip_grad=self.args.clip_grad, clip_mode=self.args.clip_mode,
                     parameters=self.model.parameters())
+                self.loss_scaler(
+                    loss, self.model_optim2,
+                    clip_grad=self.args.clip_grad, clip_mode=self.args.clip_mode,
+                    parameters=self.model.parameters())
             else:
                 loss.backward()
                 self.clip_grads(self.model.parameters())
+                self.model_optim.step()
+                self.model_optim2.step()
 
-            self.model_optim.step()
-            self.model_optim2.step()
             torch.cuda.synchronize()
             num_updates += 1
 

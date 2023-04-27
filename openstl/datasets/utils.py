@@ -108,13 +108,17 @@ class PrefetchLoader:
                 if self.fp16:
                     if self.mean is not None:
                         next_input = next_input.half().sub_(self.mean).div_(self.std)
+                        next_target = next_target.half().sub_(self.mean).div_(self.std)
                     else:
                         next_input = next_input.half()
+                        next_target = next_target.half()
                 else:
                     if self.mean is not None:
                         next_input = next_input.float().sub_(self.mean).div_(self.std)
+                        next_target = next_target.float().sub_(self.mean).div_(self.std)
                     else:
                         next_input = next_input.float()
+                        next_target = next_target.float()
 
             if not first:
                 yield input, target
@@ -171,7 +175,7 @@ def create_loader(dataset,
         assert num_aug_repeats==0, "RepeatAugment is not supported in non-distributed or IterableDataset"
 
     if collate_fn is None:
-        collate_fn = fast_collate_for_prediction if use_prefetcher else torch.utils.data.dataloader.default_collate
+        collate_fn = torch.utils.data.dataloader.default_collate
     loader_class = torch.utils.data.DataLoader
 
     loader_args = dict(
@@ -187,7 +191,7 @@ def create_loader(dataset,
     )
     try:
         loader = loader_class(dataset, **loader_args)
-    except TypeError as e:
+    except TypeError:
         loader_args.pop('persistent_workers')  # only in Pytorch 1.7+
         loader = loader_class(dataset, **loader_args)
 

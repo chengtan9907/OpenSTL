@@ -60,7 +60,7 @@ class Base_method(object):
         if self.args.fp16 and has_native_amp:
             self.amp_autocast = torch.cuda.amp.autocast
             self.loss_scaler = NativeScaler()
-            if self.args.rank == 0:
+            if self.rank == 0:
                print('Using native PyTorch AMP. Training in mixed precision (fp16).')
         else:
             print('AMP not enabled. Training in float32.')

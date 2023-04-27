@@ -1,11 +1,12 @@
 dask
 future
 fvcore
+hickle
 matplotlib
 nni
 netcdf4
 numpy
-hickle
+opencv-python
 packaging
 scikit-image
 six

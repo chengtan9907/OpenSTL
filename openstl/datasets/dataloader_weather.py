@@ -51,7 +51,7 @@ data_map = {'z': 'geopotential_500',
             'tcc': 'total_cloud_cover'}
 
 
-class ClimateDataset(Dataset):
+class WeatherBenchDataset(Dataset):
     """Wheather Bench Dataset
 
     Args:
@@ -211,28 +211,28 @@ def load_data(batch_size,
     _dataroot = osp.join(data_root, f'weather_{data_split}deg')
     weather_dataroot = _dataroot if osp.exists(_dataroot) else osp.join(data_root, 'weather')
 
-    train_set = ClimateDataset(data_root=weather_dataroot,
-                               data_name=data_name, data_split=data_split,
-                               training_time=train_time,
-                               idx_in=idx_in,
-                               idx_out=idx_out,
-                               step=step, use_augment=use_augment)
-    vali_set = ClimateDataset(weather_dataroot,
-                              data_name=data_name, data_split=data_split,
-                              training_time=val_time,
-                              idx_in=idx_in,
-                              idx_out=idx_out,
-                              step=step, use_augment=False,
-                              mean=train_set.mean,
-                              std=train_set.std)
-    test_set = ClimateDataset(weather_dataroot,
-                              data_name, data_split=data_split,
-                              training_time=test_time,
-                              idx_in=idx_in,
-                              idx_out=idx_out,
-                              step=step, use_augment=False,
-                              mean=train_set.mean,
-                              std=train_set.std)
+    train_set = WeatherBenchDataset(data_root=weather_dataroot,
+                                    data_name=data_name, data_split=data_split,
+                                    training_time=train_time,
+                                    idx_in=idx_in,
+                                    idx_out=idx_out,
+                                    step=step, use_augment=use_augment)
+    vali_set = WeatherBenchDataset(weather_dataroot,
+                                    data_name=data_name, data_split=data_split,
+                                    training_time=val_time,
+                                    idx_in=idx_in,
+                                    idx_out=idx_out,
+                                    step=step, use_augment=False,
+                                    mean=train_set.mean,
+                                    std=train_set.std)
+    test_set = WeatherBenchDataset(weather_dataroot,
+                                    data_name, data_split=data_split,
+                                    training_time=test_time,
+                                    idx_in=idx_in,
+                                    idx_out=idx_out,
+                                    step=step, use_augment=False,
+                                    mean=train_set.mean,
+                                    std=train_set.std)
 
     dataloader_train = create_loader(train_set,
                                      batch_size=batch_size,

@@ -62,7 +62,8 @@ class PhyDNet(Base_method):
             data_time_m.update(time.time() - end)
             self.model_optim.zero_grad()
 
-            batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
+            if not self.args.use_prefetcher:
+                batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
             runner.call_hook('before_train_iter')
 
             with self.amp_autocast():
@@ -82,8 +83,8 @@ class PhyDNet(Base_method):
             else:
                 loss.backward()
                 self.clip_grads(self.model.parameters())
+                self.model_optim.step()
 
-            self.model_optim.step()
             torch.cuda.synchronize()
             num_updates += 1
 

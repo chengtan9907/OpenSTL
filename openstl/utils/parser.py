@@ -100,7 +100,7 @@ def create_parser():
                         help='lower lr bound for cyclic schedulers that hit 0 (1e-5)')
     parser.add_argument('--final_div_factor', type=float, default=1e4,
                         help='min_lr = initial_lr/final_div_factor for onecycle scheduler')
-    parser.add_argument('--warmup_epoch', type=int, default=5, metavar='N',
+    parser.add_argument('--warmup_epoch', type=int, default=0, metavar='N',
                         help='epochs to warmup LR, if scheduler supports')
     parser.add_argument('--decay_epoch', type=float, default=100, metavar='N',
                         help='epoch interval to decay LR')
