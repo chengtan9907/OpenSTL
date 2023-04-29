@@ -178,8 +178,7 @@ If you are interested in our repository or our paper, please cite the following 
   journal={arXiv preprint arXiv:2211.12509},
   year={2022}
 }
-```
-```
+
 @misc{li2023openstl,
   title={OpenSTL: Open-source Toolbox for SpatioTemporal Predictive Learning},
   author={Li, Siyuan and Tan, Cheng and Gao, Zhangyang and Li, Stan Z},

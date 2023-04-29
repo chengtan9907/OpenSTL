@@ -134,6 +134,7 @@ figs
 .ipynb_checkpoints
 
 # temp
+configs_test/
 configs/kitticaltech/simvp
 configs/kth/simvp
 configs/human/simvp

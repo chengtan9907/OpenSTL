@@ -16,7 +16,7 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 
 #### Update Documents
 
-* Update documents of video prediction and weather prediction benchmarks. Provide config files for supported mixup methods.
+* Update documents of video prediction and weather prediction benchmarks with spesific GPU settings (e.g., **single GPU**). Provide config files for supported mixup methods.
 * Update `docs/en` documents for the basic usages and new features of V0.2.0.
 
 #### Fix Bugs

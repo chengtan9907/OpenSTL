@@ -25,8 +25,13 @@ if __name__ == '__main__':
 
     cfg_path = osp.join('./configs', args.dataname, f'{args.method}.py') \
         if args.config_file is None else args.config_file
-    config = update_config(config, load_config(cfg_path),
-                           exclude_keys=['method', 'batch_size', 'val_batch_size', 'sched'])
+    if args.overwrite:
+        config = update_config(config, load_config(cfg_path),
+                               exclude_keys=['method'])
+    else:
+        config = update_config(config, load_config(cfg_path),
+                               exclude_keys=['method', 'batch_size', 'val_batch_size', 'sched',
+                                             'drop_path', 'warmup_epoch'])
 
     # set multi-process settings
     setup_multi_processes(config)

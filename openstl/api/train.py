@@ -283,6 +283,9 @@ class BaseExperiment(object):
 
         eta = 1.0  # PredRNN variants
         for epoch in range(self._epoch, self._max_epochs):
+            if self._dist and hasattr(self.train_loader.sampler, 'set_epoch'):
+                self.train_loader.sampler.set_epoch(epoch)
+
             num_updates, loss_mean, eta = self.method.train_one_epoch(self, self.train_loader,
                                                                       epoch, num_updates, eta)
 

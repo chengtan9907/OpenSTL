@@ -22,7 +22,7 @@ def create_parser():
                         help='Whether to use torchscripted model')
     parser.add_argument('--seed', default=42, type=int)
     parser.add_argument('--diff_seed', action='store_true', default=False,
-                        help='Whether or not set different seeds for different ranks')
+                        help='Whether to set different seeds for different ranks')
     parser.add_argument('--fps', action='store_true', default=False,
                         help='Whether to measure inference speed (FPS)')
     parser.add_argument('--empty_cache', action='store_true', default=True,
@@ -70,6 +70,8 @@ def create_parser():
                         help='Name of model for SimVP (default: None)')
     parser.add_argument('--drop', type=float, default=0.0, help='Dropout rate(default: 0.)')
     parser.add_argument('--drop_path', type=float, default=0.0, help='Drop path rate for SimVP (default: 0.)')
+    parser.add_argument('--overwrite', action='store_true', default=False,
+                        help='Whether to allow overwriting the provided config file with args')
 
     # Training parameters (optimizer)
     parser.add_argument('--epoch', '-e', default=200, type=int, help='end epochs')

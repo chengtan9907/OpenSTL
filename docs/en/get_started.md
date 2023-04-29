@@ -11,6 +11,7 @@ python tools/train.py \
     --dataname ${DATASET_NAME} \
     --method ${METHOD_NAME} \
     --config_file ${CONFIG_FILE} \
+    --overwrite \
     --ex_name ${EXP_NAME} \
     --resume_from ${CHECKPOINT_FILE} \
     --auto_resume \
@@ -28,6 +29,7 @@ python tools/train.py \
 - `--dataname (-d)` : The name of dataset, default to be `mmnist`.
 - `--method (-m)` : The name of the video prediction method to train or test, default to be `SimVP`.
 - `--config_file (-c)` : The path of a model config file, which will provide detailed settings for a STL method.
+- `--overwrite` : Whether to overwrite predefined args in the config file.
 - `--ex_name` : The name of the experiment under the `res_dir`. Default to be `Debug`.
 - `--resume_from ${CHECKPOINT_FILE}`: Resume from a previous checkpoint file. Or you can use `--auto_resume` to resume from `latest.pth` automatically.
 - `--auto_resume` : Whether to automatically resume training when the experiment was interrupted.
@@ -74,7 +76,9 @@ An example of multiple GPUs testing on Moving MNIST dataset. The bash script is 
 PORT=29001 CUDA_VISIBLE_DEVICES=0,1 bash tools/dist_test.sh configs/mmnist/simvp/SimVP_gSTA.py 2 work_dirs/mmnist/simvp/SimVP_gSTA -d mmnist
 ```
 
-**Note**: During DDP training, the number of GPUS `ngpus` should be provided and checkpoints and logs are saved in the same folder structure as the config file under `work_dirs/` (it will be the default setting if `--ex_name` is not specified). The default learning rate `lr` and the batch size `bs` in config files are for a single GPU. If using a different number GPUs, the total batch size will change in proportion, you have to scale the learning rate following `lr = base_lr * ngpus` and `bs = base_bs * ngpus`. Other arguments should be added as the single GPU training.
+**Note**:
+* During DDP training, the number of GPUS `ngpus` should be provided, and checkpoints and logs are saved in the same folder structure as the config file under `work_dirs/` (it will be the default setting if `--ex_name` is not specified). The default learning rate `lr` and the batch size `bs` in config files are for a single GPU. If using a different number GPUs, the total batch size will change in proportion, you have to scale the learning rate following `lr = base_lr * ngpus` and `bs = base_bs * ngpus` (known as the `linear scaling rule`). Other arguments should be added as the single GPU training.
+* Experiment results using different GPUs settings will produce different results. We have noticed that single GPU training with DP and DDP setups will produce similar results, while different multiple GPUs using linear scaling rules will cause different results because of DDP training. For example, SimVP+gSTA is trained 200 epochs on MMNIST with `1GPU (DP)`, `1GPU (DDP)`, `2GPUs (2xbs8)`, and `4GPUs (4xbs4)` using the same learning rate (lr=1e-3), we produce results of MSE 26.73, 26.78, 30.01, 31.36. Therefore, we will provide the used GPUs setting in the benchmark result with the corresponding learning rate for fair comparison and reproducible purposes.
 
 ## Mixed Precision Training
 
