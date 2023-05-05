@@ -52,7 +52,7 @@ data_map = {'z': 'geopotential_500',
 
 
 class WeatherBenchDataset(Dataset):
-    """Wheather Bench Dataset
+    """Wheather Bench Dataset <http://arxiv.org/abs/2002.00469>`_
 
     Args:
         data_root (str): Path to the dataset.
