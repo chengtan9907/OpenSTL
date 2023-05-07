@@ -8,3 +8,4 @@ sphinx==4.0.2
 sphinx-copybutton
 sphinx_markdown_tables>=0.0.16
 sphinx_rtd_theme==0.5.2
+urllib3==1.26.15

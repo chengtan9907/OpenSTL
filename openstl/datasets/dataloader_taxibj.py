@@ -1,3 +1,4 @@
+import os
 import random
 import numpy as np
 import torch
@@ -42,7 +43,7 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
               pre_seq_length=None, aft_seq_length=None, in_shape=None,
               distributed=False, use_augment=False, use_prefetcher=False):
 
-    dataset = np.load(data_root+'taxibj/dataset.npz')
+    dataset = np.load(os.path.join(data_root, 'taxibj/dataset.npz'))
     X_train, Y_train, X_test, Y_test = dataset['X_train'], dataset[
         'Y_train'], dataset['X_test'], dataset['Y_test']
     assert X_train.shape[1] == pre_seq_length and Y_train.shape[1] == aft_seq_length

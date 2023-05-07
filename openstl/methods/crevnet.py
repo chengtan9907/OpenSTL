@@ -18,7 +18,7 @@ class CrevNet(Base_method):
     """
 
     def __init__(self, args, device, steps_per_epoch):
-        args.pre_seq_length = 8
+        args.pre_seq_length = args.pre_seq_length - 2
         args.total_length = args.pre_seq_length + args.aft_seq_length
         Base_method.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.config)
