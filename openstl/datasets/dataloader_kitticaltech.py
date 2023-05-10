@@ -105,33 +105,47 @@ class DataProcess(object):
 
         elif mode == 'test':
             caltech_root = self.paths['caltech']
-            data = []
-            fileidx = []
-            for seq_id in os.listdir(caltech_root):
-                if osp.isdir(osp.join(caltech_root, seq_id)) is False:
-                    continue
-                for item in os.listdir(osp.join(caltech_root, seq_id)):
-                    cap = cv2.VideoCapture(
-                        osp.join(caltech_root, seq_id, item))
-                    cnt_frames = 0
-                    while True:
-                        ret, frame = cap.read()
-                        if not ret:
-                            break
-                        cnt_frames += 1
-                        if cnt_frames % 3 == 0:
-                            frame = process_im(frame, self.input_shape) / 255.0
-                            data.append(frame)
-                            fileidx.append(seq_id + item)
-            data = np.asarray(data)
+            # find the cache file
+            caltech_cache = osp.join(caltech_root, 'data_cache.npy')
+            if osp.exists(caltech_cache):
+                data = np.load(caltech_cache).astype('float') / 255.0
+                indices = np.load(osp.join(caltech_root, 'indices_cache.npy'))
+            else:
+                print(f'loading caltech from {caltech_root}, which requires some times...')
+                data = []
+                fileidx = []
+                for seq_id in os.listdir(caltech_root):
+                    if osp.isdir(osp.join(caltech_root, seq_id)) is False:
+                        continue
+                    for item in os.listdir(osp.join(caltech_root, seq_id)):
+                        seq_file = osp.join(caltech_root, seq_id, item)
+                        print(seq_file)
+                        cap = cv2.VideoCapture(seq_file)
+                        cnt_frames = 0
+                        while True:
+                            ret, frame = cap.read()
+                            if not ret:
+                                break
+                            cnt_frames += 1
+                            if cnt_frames % 3 == 0:
+                                frame = process_im(frame, self.input_shape) / 255.0
+                                data.append(frame)
+                                fileidx.append(seq_id + item)
+                data = np.asarray(data)
 
-            indices = []
-            index = len(fileidx) - 1
-            while index >= self.seq_len - 1:
-                if fileidx[index] == fileidx[index - self.seq_len + 1]:
-                    indices.append(index - self.seq_len + 1)
-                    index -= self.seq_len - 1
-                index -= 1
+                indices = []
+                index = len(fileidx) - 1
+                while index >= self.seq_len - 1:
+                    if fileidx[index] == fileidx[index - self.seq_len + 1]:
+                        indices.append(index - self.seq_len + 1)
+                        index -= self.seq_len - 1
+                    index -= 1
+
+                # save the cache file
+                data_cache = data * 255
+                np.save(caltech_cache, data_cache.astype('uint8'))
+                indices_cache = np.asarray(indices)
+                np.save(osp.join(caltech_root, 'indices_cache.npy'), indices_cache.astype('int32'))
 
         return data, indices
 
@@ -184,7 +198,7 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
 if __name__ == '__main__':
     dataloader_train, _, dataloader_test = \
         load_data(batch_size=16,
-                val_batch_size=4,
+                val_batch_size=16,
                 data_root='../../data/',
                 num_workers=4,
                 pre_seq_length=12, aft_seq_length=1)

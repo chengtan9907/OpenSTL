@@ -5,8 +5,8 @@
     <img src="https://img.shields.io/badge/arXiv-2211.12509-b31b1b.svg?style=flat" /></a>
 <a href="https://github.com/chengtan9907/OpenSTL/blob/master/LICENSE" alt="license">
     <img src="https://img.shields.io/badge/license-Apache--2.0-%23002FA7" /></a>
-<a href="https://simvpv2.readthedocs.io/en/latest/" alt="docs">
-    <img src="https://readthedocs.org/projects/simvpv2/badge/?version=latest" /></a>
+<a href="https://openstl.readthedocs.io/en/latest/" alt="docs">
+    <img src="https://readthedocs.org/projects/openstl/badge/?version=latest" /></a>
 <a href="https://github.com/chengtan9907/OpenSTL/issues" alt="docs">
     <img src="https://img.shields.io/github/issues-raw/chengtan9907/SimVPv2?color=%23FF9600" /></a>
 <a href="https://github.com/chengtan9907/OpenSTL/issues" alt="resolution">
@@ -187,6 +187,14 @@ If you are interested in our repository or our paper, please cite the following 
   year={2023}
 }
 ```
+<!-- ```
+@article{tan2023openstl,
+  title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning},
+  author={Tan, Cheng and Li, Siyuan and Gao, Zhangyang and Li, Stan Z},
+  journal={arXiv preprint arXiv:2211.12509},
+  year={2023}
+}
+``` -->
 
 ## Contribution and Contact
 

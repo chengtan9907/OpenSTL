@@ -23,8 +23,8 @@ class SimVP(Base_method):
         self.model_optim, self.scheduler, self.by_epoch = self._init_optimizer(steps_per_epoch)
         self.criterion = nn.MSELoss()
 
-    def _build_model(self, config):
-        return SimVP_Model(**config).to(self.device)
+    def _build_model(self, args):
+        return SimVP_Model(**args).to(self.device)
 
     def _predict(self, batch_x, batch_y=None, **kwargs):
         """Forward the model"""

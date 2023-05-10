@@ -165,10 +165,10 @@ class MetaBlock(nn.Module):
                 in_channels, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
         elif model_type == 'hornet':
             self.block = HorNetSubBlock(in_channels, mlp_ratio=mlp_ratio, drop_path=drop_path)
-        elif model_type == 'mlp':
+        elif model_type in ['mlp', 'mlpmixer']:
             self.block = MLPMixerSubBlock(
                 in_channels, input_resolution, mlp_ratio=mlp_ratio, drop=drop, drop_path=drop_path)
-        elif model_type == 'moga':
+        elif model_type in ['moga', 'moganet']:
             self.block = MogaSubBlock(
                 in_channels, mlp_ratio=mlp_ratio, drop_rate=drop, drop_path_rate=drop_path)
         elif model_type == 'poolformer':

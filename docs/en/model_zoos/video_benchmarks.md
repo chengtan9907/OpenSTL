@@ -1,9 +1,9 @@
 # Video Prediction Benchmarks
 
-**We provide benchmark results of video prediction methods on video datasets. More video prediction methods will be supported in the future. Issues and PRs are welcome!**
+**We provide benchmark results of spatiotemporal prediction learning (STL) methods on various video prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!**
 
 <details open>
-<summary>Currently supported video prediction methods</summary>
+<summary>Currently supported spatiotemporal prediction methods</summary>
 
 - [x] [ConvLSTM](https://arxiv.org/abs/1506.04214) (NIPS'2015)
 - [x] [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) (NIPS'2017)
@@ -36,31 +36,32 @@
 
 </details>
 
+
 ## Moving MNIST Benchmarks
 
-We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
+We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
 
-### **Benchmark of Video Prediction Methods**
+### **STL Benchmarks on MMNIST**
 
-For a fair comparison of different methods, we report final results when models are trained to convergence. We provide config files in [configs/mmnist](https://github.com/chengtan9907/SimVPv2/configs/mmnist).
+For a fair comparison of different methods, we report final results when models are trained to convergence. We provide config files in [configs/mmnist](https://github.com/chengtan9907/OpenSTL/configs/mmnist).
 
-| Method       | Params |  FLOPs | FPS |  MSE  |   MAE  |  SSIM |   Download   |
-|--------------|:------:|:------:|:---:|:-----:|:------:|:-----:|:------------:|
-| ConvLSTM-S   |  15.0M |  56.8G | 113 | 46.26 | 142.18 | 0.878 | model \| log |
-| ConvLSTM-L   |  33.8M | 127.0G |  50 | 29.88 |  95.05 | 0.925 | model \| log |
-| PhyDNet      |  3.1M  |  15.3G | 182 | 35.68 |  96.70 | 0.917 | model \| log |
-| PredRNN      |  23.8M | 116.0G |  54 | 25.04 |  76.26 | 0.944 | model \| log |
-| PredRNN++    |  38.6M | 171.7G |  38 | 22.45 |  69.70 | 0.950 | model \| log |
-| MIM          |  38.0M | 179.2G |  37 | 23.66 |  74.37 | 0.946 | model \| log |
-| E3D-LSTM     |  51.0M | 298.9G |  18 | 36.19 |  78.64 | 0.932 | model \| log |
-| CrevNet      |  5.0M  | 270.7G |  10 | 30.15 |  86.28 | 0.935 | model \| log |
-| PredRNN.V2   |  23.9M | 116.6G |  52 | 27.73 |  82.17 | 0.937 | model \| log |
-| SimVP+IncepU |  58.0M |  19.4G | 209 | 26.69 |  77.19 | 0.940 | model \| log |
-| SimVP+gSTA-S |  46.8M |  16.5G | 282 | 15.05 |  49.80 | 0.967 | model \| log |
+| Method       | Params |  FLOPs |  FPS |  MSE  |   MAE  |  SSIM |   Download   |
+|--------------|:------:|:------:|:----:|:-----:|:------:|:-----:|:------------:|
+| ConvLSTM-S   |  15.0M |  56.8G | 113s | 46.26 | 142.18 | 0.878 | model \| log |
+| ConvLSTM-L   |  33.8M | 127.0G |  50s | 29.88 |  95.05 | 0.925 | model \| log |
+| PhyDNet      |  3.1M  |  15.3G | 182s | 35.68 |  96.70 | 0.917 | model \| log |
+| PredRNN      |  23.8M | 116.0G |  54s | 25.04 |  76.26 | 0.944 | model \| log |
+| PredRNN++    |  38.6M | 171.7G |  38s | 22.45 |  69.70 | 0.950 | model \| log |
+| MIM          |  38.0M | 179.2G |  37s | 23.66 |  74.37 | 0.946 | model \| log |
+| E3D-LSTM     |  51.0M | 298.9G |  18s | 36.19 |  78.64 | 0.932 | model \| log |
+| CrevNet      |  5.0M  | 270.7G |  10s | 30.15 |  86.28 | 0.935 | model \| log |
+| PredRNN.V2   |  23.9M | 116.6G |  52s | 27.73 |  82.17 | 0.937 | model \| log |
+| SimVP+IncepU |  58.0M |  19.4G | 209s | 26.69 |  77.19 | 0.940 | model \| log |
+| SimVP+gSTA-S |  46.8M |  16.5G | 282s | 15.05 |  49.80 | 0.967 | model \| log |
 
-### **Benchmark of MetaFormers on SimVP**
+### **Benchmark of MetaFormers Based on SimVP**
 
-Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200-epoch and 2000-epoch. We provide config file in [configs/mmnist/simvp](https://github.com/chengtan9907/SimVPv2/configs/mmnist/simvp/).
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200-epoch and 2000-epoch. We provide config file in [configs/mmnist/simvp](https://github.com/chengtan9907/OpenSTL/configs/mmnist/simvp/).
 
 | MetaFormer       |   Setting  | Params |  FLOPs |  FPS |  MSE  |  MAE  |  SSIM  |  PSNR |   Download   |
 |------------------|:----------:|:------:|:------:|:----:|:-----:|:-----:|:------:|:-----:|:------------:|
@@ -89,123 +90,45 @@ Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be 
 | HorNet           | 2000 epoch |  45.7M |  16.3G | 287s | 17.40 | 55.70 | 0.9624 | 39.19 | model \| log |
 | MogaNet          | 2000 epoch |  46.8M |  16.5G | 255s | 15.67 | 51.84 | 0.9661 | 39.35 | model \| log |
 
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## TaxiBJ Benchmarks
+## KittiCaltech Benchmarks
 
-We provide traffic benchmark results on the popular [TaxiBJ](https://arxiv.org/abs/1610.00081) dataset using $4\rightarrow 4$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (5 epochs warmup and min lr is 1e-6) and **single GPU**.
+We provide benchmark results on [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) dataset using $10\rightarrow 1$ frames prediction setting following [PredNet](https://arxiv.org/abs/1605.08104). Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with Onecycle scheduler on **single GPU**, while some computational consuming methods (denoted by \*) using **4GPUs**.
 
-### **Benchmark of MetaFormers on SimVP**
+### **STL Benchmarks on KittiCaltech**
 
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/taxibj/simvp](https://github.com/chengtan9907/SimVPv2/configs/taxibj/simvp/).
+For a fair comparison of different methods, we report final results when models are trained to convergence. We provide config files in [configs/kitticaltech](https://github.com/chengtan9907/OpenSTL/configs/kitticaltech).
 
-| MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE  |  MAE  |  SSIM  |  PSNR |   Download   |
-|------------------|:--------:|:------:|:-----:|:----:|:------:|:-----:|:------:|:-----:|:------------:|
-| IncepU (SimVPv1) | 50 epoch | 13.79M | 3.61G |  533 | 0.3282 | 15.45 | 0.9835 | 39.72 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch |  9.96M | 2.62G | 1217 | 0.3246 | 15.03 | 0.9844 | 39.95 | model \| log |
-| ViT              | 50 epoch |  9.66M | 2.80G | 1301 | 0.3171 | 15.15 | 0.9841 | 39.89 | model \| log |
-| Swin Transformer | 50 epoch |  9.66M | 2.56G | 1506 | 0.3128 | 15.07 | 0.9847 | 39.89 | model \| log |
-| Uniformer        | 50 epoch |  9.52M | 2.71G | 1333 | 0.3268 | 15.16 | 0.9844 | 39.89 | model \| log |
-| MLP-Mixer        | 50 epoch |  8.24M | 2.18G | 1974 | 0.3206 | 15.37 | 0.9841 | 39.78 | model \| log |
-| ConvMixer        | 50 epoch |  0.84M | 0.23G | 4793 | 0.3634 | 15.63 | 0.9831 | 39.69 | model \| log |
-| Poolformer       | 50 epoch |  7.75M | 2.06G | 1827 | 0.3273 | 15.39 | 0.9840 | 39.75 | model \| log |
-| ConvNeXt         | 50 epoch |  7.84M | 2.08G | 1918 | 0.3106 | 14.90 | 0.9845 | 39.99 | model \| log |
-| VAN              | 50 epoch |  9.48M | 2.49G | 1273 | 0.3125 | 14.96 | 0.9848 | 39.95 | model \| log |
-| HorNet           | 50 epoch |  9.68M | 2.54G | 1350 | 0.3186 | 15.01 | 0.9843 | 39.91 | model \| log |
-| MogaNet          | 50 epoch |  9.96M | 2.61G | 1005 | 0.3114 | 15.06 | 0.9847 | 39.92 | model \| log |
+| Method       |  Setting  | Params |  FLOPs |  FPS |  MSE  |   MAE  |  SSIM  |  PSNR |   Download   |
+|--------------|:---------:|:------:|:------:|:----:|:-----:|:------:|:------:|:-----:|:------------:|
+| ConvLSTM-S   | 100 epoch |  15.0M | 595.0G |  33s | 139.6 | 1583.3 | 0.9345 | 32.82 | model \| log |
+| E3D-LSTM\*   | 100 epoch |  54.9M |  1004G |  10s | 203.7 | 1929.7 | 0.9062 | 32.04 | model \| log |
+| MAU          | 100 epoch |  24.3M | 172.0G |  16s | 177.8 | 1800.4 | 0.9176 | 32.24 | model \| log |
+| MIM          | 100 epoch |  49.2M |  1858G |  39s | 127.3 | 1461.1 | 0.9410 | 33.26 | model \| log |
+| PredRNN      | 100 epoch |  23.7M |  1216G |  17s | 130.4 | 1525.5 | 0.9374 | 33.01 | model \| log |
+| PredRNN++    | 100 epoch |  38.5M |  1803G |  12s | 125.5 | 1453.2 | 0.9433 | 33.27 | model \| log |
+| PredRNN.V2   | 100 epoch |  23.8M |  1223G |  52s | 147.8 | 1610.5 | 0.9330 | 32.67 | model \| log |
+| SimVP+IncepU | 100 epoch |   8.6M |  60.6G |  57s | 160.2 | 1690.8 | 0.9338 | 32.48 | model \| log |
+| SimVP+gSTA-S | 100 epoch |  15.6M |  96.3G |  40s | 129.7 | 1507.7 | 0.9454 | 33.05 | model \| log |
 
+### **Benchmark of MetaFormers Based on SimVP**
 
-## WeatherBench Benchmarks
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with 100-epoch training. We provide config file in [configs/kitticaltech/simvp](https://github.com/chengtan9907/OpenSTL/configs/kitticaltech/simvp/).
 
-We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (temperature prediction `t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
+| MetaFormer       |  Setting  | Params |  FLOPs |  FPS |  MSE  |  MAE   |  SSIM  |  PSNR |   Download   |
+|------------------|:---------:|:------:|:------:|:----:|:-----:|:------:|:------:|:-----:|:------------:|
+| IncepU (SimVPv1) | 100 epoch |   8.6M |  60.6G |  57s | 160.2 | 1690.8 | 0.9338 | 32.48 | model \| log |
+| gSTA (SimVPv2)   | 100 epoch |  15.6M |  96.3G |  40s | 129.7 | 1507.7 | 0.9454 | 33.05 | model \| log |
+| ViT\*            | 100 epoch |  12.9M |  44.4G |      | 210.1 | 2057.8 | 0.9004 | 31.57 | model \| log |
+| Swin Transformer | 100 epoch |  15.3M |  95.2G |  49s | 155.2 | 1588.9 | 0.9299 | 32.98 | model \| log |
+| Uniformer\*      | 100 epoch |  11.8M | 104.0G |  28s | 135.9 | 1534.2 | 0.9393 | 32.94 | model \| log |
+| MLP-Mixer        | 100 epoch |  22.2M |  83.5G |  60s | 207.9 | 1835.9 | 0.9133 | 32.37 | model \| log |
+| ConvMixer        | 100 epoch |   1.5M |  23.1G | 129s | 174.7 | 1854.3 | 0.9232 | 31.88 | model \| log |
+| Poolformer       | 100 epoch |  12.4M |  79.8G |  51s | 153.4 | 1613.5 | 0.9334 | 32.79 | model \| log |
+| ConvNeXt         | 100 epoch |  12.5M |  80.2G |  54s | 146.8 | 1630.0 | 0.9336 | 32.58 | model \| log |
+| VAN              | 100 epoch |  14.9M |  92.5G |  41s | 132.1 | 1501.5 | 0.9437 | 33.10 | model \| log |
+| HorNet           | 100 epoch |  15.3M |  94.4G |  43s | 152.8 | 1637.9 | 0.9365 | 32.70 | model \| log |
+| MogaNet          | 100 epoch |  15.6M |  96.2G |  36s | 131.4 | 1512.1 | 0.9442 | 32.93 | model \| log |
 
-### **MetaFormers on SimVP for Temperature (t2m)**
-
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU**. We provide config files in [configs/weather/simvp_t2m_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_t2m_5_625/) for `5.625` settings ($32\times 64$ resolutions).
-
-| MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  RMSE |   Download   |
-|------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 1.521 | 0.7949 | 1.233 | model \| log |
-| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 1.331 | 0.7246 | 1.154 | model \| log |
-| PredRNN++        | 50 epoch | 38.31M |  413G |   15 |       |        |       | model \| log |
-| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 |       |        |       | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 1.238 | 0.7037 | 1.113 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 1.105 | 0.6567 | 1.051 | model \| log |
-| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 1.146 | 0.6712 | 1.070 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 1.143 | 0.6735 | 1.069 | model \| log |
-| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 1.204 | 0.6885 | 1.097 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 1.255 | 0.7011 | 1.119 | model \| log |
-| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 1.267 | 0.7073 | 1.126 | model \| log |
-| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 1.156 | 0.6715 | 1.075 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 1.277 | 0.7220 | 1.130 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 1.150 | 0.6803 | 1.072 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 1.201 | 0.6906 | 1.096 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 1.152 | 0.6665 | 1.073 | model \| log |
-
-### **MetaFormers on SimVP for Humidity (r)**
-
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU**. We provide config files in [configs/weather/simvp_r_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_r_5_625/) for `5.625` settings ($32\times 64$ resolutions).
-
-| MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE   |   MAE  |  RMSE |   Download   |
-|------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:-----:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 35.146 |  4.012 | 5.928 | model \| log |
-| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 37.611 |  4.096 | 6.133 | model \| log |
-| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 35.146 |  4.012 | 5.928 | model \| log |
-| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 36.508 |  4.087 | 6.042 | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 34.355 |  3.994 | 5.861 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 31.426 |  3.765 | 5.606 | model \| log |
-| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 32.616 |  3.852 | 5.711 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 31.332 |  3.776 | 5.597 | model \| log |
-| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 32.199 |  3.864 | 5.674 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 34.467 |  3.950 | 5.871 | model \| log |
-| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 32.829 |  3.909 | 5.730 | model \| log |
-| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 31.989 |  3.803 | 5.656 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 33.179 |  3.928 | 5.760 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 31.712 |  3.812 | 5.631 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 32.081 |  3.826 | 5.664 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 31.795 |  3.816 | 5.639 | model \| log |
-
-### **MetaFormers on SimVP for Wind Component (uv10)**
-
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU**. We provide config files in [configs/weather/simvp_uv10_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_uv10_5_625/) for `5.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
-
-| MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE  |   MAE  |  RMSE  |   Download   |
-|------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:------:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   43 | 1.8976 | 0.9215 | 1.3775 | model \| log |
-| PredRNN          | 50 epoch | 23.65M |  279G |   21 | 1.8810 | 0.9068 | 1.3715 | model \| log |
-| PredRNN++        | 50 epoch | 38.40M |  414G |   14 | 1.8727 | 0.9019 | 1.3685 | model \| log |
-| PredRNNv2        | 50 epoch | 23.68M |  280G |   21 | 2.0072 | 0.9413 | 1.4168 | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.04G |  154 | 1.9993 | 0.9510 | 1.4140 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.02G |  498 | 1.5069 | 0.8142 | 1.2276 | model \| log |
-| ViT              | 50 epoch | 12.42M |  8.0G |  427 | 1.6262 | 0.8438 | 1.2752 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.89G |  577 | 1.4996 | 0.8145 | 1.2246 | model \| log |
-| Uniformer        | 50 epoch | 12.03M | 7.46G |  459 | 1.4850 | 0.8085 | 1.2186 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.93G |  707 | 1.6066 | 0.8395 | 1.2675 | model \| log |
-| ConvMixer        | 50 epoch |  1.14M | 0.96G | 1698 | 1.7067 | 0.8714 | 1.3064 | model \| log |
-| Poolformer       | 50 epoch |  9.99M | 5.62G |  717 | 1.6123 | 0.8410 | 1.2698 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.67G |  682 | 1.6914 | 0.8698 | 1.3006 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.71G |  520 | 1.5958 | 0.8371 | 1.2632 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.85G |  513 | 1.5539 | 0.8254 | 1.2466 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  411 | 1.6072 | 0.8451 | 1.2678 | model \| log |
-
-### **MetaFormers on SimVP for Cloud Cover (tcc)**
-
-Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU**. We provide config files in [configs/weather/simvp_tcc_5_625](https://github.com/chengtan9907/SimVPv2/configs/weather/simvp_tcc_5_625/) for `5.625` settings ($32\times 64$ resolutions).
-
-| MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE   |    MAE  |   RMSE  |   Download   |
-|------------------|:--------:|:------:|:-----:|:----:|:-------:|:-------:|:-------:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 0.04944 | 0.15419 | 0.22234 | model \| log |
-| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 0.05504 | 0.15877 | 0.23461 | model \| log |
-| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 0.05479 | 0.15435 | 0.23407 | model \| log |
-| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 0.05051 | 0.15867 | 0.22475 | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 0.04765 | 0.15029 | 0.21829 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 0.04657 | 0.14688 | 0.21580 | model \| log |
-| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 0.04778 | 0.15026 | 0.21859 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 0.04639 | 0.14729 | 0.21539 | model \| log |
-| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 0.04680 | 0.14777 | 0.21634 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 0.04925 | 0.15264 | 0.22192 | model \| log |
-| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 0.04717 | 0.14874 | 0.21718 | model \| log |
-| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 0.04694 | 0.14884 | 0.21667 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 0.04742 | 0.14867 | 0.21775 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 0.04694 | 0.14725 | 0.21665 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 0.04692 | 0.14751 | 0.21661 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 0.04699 | 0.14802 | 0.21676 | model \| log |
+<p align="right">(<a href="#top">back to top</a>)</p>

@@ -156,16 +156,27 @@ def count_parameters(model):
 
 
 def measure_throughput(model, input_dummy):
-    bs = 100
-    repetitions = 100
+
+    def get_batch_size(H, W):
+        max_side = max(H, W)
+        if max_side >= 128:
+            bs = 10
+            repetitions = 1000
+        else:
+            bs = 100
+            repetitions = 100
+        return bs, repetitions
+
     if isinstance(input_dummy, tuple):
         input_dummy = list(input_dummy)
         _, T, C, H, W = input_dummy[0].shape
+        bs, repetitions = get_batch_size(H, W)
         _input = torch.rand(bs, T, C, H, W).to(input_dummy[0].device)
         input_dummy[0] = _input
         input_dummy = tuple(input_dummy)
     else:
         _, T, C, H, W = input_dummy.shape
+        bs, repetitions = get_batch_size(H, W)
         input_dummy = torch.rand(bs, T, C, H, W).to(input_dummy.device)
     total_time = 0
     with torch.no_grad():

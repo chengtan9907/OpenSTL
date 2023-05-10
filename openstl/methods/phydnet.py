@@ -26,8 +26,8 @@ class PhyDNet(Base_method):
         
         self.constraints = self._get_constraints()
 
-    def _build_model(self, config):
-        return PhyDNet_Model(**config).to(self.device)
+    def _build_model(self, args):
+        return PhyDNet_Model(**args).to(self.device)
 
     def _get_constraints(self):
         constraints = torch.zeros((49,7,7)).to(self.device)
