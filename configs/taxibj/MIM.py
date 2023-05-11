@@ -1,4 +1,4 @@
-method = 'ConvLSTM'
+method = 'MIM'
 # reverse scheduled sampling
 reverse_scheduled_sampling = 0
 r_sampling_step_1 = 25000
@@ -16,7 +16,8 @@ stride = 1
 patch_size = 2
 layer_norm = 0
 # training
-lr = 5e-4
+lr = 1e-2
 batch_size = 16
+val_batch_size = 16
 sched = 'cosine'
 warmup_epoch = 5
