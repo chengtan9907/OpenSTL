@@ -1,5 +1,5 @@
 method = 'PhyDNet'
 # model
-in_channel = 1
+patch_size = 4
 # training
 sched = 'onecycle'

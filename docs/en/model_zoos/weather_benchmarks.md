@@ -5,16 +5,18 @@
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
 
-- [x] [ConvLSTM](https://arxiv.org/abs/1506.04214) (NIPS'2015)
-- [x] [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) (NIPS'2017)
+- [x] [ConvLSTM](https://arxiv.org/abs/1506.04214) (NeurIPS'2015)
+- [x] [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) (NeurIPS'2017)
 - [x] [PredRNN++](https://arxiv.org/abs/1804.06300) (ICML'2018)
 - [x] [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX) (ICLR'2018)
-- [x] [MAU](https://arxiv.org/abs/1811.07490) (CVPR'2019)
+- [x] [MIM](https://arxiv.org/abs/1811.07490) (CVPR'2019)
 - [x] [CrevNet](https://openreview.net/forum?id=B1lKS2AqtX) (ICLR'2020)
 - [x] [PhyDNet](https://arxiv.org/abs/2003.01460) (CVPR'2020)
+- [x] [MAU](https://openreview.net/forum?id=qwtfY-3ibt7) (NeurIPS'2021)
 - [x] [PredRNN.V2](https://arxiv.org/abs/2103.09504v4) (TPAMI'2022)
 - [x] [SimVP](https://arxiv.org/abs/2206.05099) (CVPR'2022)
 - [x] [SimVP.V2](https://arxiv.org/abs/2211.12509) (ArXiv'2022)
+- [ ] [TAU](https://arxiv.org/abs/2206.12126) (CVPR'2023)
 
 </details>
 
@@ -23,7 +25,7 @@
 
 - [x] [ViT](https://arxiv.org/abs/2010.11929) (ICLR'2021)
 - [x] [Swin-Transformer](https://arxiv.org/abs/2103.14030) (ICCV'2021)
-- [x] [MLP-Mixer](https://arxiv.org/abs/2105.01601) (NIPS'2021)
+- [x] [MLP-Mixer](https://arxiv.org/abs/2105.01601) (NeurIPS'2021)
 - [x] [ConvMixer](https://arxiv.org/abs/2201.09792) (Openreview'2021)
 - [x] [UniFormer](https://arxiv.org/abs/2201.09450) (ICLR'2022)
 - [x] [PoolFormer](https://arxiv.org/abs/2111.11418) (CVPR'2022)
@@ -31,7 +33,7 @@
 - [x] [VAN](https://arxiv.org/abs/2202.09741) (ArXiv'2022)
 - [x] [IncepU (SimVP.V1)](https://arxiv.org/abs/2206.05099) (CVPR'2022)
 - [x] [gSTA (SimVP.V2)](https://arxiv.org/abs/2211.12509) (ArXiv'2022)
-- [x] [HorNet](https://arxiv.org/abs/2207.14284) (NIPS'2022)
+- [x] [HorNet](https://arxiv.org/abs/2207.14284) (NeurIPS'2022)
 - [x] [MogaNet](https://arxiv.org/abs/2211.03295) (ArXiv'2022)
 
 </details>

@@ -20,20 +20,20 @@ class PhyDNet(Base_method):
 
     def __init__(self, args, device, steps_per_epoch):
         Base_method.__init__(self, args, device, steps_per_epoch)
-        self.model = self._build_model(self.config)
+        self.model = self._build_model(self.args)
         self.model_optim, self.scheduler, self.by_epoch = self._init_optimizer(steps_per_epoch)
         self.criterion = nn.MSELoss()
-        
+
         self.constraints = self._get_constraints()
 
     def _build_model(self, args):
-        return PhyDNet_Model(**args).to(self.device)
+        return PhyDNet_Model(args).to(self.device)
 
     def _get_constraints(self):
-        constraints = torch.zeros((49,7,7)).to(self.device)
+        constraints = torch.zeros((49, 7, 7)).to(self.device)
         ind = 0
-        for i in range(0,7):
-            for j in range(0,7):
+        for i in range(0, 7):
+            for j in range(0, 7):
                 constraints[ind,i,j] = 1
                 ind +=1
         return constraints 

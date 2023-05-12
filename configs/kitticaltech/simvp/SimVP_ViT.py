@@ -8,7 +8,7 @@ hid_T = 256
 N_T = 4
 N_S = 2
 # training
-lr = 2.5e-4
+lr = 1.25e-4
 drop_path = 0.1
-batch_size = 4
+batch_size = 4  # bs = 4 x 4GPUs
 sched = 'onecycle'

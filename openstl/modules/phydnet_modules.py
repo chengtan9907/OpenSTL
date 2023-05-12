@@ -21,7 +21,7 @@ class PhyCell_Cell(nn.Module):
         self.F = nn.Sequential()
         self.F.add_module('conv1', nn.Conv2d(in_channels=input_dim, out_channels=F_hidden_dim,
                                              kernel_size=self.kernel_size, stride=(1,1), padding=self.padding))
-        self.F.add_module('bn1',nn.GroupNorm( 7 ,F_hidden_dim))        
+        self.F.add_module('bn1',nn.GroupNorm(7 ,F_hidden_dim))        
         self.F.add_module('conv2', nn.Conv2d(in_channels=F_hidden_dim, out_channels=input_dim,
                                              kernel_size=(1,1), stride=(1,1), padding=(0,0)))
 
@@ -30,12 +30,12 @@ class PhyCell_Cell(nn.Module):
                                   kernel_size=(3,3),
                                   padding=(1,1), bias=self.bias)
 
-    def forward(self, x, hidden): # x [batch_size, hidden_dim, height, width]      
+    def forward(self, x, hidden):  # x [batch_size, hidden_dim, height, width]
         combined = torch.cat([x, hidden], dim=1)  # concatenate along channel axis
         combined_conv = self.convgate(combined)
         K = torch.sigmoid(combined_conv)
-        hidden_tilde = hidden + self.F(hidden)        # prediction
-        next_hidden = hidden_tilde + K * (x-hidden_tilde)   # correction , Haddamard product     
+        hidden_tilde = hidden + self.F(hidden)  # prediction
+        next_hidden = hidden_tilde + K * (x-hidden_tilde)  # correction , Haddamard product
         return next_hidden
 
 
@@ -55,35 +55,33 @@ class PhyCell(nn.Module):
         for i in range(0, self.n_layers):
             cell_list.append(PhyCell_Cell(input_dim=input_dim,
                                           F_hidden_dim=self.F_hidden_dims[i],
-                                          kernel_size=self.kernel_size))                                     
+                                          kernel_size=self.kernel_size))
         self.cell_list = nn.ModuleList(cell_list)
         
        
-    def forward(self, input_, first_timestep=False): # input_ [batch_size, 1, channels, width, height]    
+    def forward(self, input_, first_timestep=False):  # input_ [batch_size, 1, channels, width, height]
         batch_size = input_.data.size()[0]
         if (first_timestep):   
-            self.initHidden(batch_size) # init Hidden at each forward start
-              
+            self.initHidden(batch_size)  # init Hidden at each forward start
         for j,cell in enumerate(self.cell_list):
-            if j==0: # bottom layer
+            if j==0:  # bottom layer
                 self.H[j] = cell(input_, self.H[j])
             else:
                 self.H[j] = cell(self.H[j-1],self.H[j])
-        
-        return self.H , self.H 
+        return self.H, self.H
     
     def initHidden(self,batch_size):
         self.H = [] 
         for i in range(self.n_layers):
-            self.H.append( torch.zeros(
+            self.H.append(torch.zeros(
                 batch_size, self.input_dim, self.input_shape[0], self.input_shape[1]).to(self.device))
 
     def setHidden(self, H):
         self.H = H
 
-        
+
 class PhyD_ConvLSTM_Cell(nn.Module):
-    def __init__(self, input_shape, input_dim, hidden_dim, kernel_size, bias=1):              
+    def __init__(self, input_shape, input_dim, hidden_dim, kernel_size, bias=1):
         """
         input_shape: (int, int)
             Height and width of input tensor as (height, width).
@@ -111,7 +109,7 @@ class PhyD_ConvLSTM_Cell(nn.Module):
                               padding=self.padding, bias=self.bias)
                  
     # we implement LSTM that process only one timestep 
-    def forward(self,x, hidden): # x [batch, hidden_dim, width, height]          
+    def forward(self,x, hidden): # x [batch, hidden_dim, width, height]
         h_cur, c_cur = hidden
         
         combined = torch.cat([x, h_cur], dim=1)  # concatenate along channel axis
@@ -129,38 +127,35 @@ class PhyD_ConvLSTM_Cell(nn.Module):
 
 class PhyD_ConvLSTM(nn.Module):
 
-    def __init__(self, input_shape, input_dim, hidden_dims, n_layers, kernel_size,device):
+    def __init__(self, input_shape, input_dim, hidden_dims, n_layers, kernel_size, device):
         super(PhyD_ConvLSTM, self).__init__()
         self.input_shape = input_shape
         self.input_dim = input_dim
         self.hidden_dims = hidden_dims
         self.n_layers = n_layers
         self.kernel_size = kernel_size
-        self.H, self.C = [],[]   
+        self.H, self.C = [], []   
         self.device = device
         
         cell_list = []
         for i in range(0, self.n_layers):
             cur_input_dim = self.input_dim if i == 0 else self.hidden_dims[i-1]
-            print('layer ',i,'input dim ', cur_input_dim, ' hidden dim ', self.hidden_dims[i])
+            print('layer ', i, 'input dim ', cur_input_dim, ' hidden dim ', self.hidden_dims[i])
             cell_list.append(PhyD_ConvLSTM_Cell(input_shape=self.input_shape,
-                                          input_dim=cur_input_dim,
-                                          hidden_dim=self.hidden_dims[i],
-                                          kernel_size=self.kernel_size))                                     
+                                                input_dim=cur_input_dim,
+                                                hidden_dim=self.hidden_dims[i],
+                                                kernel_size=self.kernel_size))
         self.cell_list = nn.ModuleList(cell_list)
-        
-       
-    def forward(self, input_, first_timestep=False): # input_ [batch_size, 1, channels, width, height]    
+
+    def forward(self, input_, first_timestep=False): # input_ [batch_size, 1, channels, width, height]
         batch_size = input_.data.size()[0]
         if (first_timestep):   
             self.initHidden(batch_size) # init Hidden at each forward start
-              
         for j,cell in enumerate(self.cell_list):
             if j==0: # bottom layer
                 self.H[j], self.C[j] = cell(input_, (self.H[j],self.C[j]))
             else:
                 self.H[j], self.C[j] = cell(self.H[j-1],(self.H[j],self.C[j]))
-        
         return (self.H,self.C) , self.H   # (hidden, output)
     
     def initHidden(self,batch_size):
@@ -181,10 +176,11 @@ class dcgan_conv(nn.Module):
     def __init__(self, nin, nout, stride):
         super(dcgan_conv, self).__init__()
         self.main = nn.Sequential(
-                nn.Conv2d(in_channels=nin, out_channels=nout, kernel_size=(3,3), stride=stride, padding=1),
-                nn.GroupNorm(16,nout),
+                nn.Conv2d(in_channels=nin, out_channels=nout, kernel_size=(3,3),
+                          stride=stride, padding=1),
+                nn.GroupNorm(16, nout),
                 nn.LeakyReLU(0.2, inplace=True),
-                )
+            )
 
     def forward(self, input):
         return self.main(input)
@@ -194,16 +190,16 @@ class dcgan_upconv(nn.Module):
 
     def __init__(self, nin, nout, stride):
         super(dcgan_upconv, self).__init__()
-        if (stride ==2):
+        if stride==2:
             output_padding = 1
         else:
             output_padding = 0
         self.main = nn.Sequential(
-                nn.ConvTranspose2d(in_channels=nin,out_channels=nout,kernel_size=(3,3),
-                                   stride=stride,padding=1,output_padding=output_padding),
-                nn.GroupNorm(16,nout),
+                nn.ConvTranspose2d(in_channels=nin, out_channels=nout, kernel_size=(3,3),
+                                   stride=stride, padding=1, output_padding=output_padding),
+                nn.GroupNorm(16, nout),
                 nn.LeakyReLU(0.2, inplace=True),
-                )
+            )
 
     def forward(self, input):
         return self.main(input)
@@ -211,34 +207,40 @@ class dcgan_upconv(nn.Module):
 
 class encoder_E(nn.Module):
 
-    def __init__(self, nc=1, nf=32):
+    def __init__(self, nc=1, nf=32, patch_size=4):
         super(encoder_E, self).__init__()
+        assert patch_size in [2, 4]
+        stride_2 = patch_size // 2
         # input is (1) x 64 x 64
         self.c1 = dcgan_conv(nc, nf, stride=2) # (32) x 32 x 32
         self.c2 = dcgan_conv(nf, nf, stride=1) # (32) x 32 x 32
-        self.c3 = dcgan_conv(nf, 2*nf, stride=2) # (64) x 16 x 16
+        self.c3 = dcgan_conv(nf, 2*nf, stride=stride_2) # (64) x 16 x 16
 
     def forward(self, input):
-        h1 = self.c1(input)  
-        h2 = self.c2(h1)    
+        h1 = self.c1(input)
+        h2 = self.c2(h1)
         h3 = self.c3(h2)
         return h3
 
 
 class decoder_D(nn.Module):
 
-    def __init__(self, nc=1, nf=32):
+    def __init__(self, nc=1, nf=32, patch_size=4):
         super(decoder_D, self).__init__()
+        assert patch_size in [2, 4]
+        stride_2 = patch_size // 2
+        output_padding = 1 if stride_2==2 else 0
         self.upc1 = dcgan_upconv(2*nf, nf, stride=2) #(32) x 32 x 32
         self.upc2 = dcgan_upconv(nf, nf, stride=1) #(32) x 32 x 32
         self.upc3 = nn.ConvTranspose2d(in_channels=nf, out_channels=nc, kernel_size=(3,3),
-                                       stride=2, padding=1, output_padding=1)  #(nc) x 64 x 64
+                                       stride=stride_2, padding=1,
+                                       output_padding=output_padding)  #(nc) x 64 x 64
 
-    def forward(self, input):      
-        d1 = self.upc1(input) 
+    def forward(self, input):
+        d1 = self.upc1(input)
         d2 = self.upc2(d1)
-        d3 = self.upc3(d2)  
-        return d3  
+        d3 = self.upc3(d2)
+        return d3
 
 
 class encoder_specific(nn.Module):
@@ -249,8 +251,8 @@ class encoder_specific(nn.Module):
         self.c2 = dcgan_conv(nf, nf, stride=1) # (64) x 16 x 16
 
     def forward(self, input):
-        h1 = self.c1(input)  
-        h2 = self.c2(h1)     
+        h1 = self.c1(input)
+        h2 = self.c2(h1)
         return h2
 
 
@@ -262,30 +264,22 @@ class decoder_specific(nn.Module):
         self.upc2 = dcgan_upconv(nf, nc, stride=1) #(32) x 32 x 32
         
     def forward(self, input):
-        d1 = self.upc1(input) 
-        d2 = self.upc2(d1)  
-        return d2       
+        d1 = self.upc1(input)
+        d2 = self.upc2(d1)
+        return d2
 
-        
+
 class PhyD_EncoderRNN(torch.nn.Module):
 
-    def __init__(self, phycell, convcell, in_channel=1):
+    def __init__(self, phycell, convcell, in_channel=1, patch_size=4):
         super(PhyD_EncoderRNN, self).__init__()
-        self.encoder_E = encoder_E(nc=in_channel)   # general encoder 64x64x1 -> 32x32x32
+        self.encoder_E = encoder_E(nc=in_channel, patch_size=patch_size) # general encoder 64x64x1 -> 32x32x32
         self.encoder_Ep = encoder_specific() # specific image encoder 32x32x32 -> 16x16x64
-        self.encoder_Er = encoder_specific() 
-        self.decoder_Dp = decoder_specific() # specific image decoder 16x16x64 -> 32x32x32 
-        self.decoder_Dr = decoder_specific()     
-        self.decoder_D = decoder_D(nc=in_channel)  # general decoder 32x32x32 -> 64x64x1 
+        self.encoder_Er = encoder_specific()
+        self.decoder_Dp = decoder_specific() # specific image decoder 16x16x64 -> 32x32x32
+        self.decoder_Dr = decoder_specific()
+        self.decoder_D = decoder_D(nc=in_channel, patch_size=patch_size) # general decoder 32x32x32 -> 64x64x1
 
-        # self.encoder_E = self.encoder_E.to(device)
-        # self.encoder_Ep = self.encoder_Ep.to(device) 
-        # self.encoder_Er = self.encoder_Er.to(device) 
-        # self.decoder_Dp = self.decoder_Dp.to(device) 
-        # self.decoder_Dr = self.decoder_Dr.to(device)               
-        # self.decoder_D = self.decoder_D.to(device)
-        # self.phycell = phycell.to(device)
-        # self.convcell = convcell.to(device)
         self.phycell = phycell
         self.convcell = convcell
 
@@ -419,7 +413,7 @@ class K2M(_MK):
         k = k.view(sizek)
         return k
 
-    
+
 def tensordot(a,b,dim):
     """
     tensordot in PyTorch, see numpy.tensordot?
