@@ -11,6 +11,9 @@ from .parser import create_parser
 from .predrnn_utils import (reserve_schedule_sampling_exp, schedule_sampling, reshape_patch,
                             reshape_patch_back)
 from .progressbar import ProgressBar, Timer
+from .dmvfn_utils import LapLoss, VGGPerceptualLoss
+
+
 
 __all__ = [
     'collect_results_gpu', 'gather_tensors', 'gather_tensors_batch',
@@ -20,5 +23,6 @@ __all__ = [
     'get_dataset', 'count_parameters', 'measure_throughput', 'load_config', 'update_config', 'weights_to_cpu',
     'init_dist', 'init_random_seed', 'get_dist_info', 'reduce_tensor',
     'reserve_schedule_sampling_exp', 'schedule_sampling', 'reshape_patch', 'reshape_patch_back',
-    'ProgressBar', 'Timer',
+    'ProgressBar', 'Timer', 
+    'LapLoss', 'VGGPerceptualLoss'
 ]

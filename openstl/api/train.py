@@ -239,7 +239,7 @@ class BaseExperiment(object):
     def display_method_info(self):
         """Plot the basic infomation of supported methods"""
         T, C, H, W = self.args.in_shape
-        if self.args.method == 'simvp':
+        if self.args.method in ['simvp', 'tau']:
             input_dummy = torch.ones(1, self.args.pre_seq_length, C, H, W).to(self.device)
         elif self.args.method == 'crevnet':
             # crevnet must use the batchsize rather than 1
@@ -261,6 +261,8 @@ class BaseExperiment(object):
             _tmp_input = torch.ones(1, self.args.total_length, Hp, Wp, Cp).to(self.device)
             _tmp_flag = torch.ones(1, self.args.total_length - 2, Hp, Wp, Cp).to(self.device)
             input_dummy = (_tmp_input, _tmp_flag)
+        elif self.args.method == 'dmvfn':
+            input_dummy = torch.ones(1, 3, C, H, W, requires_grad=True).to(self.device)
         else:
             raise ValueError(f'Invalid method name {self.args.method}')
 
