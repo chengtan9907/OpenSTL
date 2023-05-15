@@ -11,6 +11,8 @@
     <img src="https://img.shields.io/github/issues-raw/chengtan9907/SimVPv2?color=%23FF9600" /></a>
 <a href="https://github.com/chengtan9907/OpenSTL/issues" alt="resolution">
     <img src="https://img.shields.io/badge/issue%20resolution-1%20d-%23B7A800" /></a>
+<a href="https://img.shields.io/github/stars/chengtan9907/OpenSTL" alt="arXiv">
+    <img src="https://img.shields.io/github/stars/chengtan9907/OpenSTL" /></a>
 </p>
 
 [📘Documentation](https://simvpv2.readthedocs.io/en/latest/) |
@@ -123,7 +125,8 @@ We support various spatiotemporal prediction methods and will provide benchmarks
     - [x] [PredRNN.V2](https://arxiv.org/abs/2103.09504v4) (TPAMI'2022)
     - [x] [SimVP](https://arxiv.org/abs/2206.05099) (CVPR'2022)
     - [x] [SimVP.V2](https://arxiv.org/abs/2211.12509) (ArXiv'2022)
-    - [ ] [TAU](https://arxiv.org/abs/2206.12126) (CVPR'2023)
+    - [x] [TAU](https://arxiv.org/abs/2206.12126) (CVPR'2023)
+    - [x] [DMVFN](https://arxiv.org/abs/2303.09875) (CVPR'2023)
 
     </details>
 
@@ -168,7 +171,7 @@ This project is released under the [Apache 2.0 license](LICENSE). See `LICENSE` 
 
 ## Acknowledgement
 
-OpenSTL is an open-source project for STL algorithms created by researchers in **CAIRI AI Lab**. We encourage researchers interested in video and weather prediction to contribute to OpenSTL! We borrow the official implementations of [ConvLSTM](https://arxiv.org/abs/1506.04214), [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) variants, [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX), [MAU](https://arxiv.org/abs/1811.07490), [CrevNet](https://openreview.net/forum?id=B1lKS2AqtX), and [PhyDNet](https://arxiv.org/abs/2003.01460).
+OpenSTL is an open-source project for STL algorithms created by researchers in **CAIRI AI Lab**. We encourage researchers interested in video and weather prediction to contribute to OpenSTL! We borrow the official implementations of [ConvLSTM](https://arxiv.org/abs/1506.04214), [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) variants, [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX), [MAU](https://arxiv.org/abs/1811.07490), [CrevNet](https://openreview.net/forum?id=B1lKS2AqtX), [PhyDNet](https://arxiv.org/abs/2003.01460), [DMVFN](https://arxiv.org/abs/2303.09875).
 
 ## Citation
 
