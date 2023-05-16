@@ -11,4 +11,5 @@ N_S = 2
 lr = 5e-3
 batch_size = 16
 drop_path = 0.2
+sched = 'cosine'
 warmup_epoch = 0

@@ -16,7 +16,8 @@
 - [x] [PredRNN.V2](https://arxiv.org/abs/2103.09504v4) (TPAMI'2022)
 - [x] [SimVP](https://arxiv.org/abs/2206.05099) (CVPR'2022)
 - [x] [SimVP.V2](https://arxiv.org/abs/2211.12509) (ArXiv'2022)
-- [ ] [TAU](https://arxiv.org/abs/2206.12126) (CVPR'2023)
+- [x] [TAU](https://arxiv.org/abs/2206.12126) (CVPR'2023)
+- [x] [DMVFN](https://arxiv.org/abs/2303.09875) (CVPR'2023)
 
 </details>
 

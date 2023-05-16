@@ -15,8 +15,7 @@ class TAU(SimVP):
     r"""TAU
 
     Implementation of `Temporal Attention Unit: Towards Efficient Spatiotemporal 
-    Predictive Learning
-    <https://arxiv.org/abs/2206.12126>`_.
+    Predictive Learning <https://arxiv.org/abs/2206.12126>`_.
 
     """
 
