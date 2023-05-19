@@ -13,18 +13,20 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 
 * Update the Weather Bench dataloader with `5.625deg`, `2.8125deg`, and `1.40625deg` settings. Add Human3.6M dataloader (supporting augmentations) and config files. Add Moving FMNIST in as an advanced variants of MMNIST datasets.
 * Update tools for dataset preparation of Human3.6M, Weather Bench, and Moving FMNIST.
+* Support [TAU](https://arxiv.org/abs/2206.12126) and [DMVFN](https://arxiv.org/abs/2303.09875) with configs and benchmark results. And fix bugs in these new STL methods.
 
 #### Update Documents
 
 * Update documents of video prediction, traffic prediction, and weather prediction benchmarks with benchmark results and spesific GPU settings (e.g., **single GPU**). Provide config files for supported STL methods.
 * Update `docs/en` documents for the basic usages and new features of V0.2.0.
+* Clean-up STL benchmarks and update to the latest results with config files provided.
 
 #### Fix Bugs
 
 * Fix bugs in training loops and validation loops to save GPU memory.
 * There might be some bugs in not using all parameters for calculating losses in ConvLSTM CrevNet, which should use `--find_unused_parameters` for DDP training.
 * Fig bugs of building distributed dataloaders and preparation of DDP training.
-* Fix bugs of some STL methods (CrevNet and PreDNet).
+* Fix bugs of some STL methods (CrevNet, DMVFN, PreDNet, and TAU).
 
 ### v0.1.0 (18/02/2023)
 

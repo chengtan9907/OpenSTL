@@ -7,6 +7,7 @@ hid_S = 32
 hid_T = 256
 N_T = 8
 N_S = 2
+alpha = 0.1
 # training
 lr = 1e-3
 batch_size = 16

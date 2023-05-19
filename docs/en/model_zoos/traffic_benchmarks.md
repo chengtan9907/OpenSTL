@@ -1,6 +1,6 @@
 # Traffic Prediction Benchmarks
 
-**We provide benchmark results of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!**
+**We provide benchmark results of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Currently, we only provide benchmark results, trained models and logs will be released soon (you can contact us if you require these files).
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
@@ -42,22 +42,26 @@
 
 ## TaxiBJ Benchmarks
 
-We provide traffic benchmark results on the popular [TaxiBJ](https://arxiv.org/abs/1610.00081) dataset using $4\rightarrow 4$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (5 epochs warmup and min lr is 1e-6) and **single GPU**.
+We provide traffic benchmark results on the popular [TaxiBJ](https://arxiv.org/abs/1610.00081) dataset using $4\rightarrow 4$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (5 epochs warmup and min lr is 1e-6) and **single GPU**.
 
 ### **STL Benchmarks on TaxiBJ**
 
-For a fair comparison of different methods, we report final results when models are trained to convergence. We provide config files in [configs/taxibj](https://github.com/chengtan9907/OpenSTL/configs/taxibj).
+For a fair comparison of different methods, we report the best results when models are trained to convergence. We provide config files in [configs/taxibj](https://github.com/chengtan9907/OpenSTL/configs/taxibj).
 
-| Method       |  Setting | Params |  FLOPs | FPS |   MSE  |  MAE  |  SSIM  |  PSNR |   Download   |
-|--------------|:--------:|:------:|:------:|:---:|:------:|:-----:|:------:|:-----:|:------------:|
-| ConvLSTM-S   | 50 epoch | 14.98M | 20.74G |  46 | 0.3358 | 15.32 | 0.9836 | 39.73 | model \| log |
-| E3D-LSTM\*   | 50 epoch | 50.99M | 98.19G |  60 | 0.3421 | 14.96 | 0.9842 | 39.92 | model \| log |
-| MIM          | 50 epoch |  49.2M |  1858G |  39 | 0.3110 | 14.96 | 0.9847 | 39.88 | model \| log |
-| PredRNN      | 50 epoch | 23.66M | 42.40G |  22 | 0.3194 | 15.31 | 0.9838 | 39.79 | model \| log |
-| PredRNN++    | 50 epoch | 38.40M | 62.95G |  15 | 0.3348 | 15.37 | 0.9834 | 39.76 | model \| log |
-| PredRNN.V2   | 50 epoch | 23.67M | 42.63G |  22 | 0.3834 | 15.55 | 0.9826 | 39.75 | model \| log |
-| SimVP+IncepU | 50 epoch | 13.79M | 3.61G |  533 | 0.3282 | 15.45 | 0.9835 | 39.72 | model \| log |
-| SimVP+gSTA-S | 50 epoch |  9.96M | 2.62G | 1217 | 0.3246 | 15.03 | 0.9844 | 39.95 | model \| log |
+| Method       |  Setting | Params |  FLOPs |  FPS |   MSE  |  MAE  |  SSIM  |  PSNR |   Download   |
+|--------------|:--------:|:------:|:------:|:----:|:------:|:-----:|:------:|:-----:|:------------:|
+| ConvLSTM-S   | 50 epoch | 14.98M | 20.74G |   46 | 0.3358 | 15.32 | 0.9836 | 39.73 | model \| log |
+| E3D-LSTM\*   | 50 epoch | 50.99M | 98.19G |   60 | 0.3421 | 14.96 | 0.9842 | 39.92 | model \| log |
+| PhyDNet      | 50 epoch |  3.09M |  5.60G |  982 | 0.3622 | 15.53 | 0.9828 | 39.76 | model \| log |
+| PredRNN      | 50 epoch | 23.66M | 42.40G |   22 | 0.3194 | 15.31 | 0.9838 | 39.79 | model \| log |
+| MIM          | 50 epoch | 37.86M | 64.10G |  275 | 0.3110 | 14.96 | 0.9847 | 39.88 | model \| log |
+| MAU          | 50 epoch |  4.41M |  6.02G |  540 | 0.3268 | 15.26 | 0.9834 | 39.80 | model \| log |
+| PredRNN++    | 50 epoch | 38.40M | 62.95G |   15 | 0.3348 | 15.37 | 0.9834 | 39.76 | model \| log |
+| PredRNN.V2   | 50 epoch | 23.67M | 42.63G |   22 | 0.3834 | 15.55 | 0.9826 | 39.75 | model \| log |
+| DMVFN        | 50 epoch |  3.54M | 0.057G | 6347 | | | | | model \| log |
+| SimVP+IncepU | 50 epoch | 13.79M |  3.61G |  533 | 0.3282 | 15.45 | 0.9835 | 39.72 | model \| log |
+| SimVP+gSTA-S | 50 epoch |  9.96M |  2.62G | 1217 | 0.3246 | 15.03 | 0.9844 | 39.95 | model \| log |
+| TAU          | 50 epoch |  9.55M |  2.49G | 1268 | 0.3108 | 14.93 | 0.9848 | 39.97 | model \| log |
 
 ### **Benchmark of MetaFormers on SimVP**
 

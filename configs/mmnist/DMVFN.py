@@ -10,3 +10,7 @@ training = True
 beta = 0.5
 gamma = 0.8
 coef = 0.5
+# training
+# lr = 1e-4
+batch_size = 16
+sched = 'onecycle'

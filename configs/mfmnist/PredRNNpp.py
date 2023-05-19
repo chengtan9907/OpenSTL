@@ -1,4 +1,4 @@
-method = 'PredRNN'
+method = 'PredRNNpp'
 # reverse scheduled sampling
 reverse_scheduled_sampling = 0
 r_sampling_step_1 = 25000

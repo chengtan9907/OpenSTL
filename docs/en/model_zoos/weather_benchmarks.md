@@ -1,6 +1,6 @@
 # Weather Prediction Benchmarks
 
-**We provide benchmark results of spatiotemporal prediction learning (STL) methods on the famous weather prediction datasets, WeatherBench. More STL methods will be supported in the future. Issues and PRs are welcome!**
+**We provide benchmark results of spatiotemporal prediction learning (STL) methods on the famous weather prediction datasets, WeatherBench. More STL methods will be supported in the future. Issues and PRs are welcome!** Currently, we only provide benchmark results, trained models and logs will be released soon (you can contact us if you require these files).
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
@@ -42,7 +42,7 @@
 
 ## WeatherBench Benchmarks
 
-We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (temperature prediction `t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the final models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
+We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (temperature prediction `t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
 
 ### **STL Benchmarks on Temperature (t2m)**
 

@@ -20,7 +20,8 @@ class DMVFN(Base_method):
         Base_method.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.args)
         self.model_optim, self.scheduler, self.by_epoch = self._init_optimizer(steps_per_epoch)
-        self.lap = LapLoss(channels=args.in_shape[1])
+        max_levels = 5 if args.in_shape[-1] > 32 else 3
+        self.lap = LapLoss(max_levels=max_levels, channels=args.in_shape[1])
         self.vggloss = VGGPerceptualLoss(device)
 
     def _build_model(self, args):
@@ -38,7 +39,11 @@ class DMVFN(Base_method):
         for i in range(self.args.num_block):
             loss_l1 += (self.lap(merged[i], batch_y)).mean() \
                        * (self.args.gamma ** (self.args.num_block - i - 1))
-        loss_vgg = (self.vggloss(pred_y, batch_y)).mean()
+        if self.args.in_shape[1] in [1, 3]:
+            loss_vgg = (self.vggloss(pred_y, batch_y)).mean()
+        else:
+            loss_vgg = (self.vggloss(pred_y.mean(dim=1, keepdim=True),
+                                     batch_y.mean(dim=1, keepdim=True))).mean()
         loss_G = loss_l1 + loss_vgg * self.args.coef
         return pred_y, loss_G
 

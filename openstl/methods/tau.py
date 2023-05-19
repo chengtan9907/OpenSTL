@@ -26,7 +26,6 @@ class TAU(SimVP):
         self.criterion = nn.MSELoss()
 
     def _build_model(self, args):
-        assert args.model_type == 'tau'
         return SimVP_Model(**args).to(self.device)
     
     def diff_div_reg(self, pred_y, batch_y, tau=0.1, eps=1e-12):
