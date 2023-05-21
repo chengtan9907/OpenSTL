@@ -8,12 +8,14 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 
 * Rename the project to `OpenSTL` instead of `SimVPv2` with module name refactoring.
 * Refactor the code structure thoroughly to support non-distributed and distributed (DDP) training & testing with `tools/train.py` and `tools/test.py`.
+* Refactor `_dist_forward_collect` and `_non_dist_forward_collect` to support collection of metrics.
 
 #### New Features
 
 * Update the Weather Bench dataloader with `5.625deg`, `2.8125deg`, and `1.40625deg` settings. Add Human3.6M dataloader (supporting augmentations) and config files. Add Moving FMNIST in as an advanced variants of MMNIST datasets.
 * Update tools for dataset preparation of Human3.6M, Weather Bench, and Moving FMNIST.
 * Support [TAU](https://arxiv.org/abs/2206.12126) and [DMVFN](https://arxiv.org/abs/2303.09875) with configs and benchmark results. And fix bugs in these new STL methods.
+* Support multi-variant versions of Weather Bench with dataloader and metrics.
 
 #### Update Documents
 

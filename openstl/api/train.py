@@ -316,22 +316,15 @@ class BaseExperiment(object):
     def vali(self, vali_loader):
         """A validation loop during training"""
         self.call_hook('before_val_epoch')
-        preds, trues, val_loss = self.method.vali_one_epoch(self, self.vali_loader)
+        results, eval_log = self.method.vali_one_epoch(self, self.vali_loader)
         self.call_hook('after_val_epoch')
 
         if self._rank == 0:
-            if 'weather' in self.args.dataname:
-                metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
-            else:
-                metric_list, spatial_norm = ['mse', 'mae'], False
-            eval_res, eval_log = metric(preds, trues, vali_loader.dataset.mean, vali_loader.dataset.std,
-                                        metrics=metric_list, spatial_norm=spatial_norm)
-
             print_log('val\t '+eval_log)
             if has_nni:
-                nni.report_intermediate_result(eval_res['mse'])
+                nni.report_intermediate_result(results['mse'].mean())
 
-        return val_loss
+        return results['loss'].mean()
 
     def test(self):
         """A testing loop of STL methods"""
@@ -340,16 +333,19 @@ class BaseExperiment(object):
             self._load_from_state_dict(torch.load(best_model_path))
 
         self.call_hook('before_val_epoch')
-        inputs, preds, trues = self.method.test_one_epoch(self, self.test_loader)
+        results = self.method.test_one_epoch(self, self.test_loader)
         self.call_hook('after_val_epoch')
 
         if 'weather' in self.args.dataname:
             metric_list, spatial_norm = ['mse', 'rmse', 'mae'], True
+            channel_names = self.test_loader.dataset.data_name if 'mv' in self.args.dataname else None
         else:
             metric_list, spatial_norm = ['mse', 'mae', 'ssim', 'psnr'], False
-        eval_res, eval_log = metric(preds, trues, self.test_loader.dataset.mean, self.test_loader.dataset.std,
-                                    metrics=metric_list, spatial_norm=spatial_norm)
-        metrics = np.array([eval_res['mae'], eval_res['mse']])
+            channel_names = None
+        eval_res, eval_log = metric(results['preds'], results['trues'],
+                                    self.test_loader.dataset.mean, self.test_loader.dataset.std,
+                                    metrics=metric_list, channel_names=channel_names, spatial_norm=spatial_norm)
+        results['metrics'] = np.array([eval_res['mae'], eval_res['mse']])
 
         if self._rank == 0:
             print_log(eval_log)
@@ -357,6 +353,6 @@ class BaseExperiment(object):
             check_dir(folder_path)
 
             for np_data in ['metrics', 'inputs', 'trues', 'preds']:
-                np.save(osp.join(folder_path, np_data + '.npy'), vars()[np_data])
+                np.save(osp.join(folder_path, np_data + '.npy'), results[np_data])
 
         return eval_res['mse']

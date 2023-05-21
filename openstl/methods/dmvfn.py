@@ -3,6 +3,8 @@ import torch
 from tqdm import tqdm
 import numpy as np
 from timm.utils import AverageMeter
+
+from openstl.core import metric
 from openstl.models import DMVFN_Model
 from openstl.utils import reduce_tensor, LapLoss, VGGPerceptualLoss, ProgressBar, gather_tensors_batch
 from openstl.methods.base_method import Base_method
@@ -132,21 +134,24 @@ class DMVFN(Base_method):
         return pred_y
 
 
-    def _dist_forward_collect(self, data_loader, length=None):
+    def _dist_forward_collect(self, data_loader, length=None, gather_data=False):
         """Forward and collect predictios in a distributed manner.
 
         Args:
             data_loader: dataloader of evaluation.
             length (int): Expected length of output arrays.
+            gather_data (bool): Whether to gather raw predictions and inputs.
 
         Returns:
             results_all (dict(np.ndarray)): The concatenated outputs.
         """
+        # preparation
         results = []
         length = len(data_loader.dataset) if length is None else length
         if self.rank == 0:
             prog_bar = ProgressBar(len(data_loader))
 
+        # loop
         for idx, (batch_x, batch_y) in enumerate(data_loader):
             if idx == 0:
                 part_size = batch_x.shape[0]
@@ -155,66 +160,81 @@ class DMVFN(Base_method):
                 img0, img1 = batch_x[:, -2:-1], batch_x[:, -1:]
                 pred_y = self._inference(img0, img1, length=batch_y.shape[1])
 
-            results.append(dict(zip(['inputs', 'preds', 'trues'],
-                                    [batch_x.cpu(), pred_y.cpu(), batch_y.cpu()])))
+            if gather_data:  # return raw datas
+                results.append(dict(zip(['inputs', 'preds', 'trues'],
+                                        [batch_x.cpu().numpy(), pred_y.cpu().numpy(), batch_y.cpu().numpy()])))
+            else:  # return metrics
+                eval_res, _ = metric(pred_y.cpu().numpy(), batch_y.cpu().numpy(),
+                                     data_loader.dataset.mean, data_loader.dataset.std,
+                                     metrics=self.metric_list, spatial_norm=self.spatial_norm, return_log=False)
+                B, T, C, H, W = pred_y.shape
+                pred_y = pred_y.view(B*T, C, H, W)
+                batch_y = batch_y.view(B*T, C, H, W)
+                eval_res['loss'] = self.lap(pred_y, batch_y).cpu().numpy()
+                for k in eval_res.keys():
+                    eval_res[k] = eval_res[k].reshape(1)
+                results.append(eval_res)
+
             if self.args.empty_cache:
                 torch.cuda.empty_cache()
             if self.rank == 0:
                 prog_bar.update()
 
+        # post gather tensors
         results_all = {}
         for k in results[0].keys():
-            results_cat = np.concatenate([
-                batch[k].cpu().numpy() for batch in results], axis=0)
+            results_cat = np.concatenate([batch[k] for batch in results], axis=0)
             # gether tensors by GPU (it's no need to empty cache)
             results_gathered = gather_tensors_batch(results_cat, part_size=min(part_size*8, 16))
             results_strip = np.concatenate(results_gathered, axis=0)[:length]
             results_all[k] = results_strip
         return results_all
 
-    def _nondist_forward_collect(self, data_loader, length=None):
+    def _nondist_forward_collect(self, data_loader, length=None, gather_data=False):
         """Forward and collect predictios.
 
         Args:
             data_loader: dataloader of evaluation.
             length (int): Expected length of output arrays.
+            gather_data (bool): Whether to gather raw predictions and inputs.
 
         Returns:
             results_all (dict(np.ndarray)): The concatenated outputs.
         """
+        # preparation
         results = []
         prog_bar = ProgressBar(len(data_loader))
         length = len(data_loader.dataset) if length is None else length
-        for i, (batch_x, batch_y) in enumerate(data_loader):
+
+        # loop
+        for idx, (batch_x, batch_y) in enumerate(data_loader):
 
             with torch.no_grad():
                 batch_x, batch_y = batch_x.to(self.device), batch_y.to(self.device)
                 img0, img1 = batch_x[:, -2:-1], batch_x[:, -1:]
                 pred_y = self._inference(img0, img1, length=batch_y.shape[1])
 
-            results.append(dict(zip(['inputs', 'preds', 'trues'],
-                                    [batch_x.cpu().numpy(), pred_y.cpu().numpy(), batch_y.cpu().numpy()])))
+            if gather_data:  # return raw datas
+                results.append(dict(zip(['inputs', 'preds', 'trues'],
+                                        [batch_x.cpu().numpy(), pred_y.cpu().numpy(), batch_y.cpu().numpy()])))
+            else:  # return metrics
+                eval_res, _ = metric(pred_y.cpu().numpy(), batch_y.cpu().numpy(),
+                                     data_loader.dataset.mean, data_loader.dataset.std,
+                                     metrics=self.metric_list, spatial_norm=self.spatial_norm, return_log=False)
+                B, T, C, H, W = pred_y.shape
+                pred_y = pred_y.view(B*T, C, H, W)
+                batch_y = batch_y.view(B*T, C, H, W)
+                eval_res['loss'] = self.lap(pred_y, batch_y).cpu().numpy()
+                for k in eval_res.keys():
+                    eval_res[k] = eval_res[k].reshape(1)
+                results.append(eval_res)
+
             prog_bar.update()
             if self.args.empty_cache:
                 torch.cuda.empty_cache()
 
+        # post gather tensors
         results_all = {}
         for k in results[0].keys():
-            results_all[k] = np.concatenate(
-                [batch[k] for batch in results], axis=0)
+            results_all[k] = np.concatenate([batch[k] for batch in results], axis=0)
         return results_all
-
-    def vali_one_epoch(self, runner, vali_loader, **kwargs):
-        self.model.eval()
-        if self.dist and self.world_size > 1:
-            results = self._dist_forward_collect(vali_loader, len(vali_loader.dataset))
-        else:
-            results = self._nondist_forward_collect(vali_loader, len(vali_loader.dataset))
-
-        preds = torch.tensor(results['preds']).to(self.device)
-        trues = torch.tensor(results['trues']).to(self.device)
-        B, T, C, H, W = preds.shape
-        preds = preds.view(B*T, C, H, W)
-        trues = trues.view(B*T, C, H, W)
-        losses_m = self.lap(preds, trues).cpu().numpy()
-        return results['preds'], results['trues'], losses_m
