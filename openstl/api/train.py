@@ -263,6 +263,8 @@ class BaseExperiment(object):
             input_dummy = (_tmp_input, _tmp_flag)
         elif self.args.method == 'dmvfn':
             input_dummy = torch.ones(1, 3, C, H, W, requires_grad=True).to(self.device)
+        elif self.args.method == 'prednet':
+           input_dummy = torch.ones(1, 10, C, H, W, requires_grad=True).to(self.device)
         else:
             raise ValueError(f'Invalid method name {self.args.method}')
 
@@ -296,7 +298,7 @@ class BaseExperiment(object):
                 cur_lr = self.method.current_lr()
                 cur_lr = sum(cur_lr) / len(cur_lr)
                 with torch.no_grad():
-                    vali_loss = self.vali(self.vali_loader)
+                    vali_loss = self.vali()
 
                 if self._rank == 0:
                     print_log('Epoch: {0}, Steps: {1} | Lr: {2:.7f} | Train Loss: {3:.7f} | Vali Loss: {4:.7f}\n'.format(
@@ -313,7 +315,7 @@ class BaseExperiment(object):
         time.sleep(1)  # wait for some hooks like loggers to finish
         self.call_hook('after_run')
 
-    def vali(self, vali_loader):
+    def vali(self):
         """A validation loop during training"""
         self.call_hook('before_val_epoch')
         results, eval_log = self.method.vali_one_epoch(self, self.vali_loader)

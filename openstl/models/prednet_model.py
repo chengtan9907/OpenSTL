@@ -1,203 +1,189 @@
 import torch
-from torch import nn
-from torch.nn import functional as F
-
-from openstl.modules import PredNetConvLSTMCell
+import torch.nn as nn
+import torch.nn.functional as F
+import numpy as np
+from openstl.utils import get_initial_states
 
 
 class PredNet_Model(nn.Module):
-    r"""PredNet Model
-
-    Implementation of `Deep Predictive Coding Networks for Video Prediction
-    and Unsupervised Learning <https://arxiv.org/abs/1605.08104>`_.
-
-    """
-
-    def __init__(self, configs, output_mode='error', **kwargs):
+    def __init__(self, stack_sizes, R_stack_sizes,
+                 A_filt_sizes, Ahat_filt_sizes, R_filt_sizes,
+                 pixel_max=1., args=None):
         super(PredNet_Model, self).__init__()
-        self.configs = configs
-        self.in_shape = configs.in_shape
-        _, _, H, W = configs.in_shape
+        self.args = args
+        self.stack_sizes = stack_sizes
+        self.num_layers = len(stack_sizes)
+        assert len(R_stack_sizes) == self.num_layers
+        self.R_stack_sizes = R_stack_sizes
+        assert len(A_filt_sizes) == self.num_layers - 1
+        self.A_filt_sizes = A_filt_sizes
+        assert len(Ahat_filt_sizes) == self.num_layers
+        self.Ahat_filt_sizes = Ahat_filt_sizes
+        assert len(R_filt_sizes) == self.num_layers
+        self.R_filt_sizes = R_filt_sizes
 
-        self.a_channels = getattr(configs, "A_channels", (3, 48, 96, 192))
-        self.r_channels = getattr(configs, "R_channels", (3, 48, 96, 192))
-        self.n_layers = len(self.r_channels)
-        self.r_channels += (0, )  # for convenience
-        self.output_mode = output_mode
-        self.gating_mode = getattr(configs, "gating_mode", 'mul')
-        self.extrap_start_time = getattr(configs, "extrap_start_time", None)
-        self.peephole = getattr(configs, "peephole", False)
-        self.lstm_tied_bias = getattr(configs, "lstm_tied_bias", False)
-        self.p_max = getattr(configs, "p_max", 1.0)
+        self.pixel_max = pixel_max
+        self.error_activation = args.error_activation  # 'relu'
+        self.A_activation = args.A_activation  # 'relu'
+        self.LSTM_activation = args.LSTM_activation  # 'tanh'
+        self.LSTM_inner_activation = args.LSTM_inner_activation  # 'hard_sigmoid'
+        self.channel_axis = -3
+        self.row_axis = -2
+        self.col_axis = -1
 
-        # Input validity checks
-        default_output_modes = ['prediction', 'error', 'pred+err']
-        layer_output_modes = [unit + str(l) for l in range(self.n_layers) for unit in ['R', 'E', 'A', 'Ahat']]
-        default_gating_modes = ['mul', 'sub']
-        assert output_mode in default_output_modes + layer_output_modes, 'Invalid output_mode: ' + str(output_mode)
-        assert self.gating_mode in default_gating_modes, 'Invalid gating_mode: ' + str(self.gating_mode)
-        
-        if self.output_mode in layer_output_modes:
-            self.output_layer_type = self.output_mode[:-1]
-            self.output_layer_num = int(self.output_mode[-1])
-        else:
-            self.output_layer_type = None
-            self.output_layer_num = None
+        self.get_activationFunc = {
+            'relu': nn.ReLU(),
+            'tanh': nn.Tanh(),
+        }
 
-        # h, w = self.input_size
+        self.build_layers()
+        self.init_weights()
 
-        for i in range(self.n_layers):
-            # A_channels multiplied by 2 because E_l concactenates pred-target and target-pred
-            # Hidden states don't have same size due to upsampling
-            # How does this handle i = L-1 (final layer) | appends a zero
+    def init_weights(self):
+        def init_layer_weights(layer):
+            if isinstance(layer, nn.Conv2d):
+                layer.bias.data.zero_()
+        self.apply(init_layer_weights)
 
-            if self.gating_mode == 'mul':	
-                cell = PredNetConvLSTMCell((H, W), 2 * self.a_channels[i] + self.r_channels[i+1], self.r_channels[i],
-                    (3, 3), gating_mode='mul', peephole=self.peephole, tied_bias=self.lstm_tied_bias)
-            elif self.gating_mode == 'sub':
-                cell = PredNetConvLSTMCell((H, W), 2 * self.a_channels[i] + self.r_channels[i+1], self.r_channels[i],
-                    (3, 3), gating_mode='sub', peephole=self.peephole, tied_bias=self.lstm_tied_bias)
+    def hard_sigmoid(self, x, slope=0.2, shift=0.5):
+        x = (slope * x) + shift
+        x = torch.clamp(x, 0, 1)
+        return x
 
-            setattr(self, 'cell{}'.format(i), cell)
-            H = H // 2
-            W = W // 2
+    def batch_flatten(self, x):
+        shape = [*x.size()]
+        dim = np.prod(shape[1:])
+        return x.view(-1, int(dim))
 
-        for i in range(self.n_layers):
-            # Calculate predictions A_hat
-            conv = nn.Sequential(nn.Conv2d(self.r_channels[i], self.a_channels[i], 3, padding=1), nn.ReLU())
-            setattr(self, 'conv{}'.format(i), conv)
+    def isNotTopestLayer(self, layerIndex):
+        '''judge if the layerIndex is not the topest layer.'''
+        return True if layerIndex < self.num_layers - 1 else False
 
-        self.upsample = nn.Upsample(scale_factor=2)
-        self.maxpool = nn.MaxPool2d(kernel_size=2, stride=2)
+    def build_layers(self):
+        # i: input, f: forget, c: cell, o: output
+        self.conv_layers = {item: []
+                            for item in ['i', 'f', 'c', 'o', 'A', 'Ahat']}
+        lstm_list = ['i', 'f', 'c', 'o']
 
-        for l in range(self.n_layers - 1):
-            # Propagate error as next layer's target (line 16 of Lotter algo)
-            # In channels = 2 * A_channels[l] because of pos/neg error concat
-            # NOTE: Operation belongs to curr layer l and produces next layer  state l+1
+        for item in sorted(self.conv_layers.keys()):
+            for l in range(self.num_layers):
+                if item == 'Ahat':
+                    in_channels = self.R_stack_sizes[l]
+                    self.conv_layers['Ahat'].append(nn.Conv2d(in_channels=in_channels,
+                                                              out_channels=self.stack_sizes[
+                                                                  l], kernel_size=self.Ahat_filt_sizes[l],
+                                                              stride=(1, 1), padding=int((self.Ahat_filt_sizes[l] - 1) / 2)))
+                    act = 'relu' if l == 0 else self.A_activation
+                    self.conv_layers['Ahat'].append(self.get_activationFunc[act])
+                elif item == 'A':
+                    if self.isNotTopestLayer(l):
+                        in_channels = self.R_stack_sizes[l] * 2
+                        self.conv_layers['A'].append(nn.Conv2d(in_channels=in_channels,
+                                                               out_channels=self.stack_sizes[l + 1], kernel_size=self.A_filt_sizes[l], stride=(1, 1), padding=int((self.A_filt_sizes[l] - 1) / 2)))
+                        self.conv_layers['A'].append(self.get_activationFunc[self.A_activation])
+                elif item in lstm_list:     # build R module
+                    in_channels = self.stack_sizes[l] * \
+                        2 + self.R_stack_sizes[l]
+                    if self.isNotTopestLayer(l):
+                        in_channels += self.R_stack_sizes[l + 1]
+                    self.conv_layers[item].append(nn.Conv2d(in_channels=in_channels, out_channels=self.R_stack_sizes[l],
+                                                  kernel_size=self.R_filt_sizes[l], stride=(1, 1), padding=int((self.R_filt_sizes[l] - 1) / 2)))
 
-            update_A = nn.Sequential(nn.Conv2d(2* self.a_channels[l], self.a_channels[l+1], (3, 3), padding=1), self.maxpool)
-            setattr(self, 'update_A{}'.format(l), update_A)
+        for name, layerList in self.conv_layers.items():
+            self.conv_layers[name] = nn.ModuleList(
+                layerList).to(self.args.device)
+            setattr(self, name, self.conv_layers[name])
 
-        self.criterion = nn.MSELoss()
+        self.upSample = nn.Upsample(scale_factor=2, mode='nearest')
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2, padding=0)
 
-    def set_output_mode(self, output_mode):
-        self.output_mode = output_mode
+    def step(self, A, states, extrapolation=False):
+        n = self.num_layers
+        R_current = states[:(n)]
+        C_current = states[(n):(2 * n)]
+        E_current = states[(2 * n):(3 * n)]
 
-        # Input validity checks
-        default_output_modes = ['prediction', 'error', 'pred+err']
-        layer_output_modes = [unit + str(l) for l in range(self.n_layers) for unit in ['R', 'E', 'A', 'Ahat']]
-        assert output_mode in default_output_modes + layer_output_modes, 'Invalid output_mode: ' + str(output_mode)
-        
-        if self.output_mode in layer_output_modes:
-            self.output_layer_type = self.output_mode[:-1]
-            self.output_layer_num = int(self.output_mode[-1])
-        else:
-            self.output_layer_type = None
-            self.output_layer_num = None
+        timestep = states[-1]
+        if extrapolation == True and timestep >= self.args.in_shape[0]:
+            A = states[-2]
 
-    def step(self, a, states):
-        batch_size = a.size(0)
-        R_layers = states[:self.n_layers]
-        C_layers = states[self.n_layers:2*self.n_layers]
-        E_layers = states[2*self.n_layers:3*self.n_layers]
+        R_list, C_list, E_list = [], [], []
 
-        if self.extrap_start_time is not None:
-            t = states[-1]
-            if t >= self.extrap_start_time: # if past self.extra_start_time use previous prediction as input
-                a = states[-2]
+        for l in reversed(range(self.num_layers)):
+            inputs = [R_current[l], E_current[l]]
+            if self.isNotTopestLayer(l):
+                inputs.append(R_up)
+            inputs = torch.cat(inputs, dim=self.channel_axis)
 
-        # Update representation units
-        for l in reversed(range(self.n_layers)):
-            cell = getattr(self, 'cell{}'.format(l))
-            r_tm1 = R_layers[l]
-            c_tm1 = C_layers[l]
-            e_tm1 = E_layers[l]
-            if l == self.n_layers - 1:
-                r, c = cell(e_tm1, (r_tm1, c_tm1))
-            else:
-                tmp = torch.cat((e_tm1, self.upsample(R_layers[l+1])), 1)
-                r, c = cell(tmp, (r_tm1, c_tm1))
-            R_layers[l] = r
-            C_layers[l] = c
+            in_gate = self.hard_sigmoid(self.conv_layers['i'][l](inputs))
+            forget_gate = self.hard_sigmoid(self.conv_layers['f'][l](inputs))
+            cell_gate = F.tanh(self.conv_layers['c'][l](inputs))
+            out_gate = self.hard_sigmoid(self.conv_layers['o'][l](inputs))
+            C_next = (forget_gate * C_current[l]) + (in_gate * cell_gate)
+            R_next = out_gate * F.tanh(C_next)
 
-        # Perform error forward pass
-        for l in range(self.n_layers):
-            conv = getattr(self, 'conv{}'.format(l))
-            a_hat = conv(R_layers[l])
+            C_list.insert(0, C_next)
+            R_list.insert(0, R_next)
+
+            if l > 0:
+                R_up = self.upSample(R_next)
+
+        for l in range(self.num_layers):
+            Ahat = self.conv_layers['Ahat'][2 * l](R_list[l])  # ConvLayer
+            Ahat = self.conv_layers['Ahat'][2 *
+                                            l + 1](Ahat)   # activation function
+
             if l == 0:
-                a_hat= torch.min(a_hat, torch.tensor(self.p_max).to(self.configs.device)) # alternative SatLU (Lotter)
-                frame_prediction = a_hat
-            pos = F.relu(a_hat - a)
-            neg = F.relu(a - a_hat)
-            e = torch.cat([pos, neg],1)
-            E_layers[l] = e
-            
-            # Handling layer-specific outputs
-            if self.output_layer_num == l:
-                if self.output_layer_type == 'A':
-                    output = a
-                elif self.output_layer_type == 'Ahat':
-                    output = a_hat
-                elif self.output_layer_type == 'R':
-                    output = R_layers[l]
-                elif self.output_layer_type == 'E':
-                    output = E_layers[l]
+                Ahat = torch.clamp(Ahat, max=self.pixel_max)
+                frame_prediction = Ahat
 
-            if l < self.n_layers - 1: # updating A for next layer
-                update_A = getattr(self, 'update_A{}'.format(l))
-                a = update_A(e)
-
-        if self.output_layer_type is None:
-            if self.output_mode == 'prediction':
-                output = frame_prediction
+            if self.error_activation.lower() == 'relu':
+                E_up = F.relu(Ahat - A)
+                E_down = F.relu(A - Ahat)
+            elif self.error_activation.lower() == 'tanh':
+                E_up = F.tanh(Ahat - A)
+                E_down = F.tanh(A - Ahat)
             else:
-                # Batch flatten (return 2D matrix) then mean over units
-                # Finally, concatenate layers (batch, n_layers)
-                mean_E_layers = torch.cat([torch.mean(e.view(batch_size, -1), axis=1, keepdim=True) for e in E_layers], axis=1)
-                if self.output_mode == 'error':
-                    output = mean_E_layers
-                else:
-                    output = torch.cat([frame_prediction.view(batch_size, -1), mean_E_layers], axis=1)
+                raise (RuntimeError(
+                    'cannot obtain the activation function named %s' % self.error_activation))
 
-        states = R_layers + C_layers + E_layers
-        if self.extrap_start_time is not None:
-            states += [frame_prediction, t+1]
-        return output, states
+            E_list.append(torch.cat((E_up, E_down), dim=self.channel_axis))
 
-    def forward(self, input_tensor, **kwargs):
+            if self.isNotTopestLayer(l):
+                A = self.conv_layers['A'][2 * l](E_list[l])
+                A = self.conv_layers['A'][2 * l + 1](A)
+                A = self.pool(A)    # target for next layer
 
-        R_layers = [None] * self.n_layers
-        C_layers = [None] * self.n_layers
-        E_layers = [None] * self.n_layers
+        for l in range(self.num_layers):
+            layer_error = torch.mean(self.batch_flatten(
+                E_list[l]), dim=-1, keepdim=True)
+            all_error = layer_error if l == 0 else torch.cat(
+                (all_error, layer_error), dim=-1)
 
-        _, _, h, w = self.in_shape
-        batch_size = input_tensor.size(0)
+        states = R_list + C_list + E_list
+        predict = frame_prediction
+        error = all_error
+        states += [frame_prediction, timestep + 1]
+        return predict, error, states
 
-        # Initialize states
-        for l in range(self.n_layers):
-            R_layers[l] = torch.zeros(batch_size, self.r_channels[l], h, w, requires_grad=True).to(self.configs.device)
-            C_layers[l] = torch.zeros(batch_size, self.r_channels[l], h, w, requires_grad=True).to(self.configs.device)
-            E_layers[l] = torch.zeros(batch_size, 2*self.a_channels[l], h, w, requires_grad=True).to(self.configs.device)
-            # Size of hidden state halves from each layer to the next
-            h = h//2
-            w = w//2
+    def forward(self, A0_withTimeStep, initial_states=None, extrapolation=False):
+        '''
+        A0_withTimeStep is the input from dataloader.
+        Its shape is: (batch_size, timesteps, Channel, Height, Width).
 
-        states = R_layers + C_layers + E_layers
-        # Initialize previous_prediction
-        if self.extrap_start_time is not None:
-            frame_prediction = torch.zeros_like(input_tensor[:,0], dtype=torch.float32).to(self.configs.device)
-            states += [frame_prediction, -1] # [a, t]
-            
-        num_time_steps = input_tensor.size(1)
-        total_output = [] # contains output sequence
-        for t in range(num_time_steps):
-            a = input_tensor[:,t].type(torch.FloatTensor).to(self.configs.device)
-            output, states = self.step(a, states)
-            total_output.append(output)
+        '''
+        if initial_states is None:
+            initial_states = get_initial_states((1, 10, 1, 64, 64),
+                                                self.row_axis, self.col_axis, self.num_layers, self.R_stack_sizes, self.stack_sizes, self.channel_axis, self.args.device)
+        A0_withTimeStep = A0_withTimeStep.transpose(0, 1)
+        num_timesteps = A0_withTimeStep.shape[0]
 
-        ax = len(output.shape)
-        # print(output.shape)
-        total_output = [out.view(out.shape + (1,)) for out in total_output]
-        total_output = torch.cat(total_output, axis=ax) # (batch, ..., nt)
-
-        return total_output
+        hidden_states = initial_states
+        predict_list, error_list = [], []
+        for t in range(num_timesteps):
+            A0 = A0_withTimeStep[t, ...]
+            predict, error, hidden_states = self.step(
+                A0, hidden_states, extrapolation)
+            predict_list.append(predict)
+            error_list.append(error)
+        return predict_list, error_list
