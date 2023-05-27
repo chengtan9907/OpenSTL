@@ -20,8 +20,11 @@ def generate_mmnist_testset(root, data_name='mnist', num_objects=[2], save_path=
 
     for i in range(length):
         num_digits = random.choice(dataset.num_objects)
-        images = dataset.generate_moving_mnist(num_digits)
-        test_list.append(images.reshape(20, 1, 64, 64))
+        images = dataset.generate_moving_mnist(num_digits, dataset.background)
+        if not dataset.background:
+            test_list.append(images.reshape(20, 1, 64, 64))
+        else:
+            test_list.append(images.reshape(20, 1, 64, 64, 3))
     test_data = np.concatenate(test_list, axis=1)
     np.save(save_path, test_data)
 
@@ -41,6 +44,7 @@ def main():
     file_map = {
         'mnist': 'data/moving_mnist/mnist_test_seq.npy',
         'fmnist': 'data/moving_fmnist/fmnist_test_seq.npy',
+        'mnist_cifar': 'data/moving_mnist/mnist_cifar_test_seq.npy',
     }
 
     data_name = args.data_name  # 'fmnist'

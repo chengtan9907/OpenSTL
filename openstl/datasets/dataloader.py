@@ -21,7 +21,7 @@ def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, dist
         return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
     elif 'mnist' in dataname:  # 'mmnist', 'mfmnist'
         from .dataloader_moving_mnist import load_data
-        cfg_dataloader['data_name'] = 'fmnist' if dataname == 'mfmnist' else 'mnist'
+        cfg_dataloader['data_name'] = kwargs.get('data_name', 'mnist')
         return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
     elif dataname == 'taxibj':
         from .dataloader_taxibj import load_data

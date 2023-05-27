@@ -1,3 +1,4 @@
+import cv2
 import gzip
 import numpy as np
 import os
@@ -5,9 +6,22 @@ import random
 
 import torch
 import torch.nn.functional as F
+import torchvision
 from torch.utils.data import Dataset
 
 from openstl.datasets.utils import create_loader
+
+
+def load_cifar(root, data_name='mnist_cifar'):
+    # Load CIFAR-10 dataset as the background.
+    data = None
+    if 'cifar' in data_name:
+        path = os.path.join(root, 'cifar10')
+        cifar_train = torchvision.datasets.CIFAR10(root=path, train=True, download=True)
+        cifar_test = torchvision.datasets.CIFAR10(root=path, train=False, download=True)
+        data = np.concatenate([cifar_train.data, cifar_test.data],
+                              axis=0).reshape(-1, 32, 32, 3)
+    return data
 
 
 def load_mnist(root, data_name='mnist'):
@@ -15,6 +29,7 @@ def load_mnist(root, data_name='mnist'):
     file_map = {
         'mnist': 'moving_mnist/train-images-idx3-ubyte.gz',
         'fmnist': 'moving_fmnist/train-images-idx3-ubyte.gz',
+        'mnist_cifar': 'moving_mnist/train-images-idx3-ubyte.gz',
     }
     path = os.path.join(root, file_map[data_name])
     with gzip.open(path, 'rb') as f:
@@ -28,10 +43,12 @@ def load_fixed_set(root, data_name='mnist'):
     file_map = {
         'mnist': 'moving_mnist/mnist_test_seq.npy',
         'fmnist': 'moving_fmnist/fmnist_test_seq.npy',
+        'mnist_cifar': 'moving_mnist/mnist_cifar_test_seq.npy',
     }
     path = os.path.join(root, file_map[data_name])
     dataset = np.load(path)
-    dataset = dataset[..., np.newaxis]
+    if 'cifar' not in data_name:
+        dataset = dataset[..., np.newaxis]
     return dataset
 
 
@@ -59,9 +76,11 @@ class MovingMNIST(Dataset):
         self.data_name = data_name
         if self.is_train:
             self.mnist = load_mnist(root, data_name)
+            self.cifar = load_cifar(root, data_name)
         else:
             if num_objects[0] != 2:
                 self.mnist = load_mnist(root, data_name)
+                self.cifar = load_cifar(root, data_name)
             else:
                 self.dataset = load_fixed_set(root, data_name)
         self.length = int(1e4) if self.dataset is None else self.dataset.shape[1]
@@ -72,6 +91,7 @@ class MovingMNIST(Dataset):
         self.n_frames_total = self.n_frames_input + self.n_frames_output
         self.transform = transform
         self.use_augment = use_augment
+        self.background = 'cifar' in data_name
         # For generating data
         self.image_size_ = image_size
         self.digit_size_ = 28
@@ -124,27 +144,39 @@ class MovingMNIST(Dataset):
         start_x = (canvas_size * start_x).astype(np.int32)
         return start_y, start_x
 
-    def generate_moving_mnist(self, num_digits=2):
+    def generate_moving_mnist(self, num_digits=2, background=False):
         '''
         Get random trajectories for the digits and generate a video.
         '''
-        data = np.zeros((self.n_frames_total, self.image_size_,
-                         self.image_size_), dtype=np.float32)
+        if not background:  # `black`
+            data = np.zeros((self.n_frames_total, self.image_size_,
+                            self.image_size_), dtype=np.float32)
+        else:  # cifar-10 as the background
+            ind = random.randint(0, self.cifar.shape[0] - 1)
+            back = cv2.resize(self.cifar[ind], (self.image_size_, self.image_size_), interpolation=cv2.INTER_CUBIC)
+            data = np.repeat(back[np.newaxis, ...], self.n_frames_total, axis=0).astype(np.uint8)
         for n in range(num_digits):
             # Trajectory
             start_y, start_x = self.get_random_trajectory(self.n_frames_total)
             ind = random.randint(0, self.mnist.shape[0] - 1)
-            digit_image = self.mnist[ind]
+            digit_image = self.mnist[ind].copy()
+            if background:  # binary {0, 255}
+                digit_image[digit_image > 1] = 255
             for i in range(self.n_frames_total):
                 top = start_y[i]
                 left = start_x[i]
                 bottom = top + self.digit_size_
                 right = left + self.digit_size_
                 # Draw digit
-                data[i, top:bottom, left:right] = np.maximum(
-                    data[i, top:bottom, left:right], digit_image)
+                if not background:
+                    data[i, top:bottom, left:right] = np.maximum(
+                        data[i, top:bottom, left:right], digit_image)
+                else:
+                    data[i, top:bottom, left:right, ...] = np.maximum(
+                        data[i, top:bottom, left:right, ...], np.repeat(digit_image[..., np.newaxis], 3, axis=2))
 
-        data = data[..., np.newaxis]
+        if not background:
+            data = data[..., np.newaxis]
         return data
 
     def _augment_seq(self, imgs, crop_scale=0.94):
@@ -171,14 +203,16 @@ class MovingMNIST(Dataset):
             # Sample number of objects
             num_digits = random.choice(self.num_objects)
             # Generate data on the fly
-            images = self.generate_moving_mnist(num_digits)
+            images = self.generate_moving_mnist(num_digits, self.background)
         else:
             images = self.dataset[:, idx, ...]
 
-        r = 1
-        w = int(64 / r)
-        images = images.reshape((length, w, r, w, r)).transpose(
-            0, 2, 4, 1, 3).reshape((length, r * r, w, w))
+        if not self.background:
+            r, w = 1, self.image_size_
+            images = images.reshape((length, w, r, w, r)).transpose(
+                0, 2, 4, 1, 3).reshape((length, r * r, w, w))
+        else:
+            images = images.transpose(0, 3, 1, 2)
 
         input = images[:self.n_frames_input]
         if self.n_frames_output > 0:
