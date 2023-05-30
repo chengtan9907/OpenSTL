@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/github/stars/chengtan9907/OpenSTL" /></a>
 </p>
 
-[📘Documentation](https://simvpv2.readthedocs.io/en/latest/) |
+[📘Documentation](https://openstl.readthedocs.io/en/latest/) |
 [🛠️Installation](docs/en/install.md) |
 [🚀Model Zoo](docs/en/model_zoos/video_benchmarks.md) |
 [🆕News](docs/en/changelog.md)

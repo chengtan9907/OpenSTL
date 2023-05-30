@@ -109,12 +109,12 @@ For a fair comparison of different methods, we report the best results when mode
 |--------------|:----------:|:------:|:------:|:---:|:-----:|:------:|:------:|:-----:|:------------:|
 | ConvLSTM-S   |  200 epoch |  15.0M |  56.8G | 113 | 28.87 | 113.20 | 0.8793 | 35.09 | model \| log |
 | ConvLSTM-L   |  200 epoch |  33.8M | 127.0G |  50 | 25.51 | 104.85 | 0.8928 | 35.23 | model \| log |
-| PhyDNet      |  200 epoch |  3.1M  |  15.3G | 182 | | | | | model \| log |
+| PhyDNet      |  200 epoch |  3.1M  |  15.3G | 182 | 34.75 | 125.66 | 0.8567 | 35.04 | model \| log |
 | PredRNN      |  200 epoch |  23.8M | 116.0G |  54 | 22.01 |  91.74 | 0.9091 | 35.74 | model \| log |
-| PredRNN++    |  200 epoch |  38.6M | 171.7G |  38 | | | | | model \| log |
+| PredRNN++    |  200 epoch |  38.6M | 171.7G |  38 | 21.71 |  91.97 | 0.9097 | 35.76 | model \| log |
 | MIM          |  200 epoch |  38.0M | 179.2G |  37 | 23.09 |  96.37 | 0.9043 | 35.53 | model \| log |
-| MIM          |  200 epoch |   4.5M |  17.8G | 201 | 26.56 | 104.39 | 0.8916 | 35.41 | model \| log |
-| E3D-LSTM     |  200 epoch |  51.0M | 298.9G |  18 | | | | | model \| log |
+| MAU          |  200 epoch |   4.5M |  17.8G | 201 | 26.56 | 104.39 | 0.8916 | 35.41 | model \| log |
+| E3D-LSTM     |  200 epoch |  51.0M | 298.9G |  18 | 35.35 | 110.09 | 0.8722 | 35.84 | model \| log |
 | CrevNet      |  200 epoch |   5.0M | 270.7G |  10 | | | | | model \| log |
 | PredRNN.V2   |  200 epoch |  23.9M | 116.6G |  52 | 24.13 |  97.46 | 0.9004 | 35.60 | model \| log |
 | SimVP+IncepU |  200 epoch |  58.0M |  19.4G | 209 | 30.77 | 113.94 | 0.8740 | 35.31 | model \| log |

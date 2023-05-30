@@ -51,9 +51,12 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
 | ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 1.521 | 0.7949 | 1.233 | model \| log |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  177 | 285.9 | 8.7370 | 16.91 | model \| log |
 | PredRNN          | 50 epoch | 23.57M |  278G |   22 | 1.331 | 0.7246 | 1.154 | model \| log |
-| PredRNN++        | 50 epoch | 38.31M |  413G |   15 |       |        |       | model \| log |
-| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 |       |        |       | model \| log |
+| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 1.634 | 0.7883 | 1.278 | model \| log |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | | | | model \| log |
+| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 1.251 | 0.7036 | 1.119 | model \| log |
+| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 1.545 | 0.7986 | 1.243 | model \| log |
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 1.238 | 0.7037 | 1.113 | model \| log |
 | gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 1.105 | 0.6567 | 1.051 | model \| log |
 | ViT              | 50 epoch | 12.41M | 7.99G |  432 | 1.146 | 0.6712 | 1.070 | model \| log |
@@ -74,8 +77,11 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |  MSE   |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:-----:|:------------:|
 | ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 35.146 |  4.012 | 5.928 | model \| log |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  177 | 239.00 |  8.975 | 15.46 | model \| log |
 | PredRNN          | 50 epoch | 23.57M |  278G |   22 | 37.611 |  4.096 | 6.133 | model \| log |
 | PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 35.146 |  4.012 | 5.928 | model \| log |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | | | | model \| log |
+| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 34.529 |  4.004 | 5.876 | model \| log |
 | PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 36.508 |  4.087 | 6.042 | model \| log |
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 34.355 |  3.994 | 5.861 | model \| log |
 | gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 31.426 |  3.765 | 5.606 | model \| log |
@@ -97,8 +103,11 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE  |   MAE  |  RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:------:|:------------:|
 | ConvLSTM         | 50 epoch | 14.98M |  136G |   43 | 1.8976 | 0.9215 | 1.3775 | model \| log |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  172 | 16.798 | 2.9208 | 4.0986 | model \| log |
 | PredRNN          | 50 epoch | 23.65M |  279G |   21 | 1.8810 | 0.9068 | 1.3715 | model \| log |
 | PredRNN++        | 50 epoch | 38.40M |  414G |   14 | 1.8727 | 0.9019 | 1.3685 | model \| log |
+| MIM              | 50 epoch | 37.75M |  109G |  122 | | | | model \| log |
+| MAU              | 50 epoch |  5.46M | 39.6G |  233 | | | | model \| log |
 | PredRNNv2        | 50 epoch | 23.68M |  280G |   21 | 2.0072 | 0.9413 | 1.4168 | model \| log |
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.04G |  154 | 1.9993 | 0.9510 | 1.4140 | model \| log |
 | gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.02G |  498 | 1.5069 | 0.8142 | 1.2276 | model \| log |
@@ -120,8 +129,11 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 | MetaFormer       |  Setting | Params | FLOPs |  FPS |   MSE   |    MAE  |   RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-------:|:-------:|:-------:|:------------:|
 | ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 0.04944 | 0.15419 | 0.22234 | model \| log |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  172 | 0.09913 | 0.22614 | 0.31485 | model \| log |
 | PredRNN          | 50 epoch | 23.57M |  278G |   22 | 0.05504 | 0.15877 | 0.23461 | model \| log |
 | PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 0.05479 | 0.15435 | 0.23407 | model \| log |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | | | | model \| log |
+| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 0.04955 | 0.15158 | 0.22260 | model \| log |
 | PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 0.05051 | 0.15867 | 0.22475 | model \| log |
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 0.04765 | 0.15029 | 0.21829 | model \| log |
 | gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 0.04657 | 0.14688 | 0.21580 | model \| log |

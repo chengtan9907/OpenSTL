@@ -1,4 +1,4 @@
-method = 'E3DLSTM'
+method = 'ConvLSTM'
 # reverse scheduled sampling
 reverse_scheduled_sampling = 0
 r_sampling_step_1 = 25000
@@ -16,6 +16,6 @@ stride = 1
 patch_size = 4
 layer_norm = 0
 # training
-lr = 1e-4
-batch_size = 16
+lr = 5e-4
+batch_size = 4 # bs16 = 4gpus x bs4
 sched = 'onecycle'
