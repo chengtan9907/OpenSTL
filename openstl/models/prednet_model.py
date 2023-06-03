@@ -173,7 +173,8 @@ class PredNet_Model(nn.Module):
 
         '''
         if initial_states is None:
-            initial_states = get_initial_states((1, 10, 1, 64, 64),
+            T, C, H, W = self.args.in_shape
+            initial_states = get_initial_states((1, T, C, H, W)),
                                                 self.row_axis, self.col_axis, self.num_layers, self.R_stack_sizes, self.stack_sizes, self.channel_axis, self.args.device)
         A0_withTimeStep = A0_withTimeStep.transpose(0, 1)
         num_timesteps = A0_withTimeStep.shape[0]
