@@ -18,3 +18,4 @@ layer_norm = 0
 # training
 # batch_size = 16
 val_batch_size = 16
+drop_last = True

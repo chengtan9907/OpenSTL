@@ -17,6 +17,7 @@ patch_size = 2
 layer_norm = 0
 decouple_beta = 0.1
 # training
-lr = 5e-4
+lr = 1e-4
 batch_size = 4 # bs16 = 4gpus x bs4
-sched = 'onecycle'
+sched = 'cosine'
+warmup_epoch = 0

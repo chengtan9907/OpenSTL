@@ -241,7 +241,7 @@ def load_data(batch_size,
               idx_out=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
               step=1,
               level=1,
-              distributed=False, use_augment=False, use_prefetcher=False,
+              distributed=False, use_augment=False, use_prefetcher=False, drop_last=False,
               **kwargs):
 
     assert data_split in ['5_625', '2_8125', '1_40625']
@@ -280,13 +280,13 @@ def load_data(batch_size,
     dataloader_vali = create_loader(test_set, # validation_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=False,
+                                    pin_memory=True, drop_last=drop_last,
                                     num_workers=num_workers,
                                     distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=False,
+                                    pin_memory=True, drop_last=drop_last,
                                     num_workers=num_workers,
                                     distributed=distributed, use_prefetcher=use_prefetcher)
 

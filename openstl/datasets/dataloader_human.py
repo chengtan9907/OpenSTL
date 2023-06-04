@@ -106,7 +106,7 @@ class HumanDataset(Dataset):
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
               pre_seq_length=4, aft_seq_length=4, in_shape=[4, 3, 256, 256],
-              distributed=False, use_augment=False, use_prefetcher=False):
+              distributed=False, use_augment=False, use_prefetcher=False, drop_last=False):
 
     data_root = os.path.join(data_root, 'human')
     image_size = in_shape[-1] if in_shape is not None else 256
@@ -125,7 +125,7 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=False,
+                                    pin_memory=True, drop_last=drop_last,
                                     num_workers=num_workers,
                                     distributed=distributed, use_prefetcher=use_prefetcher)
 

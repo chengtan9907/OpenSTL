@@ -264,7 +264,7 @@ class BaseExperiment(object):
         elif self.args.method == 'dmvfn':
             input_dummy = torch.ones(1, 3, C, H, W, requires_grad=True).to(self.device)
         elif self.args.method == 'prednet':
-           input_dummy = torch.ones(1, 10, C, H, W, requires_grad=True).to(self.device)
+           input_dummy = torch.ones(1, 1, C, H, W, requires_grad=True).to(self.device)
         else:
             raise ValueError(f'Invalid method name {self.args.method}')
 

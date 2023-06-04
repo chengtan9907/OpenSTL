@@ -1,4 +1,4 @@
-method = 'MIM'
+method = 'E3DLSTM'
 # reverse scheduled sampling
 reverse_scheduled_sampling = 0
 r_sampling_step_1 = 25000
@@ -16,8 +16,6 @@ stride = 1
 patch_size = 4
 layer_norm = 0
 # training
-lr = 5e-4
-batch_size = 16
-val_batch_size = 16
+# lr = 2.5e-3
+batch_size = 4
 sched = 'onecycle'
-drop_last = True

@@ -6,9 +6,10 @@ model_type = 'uniformer'
 hid_S = 32
 hid_T = 256
 N_T = 8
-N_S = 2
+N_S = 4
 # training
-# lr = 5e-3
+lr = 5e-3
 batch_size = 4 # bs16 = 4gpus x bs4
 drop_path = 0.1
-sched = 'onecycle'
+sched = 'cosine'
+warmup_epoch = 0

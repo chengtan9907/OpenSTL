@@ -20,3 +20,4 @@ layer_norm = 0
 batch_size = 16
 val_batch_size = 16
 sched = 'onecycle'
+drop_last = True

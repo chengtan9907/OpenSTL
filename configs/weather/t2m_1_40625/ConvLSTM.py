@@ -16,6 +16,7 @@ stride = 1
 patch_size = 4
 layer_norm = 0
 # training
-lr = 5e-4
+lr = 1e-4
 batch_size = 4 # bs16 = 4gpus x bs4
-sched = 'onecycle'
+sched = 'cosine'
+warmup_epoch = 0

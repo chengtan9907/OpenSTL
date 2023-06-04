@@ -41,7 +41,7 @@ class TaxibjDataset(Dataset):
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4,
               pre_seq_length=None, aft_seq_length=None, in_shape=None,
-              distributed=False, use_augment=False, use_prefetcher=False):
+              distributed=False, use_augment=False, use_prefetcher=False, drop_last=False):
 
     dataset = np.load(os.path.join(data_root, 'taxibj/dataset.npz'))
     X_train, Y_train, X_test, Y_test = dataset['X_train'], dataset[
@@ -59,13 +59,13 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4,
     dataloader_vali = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=False,
+                                    pin_memory=True, drop_last=drop_last,
                                     num_workers=num_workers,
                                     distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=False,
+                                    pin_memory=True, drop_last=drop_last,
                                     num_workers=num_workers,
                                     distributed=distributed, use_prefetcher=use_prefetcher)
 

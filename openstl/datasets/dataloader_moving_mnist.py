@@ -236,7 +236,7 @@ class MovingMNIST(Dataset):
 
 def load_data(batch_size, val_batch_size, data_root, num_workers=4, data_name='mnist',
               pre_seq_length=10, aft_seq_length=10, in_shape=[10, 1, 64, 64],
-              distributed=False, use_augment=False, use_prefetcher=False):
+              distributed=False, use_augment=False, use_prefetcher=False, drop_last=False):
 
     image_size = in_shape[-1] if in_shape is not None else 64
     train_set = MovingMNIST(root=data_root, is_train=True, data_name=data_name,
@@ -257,13 +257,13 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4, data_name='m
     dataloader_vali = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=False,
+                                    pin_memory=True, drop_last=drop_last,
                                     num_workers=num_workers,
                                     distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_test = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
-                                    pin_memory=True, drop_last=False,
+                                    pin_memory=True, drop_last=drop_last,
                                     num_workers=num_workers,
                                     distributed=distributed, use_prefetcher=use_prefetcher)
 

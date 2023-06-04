@@ -22,7 +22,8 @@ class BasicConv2d(nn.Module):
                  padding=0,
                  dilation=1,
                  upsampling=False,
-                 act_norm=False):
+                 act_norm=False,
+                 act_inplace=True):
         super(BasicConv2d, self).__init__()
         self.act_norm = act_norm
         if upsampling is True:
@@ -37,7 +38,7 @@ class BasicConv2d(nn.Module):
                 stride=stride, padding=padding, dilation=dilation)
 
         self.norm = nn.GroupNorm(2, out_channels)
-        self.act = nn.SiLU(True)
+        self.act = nn.SiLU(inplace=act_inplace)
 
         self.apply(self._init_weights)
 
@@ -61,14 +62,16 @@ class ConvSC(nn.Module):
                  kernel_size=3,
                  downsampling=False,
                  upsampling=False,
-                 act_norm=True):
+                 act_norm=True,
+                 act_inplace=True):
         super(ConvSC, self).__init__()
 
         stride = 2 if downsampling is True else 1
         padding = (kernel_size - stride + 1) // 2
 
         self.conv = BasicConv2d(C_in, C_out, kernel_size=kernel_size, stride=stride,
-                                upsampling=upsampling, padding=padding, act_norm=act_norm)
+                                upsampling=upsampling, padding=padding,
+                                act_norm=act_norm, act_inplace=act_inplace)
 
     def forward(self, x):
         y = self.conv(x)
@@ -84,7 +87,8 @@ class GroupConv2d(nn.Module):
                  stride=1,
                  padding=0,
                  groups=1,
-                 act_norm=False):
+                 act_norm=False,
+                 act_inplace=True):
         super(GroupConv2d, self).__init__()
         self.act_norm=act_norm
         if in_channels % groups != 0:
@@ -93,7 +97,7 @@ class GroupConv2d(nn.Module):
             in_channels, out_channels, kernel_size=kernel_size,
             stride=stride, padding=padding, groups=groups)
         self.norm = nn.GroupNorm(groups,out_channels)
-        self.activate = nn.LeakyReLU(0.2, inplace=True)
+        self.activate = nn.LeakyReLU(0.2, inplace=act_inplace)
 
     def forward(self, x):
         y = self.conv(x)

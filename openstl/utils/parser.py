@@ -56,6 +56,8 @@ def create_parser():
                         help='Whether to use image augmentations for training')
     parser.add_argument('--use_prefetcher', action='store_true', default=False,
                         help='Whether to use prefetcher for faster data loading')
+    parser.add_argument('--drop_last', action='store_true', default=False,
+                        help='Whether to drop the last batch in the val data loading')
 
     # method parameters
     parser.add_argument('--method', '-m', default='SimVP', type=str,

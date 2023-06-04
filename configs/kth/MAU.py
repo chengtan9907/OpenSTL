@@ -15,7 +15,6 @@ tau = 5
 cell_mode = 'normal'
 model_mode = 'normal'
 # training
-lr = 1e-4
-batch_size = 4 # bs16 = 4gpus x bs4
-sched = 'cosine'
-warmup_epoch = 0
+# lr = 1e-3
+batch_size = 16
+sched = 'onecycle'

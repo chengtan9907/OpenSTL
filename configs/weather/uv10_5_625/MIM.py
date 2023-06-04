@@ -21,3 +21,4 @@ batch_size = 16
 val_batch_size = 16
 sched = 'cosine'
 warmup_epoch = 0
+drop_last = True

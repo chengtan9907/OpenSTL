@@ -30,13 +30,14 @@ class TAU(SimVP):
     
     def diff_div_reg(self, pred_y, batch_y, tau=0.1, eps=1e-12):
         B, T, C = pred_y.shape[:3]
+        if T <= 2:  return 0
         gap_pred_y = (pred_y[:, 1:] - pred_y[:, :-1]).reshape(B, T-1, -1)
         gap_batch_y = (batch_y[:, 1:] - batch_y[:, :-1]).reshape(B, T-1, -1)
         softmax_gap_p = F.softmax(gap_pred_y / tau, -1)
         softmax_gap_b = F.softmax(gap_batch_y / tau, -1)
         loss_gap = softmax_gap_p * \
             torch.log(softmax_gap_p / (softmax_gap_b + eps) + eps)
-        return loss_gap
+        return loss_gap.mean()
 
     def train_one_epoch(self, runner, train_loader, epoch, num_updates, eta=None, **kwargs):
         """Train the model with train_loader."""
@@ -58,7 +59,7 @@ class TAU(SimVP):
 
             with self.amp_autocast():
                 pred_y = self._predict(batch_x)
-                loss = self.criterion(pred_y, batch_y) + self.args.alpha * self.diff_div_reg(pred_y, batch_y).mean()
+                loss = self.criterion(pred_y, batch_y) + self.args.alpha * self.diff_div_reg(pred_y, batch_y)
 
             if not self.dist:
                 losses_m.update(loss.item(), batch_x.size(0))

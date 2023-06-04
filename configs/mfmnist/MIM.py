@@ -20,3 +20,4 @@ lr = 1e-4
 batch_size = 16
 val_batch_size = 16
 sched = 'onecycle'
+drop_last = True
