@@ -10,7 +10,6 @@ N_S = 2
 alpha = 0.1
 # training
 lr = 1e-3
-batch_size = 16
 drop_path = 0.1
 batch_size = 16
 sched = 'onecycle'
