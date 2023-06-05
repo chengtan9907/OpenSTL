@@ -16,3 +16,7 @@ stride = 1
 patch_size = 2
 layer_norm = 0
 decouple_beta = 0.01
+# training
+lr = 1e-3
+batch_size = 16
+sched = 'onecycle'

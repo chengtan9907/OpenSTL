@@ -29,6 +29,8 @@ def create_parser():
                         help='Whether to empty cuda cache after GPU training')
     parser.add_argument('--find_unused_parameters', action='store_true', default=False,
                         help='Whether to find unused parameters in forward during DDP training')
+    parser.add_argument('--broadcast_buffers', action='store_false', default=True,
+                        help='Whether to set broadcast_buffers to false during DDP training')
     parser.add_argument('--resume_from', type=str, default=None, help='the checkpoint file to resume from')
     parser.add_argument('--auto_resume', action='store_true', default=False,
                         help='When training was interupted, resume from the latest checkpoint')
@@ -61,10 +63,10 @@ def create_parser():
 
     # method parameters
     parser.add_argument('--method', '-m', default='SimVP', type=str,
-                        choices=['ConvLSTM', 'convlstm', 'CrevNet', 'crevnet', 'E3DLSTM', 'e3dlstm',
-                                 'MAU', 'mau', 'MIM', 'mim', 'PhyDNet', 'phydnet',
+                        choices=['ConvLSTM', 'convlstm', 'CrevNet', 'crevnet', 'DMVFN', 'dmvfn', 'E3DLSTM', 'e3dlstm',
+                                 'MAU', 'mau', 'MIM', 'mim', 'PhyDNet', 'phydnet', 'PredNet', 'prednet',
                                  'PredRNN', 'predrnn', 'PredRNNpp', 'predrnnpp', 'PredRNNv2', 'predrnnv2',
-                                 'SimVP', 'simvp'],
+                                 'SimVP', 'simvp', 'TAU', 'tau'],
                         help='Name of video prediction method to train (default: "SimVP")')
     parser.add_argument('--config_file', '-c', default='configs/mmnist/simvp/SimVP_gSTA.py', type=str,
                         help='Path to the default config file')

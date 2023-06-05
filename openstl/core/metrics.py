@@ -1,5 +1,13 @@
+import cv2
 import numpy as np
-from skimage.metrics import structural_similarity as cal_ssim
+import torch
+
+try:
+    import lpips
+    from skimage.metrics import structural_similarity as cal_ssim
+except:
+    lpips = None
+    cal_ssim = None
 
 
 def rescale(x):
@@ -37,6 +45,53 @@ def PSNR(pred, true):
     return 20 * np.log10(255) - 10 * np.log10(mse)
 
 
+def SSIM(pred, true, **kwargs):
+    C1 = (0.01 * 255)**2
+    C2 = (0.03 * 255)**2
+
+    img1 = pred.astype(np.float64)
+    img2 = true.astype(np.float64)
+    kernel = cv2.getGaussianKernel(11, 1.5)
+    window = np.outer(kernel, kernel.transpose())
+
+    mu1 = cv2.filter2D(img1, -1, window)[5:-5, 5:-5]  # valid
+    mu2 = cv2.filter2D(img2, -1, window)[5:-5, 5:-5]
+    mu1_sq = mu1**2
+    mu2_sq = mu2**2
+    mu1_mu2 = mu1 * mu2
+    sigma1_sq = cv2.filter2D(img1**2, -1, window)[5:-5, 5:-5] - mu1_sq
+    sigma2_sq = cv2.filter2D(img2**2, -1, window)[5:-5, 5:-5] - mu2_sq
+    sigma12 = cv2.filter2D(img1 * img2, -1, window)[5:-5, 5:-5] - mu1_mu2
+
+    ssim_map = ((2 * mu1_mu2 + C1) * (2 * sigma12 + C2)) / ((mu1_sq + mu2_sq + C1) *
+                                                            (sigma1_sq + sigma2_sq + C2))
+    return ssim_map.mean()
+
+
+class LPIPS(torch.nn.Module):
+    """Learned Perceptual Image Patch Similarity, LPIPS.
+
+    Modified from
+    https://github.com/richzhang/PerceptualSimilarity/blob/master/lpips_2imgs.py
+    """
+
+    def __init__(self, net='alex', use_gpu=True):
+        super().__init__()
+        assert net in ['alex', 'squeeze', 'vgg']
+        self.use_gpu = use_gpu and torch.cuda.is_available()
+        self.loss_fn = lpips.LPIPS(net=net)
+        if use_gpu:
+            self.loss_fn.cuda()
+
+    def forward(self, img1, img2):
+        # Load images, which are min-max norm to [0, 1]
+        img1 = lpips.im2tensor(img1 * 255)  # RGB image from [-1,1]
+        img2 = lpips.im2tensor(img2 * 255)
+        if self.use_gpu:
+            img1, img2 = img1.cuda(), img2.cuda()
+        return self.loss_fn.forward(img1, img2).squeeze().detach().cpu().numpy()
+
+
 def metric(pred, true, mean=None, std=None, metrics=['mae', 'mse'],
            clip_range=[0, 1], channel_names=None,
            spatial_norm=False, return_log=True):
@@ -61,7 +116,7 @@ def metric(pred, true, mean=None, std=None, metrics=['mae', 'mse'],
         true = true * std + mean
     eval_res = {}
     eval_log = ""
-    allowed_metrics = ['mae', 'mse', 'rmse', 'ssim', 'psnr',]
+    allowed_metrics = ['mae', 'mse', 'rmse', 'ssim', 'psnr', 'lpips']
     invalid_metrics = set(metrics) - set(allowed_metrics)
     if len(invalid_metrics) != 0:
         raise ValueError(f'metric {invalid_metrics} is not supported.')
@@ -121,6 +176,16 @@ def metric(pred, true, mean=None, std=None, metrics=['mae', 'mse'],
             for f in range(pred.shape[1]):
                 psnr += PSNR(pred[b, f], true[b, f])
         eval_res['psnr'] = psnr / (pred.shape[0] * pred.shape[1])
+
+    if 'lpips' in metrics:
+        lpips = 0
+        cal_lpips = LPIPS(net='alex', use_gpu=False)
+        pred = pred.transpose(0, 1, 3, 4, 2)
+        true = true.transpose(0, 1, 3, 4, 2)
+        for b in range(pred.shape[0]):
+            for f in range(pred.shape[1]):
+                lpips += cal_lpips(pred[b, f], true[b, f])
+        eval_res['lpips'] = lpips / (pred.shape[0] * pred.shape[1])
 
     if return_log:
         for k, v in eval_res.items():

@@ -1,4 +1,4 @@
-name: SimVP
+name: OpenSTL
 channels:
   - pytorch
   - conda-forge
@@ -13,7 +13,8 @@ dependencies:
   - xarray==0.19.0
   - pip:
     - fvcore
+    - lpips
     - scikit-image
     - timm
     - tqdm
-prefix: /opt/anaconda3/envs/simvp
+prefix: /opt/anaconda3/envs/openstl

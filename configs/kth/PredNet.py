@@ -11,6 +11,6 @@ A_activation = 'relu'
 LSTM_activation = 'tanh'
 LSTM_inner_activation = 'hard_sigmoid'
 # training
-lr = 1e-3
+# lr = 1e-3
 batch_size = 16
 sched = 'onecycle'

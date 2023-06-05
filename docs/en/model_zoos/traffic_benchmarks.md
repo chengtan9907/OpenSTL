@@ -6,6 +6,7 @@
 <summary>Currently supported spatiotemporal prediction methods</summary>
 
 - [x] [ConvLSTM](https://arxiv.org/abs/1506.04214) (NeurIPS'2015)
+- [x] [PredNet](https://openreview.net/forum?id=B1ewdt9xe) (ICLR'2017)
 - [x] [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855) (NeurIPS'2017)
 - [x] [PredRNN++](https://arxiv.org/abs/1804.06300) (ICML'2018)
 - [x] [E3D-LSTM](https://openreview.net/forum?id=B1lKS2AqtX) (ICLR'2018)

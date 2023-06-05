@@ -70,7 +70,8 @@ class Base_method(object):
                print('Using native PyTorch AMP. Training in mixed precision (fp16).')
         else:
             print('AMP not enabled. Training in float32.')
-        self.model = NativeDDP(self.model, device_ids=[self.rank], broadcast_buffers=True,
+        self.model = NativeDDP(self.model, device_ids=[self.rank],
+                               broadcast_buffers=self.args.broadcast_buffers,
                                find_unused_parameters=self.args.find_unused_parameters)
 
     def train_one_epoch(self, runner, train_loader, **kwargs): 
