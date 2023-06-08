@@ -1,5 +1,5 @@
 method = 'PredNet'
-stack_sizes = (3, 32, 64, 128, 256) # 1 refer to num of channel(input)
+stack_sizes = (1, 32, 64, 128, 256) # 1 refer to num of channel(input)
 R_stack_sizes = stack_sizes
 A_filt_sizes = (3, 3, 3, 3)
 Ahat_filt_sizes = (3, 3, 3, 3, 3)

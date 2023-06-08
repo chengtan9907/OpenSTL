@@ -31,6 +31,7 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 * Fig bugs of building distributed dataloaders and preparation of DDP training.
 * Fix bugs of some STL methods (CrevNet, DMVFN, PreDNet, and TAU).
 * Fix bugs in datasets: fixing Caltech dataset for evaluation (28/05/2023 updating [Baidu Cloud](https://pan.baidu.com/s/1fudsBHyrf3nbt-7d42YWWg?pwd=kjfk)).
+* Fix the bug of `PSNR` (changing the implementation from E3D-LSTM to the corrent version) and update results in the benchmarks.
 
 ### v0.1.0 (18/02/2023)
 
