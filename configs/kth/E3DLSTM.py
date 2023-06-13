@@ -12,10 +12,10 @@ sampling_changing_rate = 0.00002
 # model
 num_hidden = '128,128,128,128'
 filter_size = 5
-stride = 1
-patch_size = 4
+stride = 2
+patch_size = 8
 layer_norm = 0
 # training
-# lr = 2.5e-3
-batch_size = 4
+lr = 5e-4
+batch_size = 8  # bs = 8 x 2GPUs
 sched = 'onecycle'
