@@ -1,10 +1,12 @@
 <p align="center" width="100%">
-  <img src='./assets/logo.png' width="60%">
+  <img src='https://github-production-user-asset-6210df.s3.amazonaws.com/44519745/246222783-fdda535f-e132-4fdd-8871-2408cd29a264.png' width="60%">
 </p>
 
 # OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning
 
 <p align="left">
+<!-- <a href="https://arxiv.org/abs/2211.12509" alt="arXiv">
+    <img src="https://img.shields.io/badge/arXiv-2211.12509-b31b1b.svg?style=flat" /></a> -->
 <a href="https://github.com/chengtan9907/OpenSTL/blob/master/LICENSE" alt="license">
     <img src="https://img.shields.io/badge/license-Apache--2.0-%23002FA7" /></a>
 <a href="https://openstl.readthedocs.io/en/latest/" alt="docs">
@@ -27,7 +29,7 @@
 OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, encompassing a broad spectrum of methods and diverse tasks, ranging from synthetic moving object trajectories to real-world scenarios such as human motion, driving scenes, traffic flow, and weather forecasting. OpenSTL offers a modular and extensible framework, excelling in user-friendliness, organization, and comprehensiveness. The codebase is organized into three abstracted layers, namely the core layer, algorithm layer, and user interface layer, arranged from the bottom to the top.
 
 <p align="center" width="100%">
-  <img src='./assets/framework.png' width="90%">
+  <img src='https://github-production-user-asset-6210df.s3.amazonaws.com/44519745/246222226-61e6b8e8-959c-4bb3-a1cd-c994b423de3f.png' width="90%">
 </p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>

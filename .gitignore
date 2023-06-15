@@ -135,5 +135,4 @@ figs
 
 # temp
 configs_test/
-configs/human/simvp
 api/test.py

@@ -38,8 +38,7 @@ def plot_world_map(out_path=None):
     try:
         from mpl_toolkits.basemap import Basemap
     except:
-        assert False and 'Please install Basemap and its dependency (e.g., geos), ' \
-                         'pip install geos basemap pyproj'
+        assert False and 'Please install Basemap, e.g., pip install geos basemap pyproj'
 
     fig = plt.figure(figsize=(8, 4))
     fig.add_axes([0., 0., 1, 1])
@@ -203,8 +202,7 @@ def show_heatmap_on_image(img: np.ndarray,
 
     if image_weight < 0 or image_weight > 1:
         raise Exception(
-            f"image_weight should be in the range [0, 1].\
-                Got: {image_weight}")
+            f"image_weight should be in the range [0, 1]. Got: {image_weight}")
 
     if not image_binary:
         cam = (1 - image_weight) * heatmap + image_weight * img
@@ -217,8 +215,42 @@ def show_heatmap_on_image(img: np.ndarray,
     return np.uint8(255 * cam)
 
 
-def show_weather_bench(heatmap, src_img=None, cmap='GnBu', title=None, out_path=None):
-    """fuse src_img and heatmap to show or save."""
+def show_taxibj(heatmap, cmap='viridis', title=None, out_path=None, vis_channel=None):
+    """ploting heatmap to show or save of TaxiBJ"""
+    if vis_channel is not None:
+        vis_channel = 0 if vis_channel < 0 else vis_channel
+    else:
+        vis_channel = 0
+
+    cmap = get_mpl_colormap(cmap)
+    ret_img = list()
+    if len(heatmap.shape) == 3:
+        heatmap = heatmap[np.newaxis, :]
+
+    for i in range(heatmap.shape[0]):
+        # plot heatmap with cmap
+        vis_img = heatmap[i, vis_channel, :, :, np.newaxis]
+        vis_img = cv2.resize(np.uint8(255 * vis_img), (256, 256)).squeeze()
+        vis_img = cv2.applyColorMap(np.uint8(vis_img), cmap)
+        vis_img = np.float32(vis_img) / 255
+        vis_img = vis_img / np.max(vis_img)
+        vis_img = np.uint8(255 * vis_img)
+
+        ret_img.append(vis_img[np.newaxis, :])
+        if out_path is not None:
+            cv2.imwrite(str(out_path).replace('.', f'{i}.'), vis_img)
+        if title is not None:
+            imshow(vis_img, win_name=title+str(i))
+
+    if len(ret_img) > 1:
+        return np.concatenate(ret_img, axis=0)
+    else:
+        return ret_img[0]
+
+
+def show_weather_bench(heatmap, src_img=None, cmap='GnBu', title=None,
+                       out_path=None, vis_channel=None):
+    """fusing src_img and heatmap to show or save of Weather Bench"""
     if not isinstance(src_img, np.ndarray):
         if src_img is None:
             plot_world_map('tmp.png')
@@ -228,6 +260,10 @@ def show_weather_bench(heatmap, src_img=None, cmap='GnBu', title=None, out_path=
             src_img = cv2.imread(src_img)
         src_img = cv2.resize(src_img, (512, 256))
     src_img = np.float32(src_img) / 255
+    if vis_channel is not None:
+        vis_channel = 0 if vis_channel < 0 else vis_channel
+    else:
+        vis_channel = 0
 
     ret_img = list()
     if len(heatmap.shape) == 3:
@@ -235,7 +271,7 @@ def show_weather_bench(heatmap, src_img=None, cmap='GnBu', title=None, out_path=
 
     for i in range(heatmap.shape[0]):
         vis_img = show_heatmap_on_image(
-            src_img, heatmap[i, 0, ...], use_rgb=False, colormap=get_mpl_colormap(cmap),
+            src_img, heatmap[i, vis_channel, ...], use_rgb=False, colormap=get_mpl_colormap(cmap),
             image_weight=0.1, image_binary=True)
         ret_img.append(vis_img[np.newaxis, :])
         if out_path is not None:

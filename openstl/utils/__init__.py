@@ -14,7 +14,7 @@ from .dmvfn_utils import LapLoss, MeanShift, VGGPerceptualLoss
 from .prednet_utils import get_initial_states
 from .progressbar import ProgressBar, Timer
 from .visualization import (show_video_line, show_video_gif_multiple, show_video_gif_single,
-                            show_heatmap_on_image, show_weather_bench)
+                            show_heatmap_on_image, show_taxibj, show_weather_bench)
 
 
 __all__ = [
@@ -28,5 +28,6 @@ __all__ = [
     'LapLoss', 'MeanShift', 'VGGPerceptualLoss',
     'get_initial_states',
     'ProgressBar', 'Timer',
-    'show_video_line', 'show_video_gif_multiple', 'show_video_gif_single', 'show_heatmap_on_image', 'show_weather_bench',
+    'show_video_line', 'show_video_gif_multiple', 'show_video_gif_single', 'show_heatmap_on_image',
+    'show_taxibj', 'show_weather_bench',
 ]

@@ -3,7 +3,8 @@ import os
 import numpy as np
 
 from openstl.datasets import dataset_parameters
-from openstl.utils import show_video_gif_multiple, show_video_gif_single, show_video_line, show_weather_bench
+from openstl.utils import (show_video_gif_multiple, show_video_gif_single, show_video_line,
+                           show_taxibj, show_weather_bench)
 
 
 def min_max_norm(data):
@@ -27,6 +28,8 @@ def parse_args():
                         help='Whether to reload the input and true for each method')
     parser.add_argument('--save_dirs', '-s', default='vis_figures', type=str,
                         help='The path to save visualization results')
+    parser.add_argument('--vis_channel', '-vc', default=-1, type=int,
+                        help='Select a channel to visualize as the heatmap')
 
     args = parser.parse_args()
     return args
@@ -52,6 +55,12 @@ def main():
     idx, ncols = args.index, config['aft_seq_length']
     if not os.path.isdir(args.save_dirs):
         os.mkdir(args.save_dirs)
+    if args.vis_channel != -1:  # choose a channel
+        c_surfix = f"_C{args.vis_channel}"
+        assert 0 <= args.vis_channel <= config['in_shape'][1], 'Channel index out of range'
+    else:
+        c_surfix = ""
+        assert args.dataname not in ['taxibj', 'weather_uv10_5_625'], 'Please select a channel'
 
     # loading results
     predicts_dict, inputs_dict, trues_dict = dict(), dict(), dict()
@@ -74,8 +83,11 @@ def main():
         if 'weather' in args.dataname:
             inputs = min_max_norm(inputs)
             trues = min_max_norm(trues)
-            inputs = show_weather_bench(inputs[idx, 0:ncols, ...], src_img=None).transpose(0, 3, 1, 2)
-            trues = show_weather_bench(trues[idx, 0:ncols, ...], src_img=None).transpose(0, 3, 1, 2)
+            inputs = show_weather_bench(inputs[idx, 0:ncols, ...], src_img=None, cmap='GnBu').transpose(0, 3, 1, 2)
+            trues = show_weather_bench(trues[idx, 0:ncols, ...], src_img=None, cmap='GnBu').transpose(0, 3, 1, 2)
+        elif 'taxibj' in args.dataname:
+            inputs = show_taxibj(inputs[idx, 0:ncols, ...], cmap='viridis').transpose(0, 3, 1, 2)
+            trues = show_taxibj(trues[idx, 0:ncols, ...], cmap='viridis').transpose(0, 3, 1, 2)
         else:
             inputs, trues = inputs[idx], trues[idx]
         if not args.reload_input:  # load the input and true for each method
@@ -89,30 +101,35 @@ def main():
         if args.reload_input:
             inputs, trues = inputs_dict[method], trues_dict[method]
         if 'weather' in args.dataname:
-            preds = show_weather_bench(predicts_dict[method][idx, 0:ncols, ...], src_img=None)
+            preds = show_weather_bench(predicts_dict[method][idx, 0:ncols, ...],
+                                       src_img=None, cmap='GnBu', vis_channel=args.vis_channel)
+            preds = preds.transpose(0, 3, 1, 2)
+        elif 'taxibj' in args.dataname:
+            preds = show_taxibj(predicts_dict[method][idx, 0:ncols, ...],
+                                cmap='viridis', vis_channel=args.vis_channel)
             preds = preds.transpose(0, 3, 1, 2)
         else:
             preds = predicts_dict[method][idx]
 
         if i == 0:
             show_video_line(inputs.copy(), ncols=config['pre_seq_length'], vmax=0.6, cbar=False,
-                out_path='{}/{}_input{}'.format(args.save_dirs, args.dataname, str(idx)+'.png'),
+                out_path='{}/{}_input{}'.format(args.save_dirs, args.dataname+c_surfix, str(idx)+'.png'),
                 format='png', use_rgb=use_rgb)
             show_video_line(trues.copy(), ncols=config['aft_seq_length'], vmax=0.6, cbar=False,
-                out_path='{}/{}_true{}'.format(args.save_dirs, args.dataname, str(idx)+'.png'),
+                out_path='{}/{}_true{}'.format(args.save_dirs, args.dataname+c_surfix, str(idx)+'.png'),
                 format='png', use_rgb=use_rgb)
             show_video_gif_single(inputs.copy(), use_rgb=use_rgb,
-                out_path='{}/{}_{}_{}_input'.format(args.save_dirs, args.dataname, method, idx))
+                out_path='{}/{}_{}_{}_input'.format(args.save_dirs, args.dataname+c_surfix, method, idx))
             show_video_gif_single(trues.copy(), use_rgb=use_rgb,
-                out_path='{}/{}_{}_{}_true'.format(args.save_dirs, args.dataname, method, idx))
+                out_path='{}/{}_{}_{}_true'.format(args.save_dirs, args.dataname+c_surfix, method, idx))
 
         show_video_line(preds, ncols=ncols, vmax=0.6, cbar=False,
-                        out_path='{}/{}_{}_{}'.format(args.save_dirs, args.dataname, method, str(idx)+'.png'),
+                        out_path='{}/{}_{}_{}'.format(args.save_dirs, args.dataname+c_surfix, method, str(idx)+'.png'),
                         format='png', use_rgb=use_rgb)
         show_video_gif_multiple(inputs, trues, preds, use_rgb=use_rgb,
-                                out_path='{}/{}_{}_{}'.format(args.save_dirs, args.dataname, method, idx))
+                                out_path='{}/{}_{}_{}'.format(args.save_dirs, args.dataname+c_surfix, method, idx))
         show_video_gif_single(preds, use_rgb=use_rgb,
-                              out_path='{}/{}_{}_{}_pred'.format(args.save_dirs, args.dataname, method, idx))
+                              out_path='{}/{}_{}_{}_pred'.format(args.save_dirs, args.dataname+c_surfix, method, idx))
 
 
 if __name__ == '__main__':

@@ -17,7 +17,8 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 * Support [PredNet](https://openreview.net/forum?id=B1ewdt9xe), [TAU](https://arxiv.org/abs/2206.12126), and [DMVFN](https://arxiv.org/abs/2303.09875) with configs and benchmark results. And fix bugs in these new STL methods.
 * Support multi-variant versions of Weather Bench with dataloader and metrics.
 * Support [lpips](https://github.com/richzhang/PerceptualSimilarity/tree/master) metric for video prediction benchmarks.
-* Support STL results visualization by [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py) for video prediction and weather prediction tasks.
+* Support STL results visualization by [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py) for video prediction, traffic prediction, weather prediction tasks.
+* Support visualization of STL methods on various datasets (on updating).
 
 #### Update Documents
 
