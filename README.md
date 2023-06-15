@@ -22,11 +22,6 @@
 [🚀Model Zoo](docs/en/model_zoos/video_benchmarks.md) |
 [🆕News](docs/en/changelog.md)
 
-This repository is an open-source project for spatiotemporal predictive learning, which provides benchmarks of STL methods in various scenarios. It also contains the implementation code for the paper (noted as [SimVPv2](https://arxiv.org/abs/2211.12509)):
-
-**SimVP: Towards Simple yet Powerful Spatiotemporal Predictive learning**  
-[Cheng Tan](https://chengtan9907.github.io/), [Zhangyang Gao](https://scholar.google.com/citations?user=4SclT-QAAAAJ&hl=en), [Siyuan Li](https://lupin1998.github.io/), [Stan Z. Li](https://scholar.google.com/citations?user=Y-nyLGIAAAAJ&hl).
-
 ## Introduction
 
 OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, encompassing a broad spectrum of methods and diverse tasks, ranging from synthetic moving object trajectories to real-world scenarios such as human motion, driving scenes, traffic flow, and weather forecasting. OpenSTL offers a modular and extensible framework, excelling in user-friendliness, organization, and comprehensiveness. The codebase is organized into three abstracted layers, namely the core layer, algorithm layer, and user interface layer, arranged from the bottom to the top.
