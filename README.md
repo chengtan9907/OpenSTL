@@ -1,8 +1,10 @@
-# OpenSTL: Open-source Toolbox for SpatioTemporal Predictive Learning
+<p align="center" width="100%">
+  <img src='./assets/logo.png' width="60%">
+</p>
+
+# OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning
 
 <p align="left">
-<a href="https://arxiv.org/abs/2211.12509" alt="arXiv">
-    <img src="https://img.shields.io/badge/arXiv-2211.12509-b31b1b.svg?style=flat" /></a>
 <a href="https://github.com/chengtan9907/OpenSTL/blob/master/LICENSE" alt="license">
     <img src="https://img.shields.io/badge/license-Apache--2.0-%23002FA7" /></a>
 <a href="https://openstl.readthedocs.io/en/latest/" alt="docs">
@@ -27,9 +29,10 @@ This repository is an open-source project for spatiotemporal predictive learning
 
 ## Introduction
 
-[SimVPv2](https://arxiv.org/abs/2211.12509) is the journal version of our previous conference work ([SimVP: Simpler yet Better Video Prediction](https://arxiv.org/abs/2206.05099), CVPR 2022). It is worth noticing that the hidden Translator $h$ in SimVP can be replaced by any [MetaFormer](https://arxiv.org/abs/2111.11418) block (satisfying the macro design of `token mixing` and `channel mixing`). Therefore, we can provide benchmarks of popular ConvNets and Vision Transformers based on SimVP.
-<p align="center">
-    <img width="75%" src="https://user-images.githubusercontent.com/44519745/219116763-bb4ab408-7f25-47d3-b93e-79834c7b065e.png"> <br>
+OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, encompassing a broad spectrum of methods and diverse tasks, ranging from synthetic moving object trajectories to real-world scenarios such as human motion, driving scenes, traffic flow, and weather forecasting. OpenSTL offers a modular and extensible framework, excelling in user-friendliness, organization, and comprehensiveness. The codebase is organized into three abstracted layers, namely the core layer, algorithm layer, and user interface layer, arranged from the bottom to the top.
+
+<p align="center" width="100%">
+  <img src='./assets/framework.png' width="90%">
 </p>
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -193,14 +196,6 @@ If you are interested in our repository or our paper, please cite the following 
   year={2023}
 }
 ```
-<!-- ```
-@article{tan2023openstl,
-  title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning},
-  author={Tan, Cheng and Li, Siyuan and Gao, Zhangyang and Li, Stan Z},
-  journal={arXiv preprint arXiv:2211.12509},
-  year={2023}
-}
-``` -->
 
 ## Contribution and Contact
 
