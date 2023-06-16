@@ -16,6 +16,9 @@ stride = 1
 patch_size = 4
 layer_norm = 0
 # training
-# batch_size = 16
-val_batch_size = 16
+lr = 1e-4
+batch_size = 4  # 4 x bs4 = bs16
+val_batch_size = 4  # 4 x bs4 = bs16
 drop_last = True
+sched = 'cosine'
+warmup_epoch = 0

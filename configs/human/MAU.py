@@ -10,7 +10,12 @@ filter_size = 5
 stride = 1
 patch_size = 1
 layer_norm = 0
-sr_size = 2
+sr_size = 4
 tau = 5
 cell_mode = 'normal'
 model_mode = 'normal'
+# training
+lr = 1e-4
+batch_size = 16
+sched = 'cosine'
+warmup_epoch = 0

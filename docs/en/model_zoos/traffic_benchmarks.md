@@ -65,7 +65,7 @@ For a fair comparison of different methods, we report the best results when mode
 | SimVP+gSTA-S | 50 epoch |  9.96M |  2.62G | 1217 | 0.3246 | 15.03 | 0.9844 | 39.71 | model \| log |
 | TAU          | 50 epoch |  9.55M |  2.49G | 1268 | 0.3108 | 14.93 | 0.9848 | 39.74 | model \| log |
 
-### **Benchmark of MetaFormers on SimVP**
+### **Benchmark of MetaFormers on SimVP (MetaVP)**
 
 Similar to [Moving MNIST Benchmarks](#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) with training times of 50-epoch. We provide config files in [configs/taxibj/simvp](https://github.com/chengtan9907/OpenSTL/configs/taxibj/simvp/).
 
