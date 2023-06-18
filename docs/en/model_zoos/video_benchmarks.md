@@ -1,6 +1,6 @@
 # Video Prediction Benchmarks
 
-**We provide benchmark results of spatiotemporal prediction learning (STL) methods on various video prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Currently, we only provide benchmark results, trained models and logs will be released soon (you can contact us if you require these files).
+**We provide benchmark results of spatiotemporal prediction learning (STL) methods on various video prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Currently, we only provide benchmark results, trained models and logs will be released soon (you can contact us if you require these files). You can download model files from [Baidu Cloud (tgr6)](https://pan.baidu.com/s/1XPzEtiIbNJqTmVyb3IXKwA?pwd=tgr6).
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
@@ -43,68 +43,68 @@
 
 ## Moving MNIST Benchmarks
 
-We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
+We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
 
 ### **STL Benchmarks on MMNIST**
 
-For a fair comparison of different methods, we report the best results when models are trained to convergence. We provide config files in [configs/mmnist](https://github.com/chengtan9907/OpenSTL/configs/mmnist).
+For a fair comparison of different methods, we report the best results when models are trained to converge. We provide config files in [configs/mmnist](https://github.com/chengtan9907/OpenSTL/configs/mmnist).
 
 | Method       |   Setting  | Params |  FLOPs |  FPS |   MSE  |   MAE  |  SSIM  |  PSNR |   Download   |
 |--------------|:----------:|:------:|:------:|:----:|:------:|:------:|:------:|:-----:|:------------:|
-| ConvLSTM-S   |  200 epoch |  15.0M |  56.8G |  113 |  29.80 |  90.64 | 0.9288 | 22.10 | model \| log |
-| ConvLSTM-L   |  200 epoch |  33.8M | 127.0G |   50 |  27.78 |  86.14 | 0.9343 | 22.44 | model \| log |
-| PredNet      |  200 epoch |  12.5M |   8.6G |  659 | 161.38 | 201.16 | 0.7783 | 14.33 | model \| log |
-| PhyDNet      |  200 epoch |   3.1M |  15.3G |  182 |  28.19 |  78.64 | 0.9374 | 22.62 | model \| log |
-| PredRNN      |  200 epoch |  23.8M | 116.0G |   54 |  23.97 |  72.82 | 0.9462 | 23.28 | model \| log |
-| PredRNN++    |  200 epoch |  38.6M | 171.7G |   38 |  22.06 |  69.58 | 0.9509 | 23.65 | model \| log |
-| MIM          |  200 epoch |  38.0M | 179.2G |   37 |  22.55 |  69.97 | 0.9498 | 23.56 | model \| log |
-| MAU          |  200 epoch |   4.5M |  17.8G |  201 |  26.86 |  78.22 | 0.9398 | 22.76 | model \| log |
-| E3D-LSTM     |  200 epoch |  51.0M | 298.9G |   18 |  35.97 |  78.28 | 0.9320 | 21.11 | model \| log |
-| CrevNet      |  200 epoch |   5.0M | 270.7G |   10 |  30.15 |  86.28 | 0.9350 |       | model \| log |
-| PredRNN.V2   |  200 epoch |  23.9M | 116.6G |   52 |  24.13 |  73.73 | 0.9453 | 23.21 | model \| log |
-| DMVFN        |  200 epoch |   3.5M |   0.2G | 1145 | 123.67 | 179.96 | 0.8140 | 16.15 | model \| log |
-| SimVP+IncepU |  200 epoch |  58.0M |  19.4G |  209 |  32.15 |  89.05 | 0.9268 | 37.97 | model \| log |
-| SimVP+gSTA-S |  200 epoch |  46.8M |  16.5G |  282 |  26.69 |  77.19 | 0.9402 | 38.35 | model \| log |
-| TAU          |  200 epoch |  44.7M |  16.0G |  283 |  24.60 |  71.93 | 0.9454 | 23.19 | model \| log |
+| ConvLSTM-S   |  200 epoch |  15.0M |  56.8G |  113 |  29.80 |  90.64 | 0.9288 | 22.10 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_convlstm_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_convlstm_one_ep200.log) |
+| ConvLSTM-L   |  200 epoch |  33.8M | 127.0G |   50 |  27.78 |  86.14 | 0.9343 | 22.44 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_convlstm_l_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_convlstm_l_one_ep200.log) |
+| PredNet      |  200 epoch |  12.5M |   8.6G |  659 | 161.38 | 201.16 | 0.7783 | 14.33 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_prednet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_prednet_one_ep200.log) |
+| PhyDNet      |  200 epoch |   3.1M |  15.3G |  182 |  28.19 |  78.64 | 0.9374 | 22.62 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_phydnet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_phydnet_one_ep200.log) |
+| PredRNN      |  200 epoch |  23.8M | 116.0G |   54 |  23.97 |  72.82 | 0.9462 | 23.28 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnn_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnn_one_ep200.log) |
+| PredRNN++    |  200 epoch |  38.6M | 171.7G |   38 |  22.06 |  69.58 | 0.9509 | 23.65 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnnpp_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnnpp_one_ep200.log) |
+| MIM          |  200 epoch |  38.0M | 179.2G |   37 |  22.55 |  69.97 | 0.9498 | 23.56 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_mim_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_mim_one_ep200.log) |
+| MAU          |  200 epoch |   4.5M |  17.8G |  201 |  26.86 |  78.22 | 0.9398 | 22.76 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_mau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_mau_one_ep200.log) |
+| E3D-LSTM     |  200 epoch |  51.0M | 298.9G |   18 |  35.97 |  78.28 | 0.9320 | 21.11 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_e3dlstm_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_e3dlstm_one_ep200.log) |
+| CrevNet      |  200 epoch |   5.0M | 270.7G |   10 |  30.15 |  86.28 | 0.9350 |       | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_crevnet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_crevnet_one_ep200.log) |
+| PredRNN.V2   |  200 epoch |  23.9M | 116.6G |   52 |  24.13 |  73.73 | 0.9453 | 23.21 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnnv2_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnnv2_one_ep200.log) |
+| DMVFN        |  200 epoch |   3.5M |   0.2G | 1145 | 123.67 | 179.96 | 0.8140 | 16.15 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_dmvfn_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_dmvfn_one_ep200.log) |
+| SimVP+IncepU |  200 epoch |  58.0M |  19.4G |  209 |  32.15 |  89.05 | 0.9268 | 37.97 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep200.log) |
+| SimVP+gSTA-S |  200 epoch |  46.8M |  16.5G |  282 |  26.69 |  77.19 | 0.9402 | 38.35 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep200.log) |
+| TAU          |  200 epoch |  44.7M |  16.0G |  283 |  24.60 |  71.93 | 0.9454 | 23.19 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep200.log) |
 
 ### **Benchmark of MetaFormers Based on SimVP (MetaVP)**
 
-Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200-epoch and 2000-epoch. We provide config file in [configs/mmnist/simvp](https://github.com/chengtan9907/OpenSTL/configs/mmnist/simvp/).
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200-epoch and 2000-epoch. We provide config files in [configs/mmnist/simvp](https://github.com/chengtan9907/OpenSTL/configs/mmnist/simvp/).
 
 | MetaVP           |   Setting  | Params |  FLOPs | FPS |  MSE  |  MAE  |  SSIM  |  PSNR |   Download   |
 |------------------|:----------:|:------:|:------:|:---:|:-----:|:-----:|:------:|:-----:|:------------:|
-| IncepU (SimVPv1) |  200 epoch |  58.0M |  19.4G | 209 | 32.15 | 89.05 | 0.9268 | 21.84 | model \| log |
-| gSTA (SimVPv2)   |  200 epoch |  46.8M |  16.5G | 282 | 26.69 | 77.19 | 0.9402 | 22.78 | model \| log |
-| ViT              |  200 epoch |  46.1M |  16.9G | 290 | 35.15 | 95.87 | 0.9139 | 21.67 | model \| log |
-| Swin Transformer |  200 epoch |  46.1M |  16.4G | 294 | 29.70 | 84.05 | 0.9331 | 22.22 | model \| log |
-| Uniformer        |  200 epoch |  44.8M |  16.5G | 296 | 30.38 | 85.87 | 0.9308 | 22.13 | model \| log |
-| MLP-Mixer        |  200 epoch |  38.2M |  14.7G | 334 | 29.52 | 83.36 | 0.9338 | 22.22 | model \| log |
-| ConvMixer        |  200 epoch |   3.9M |   5.5G | 658 | 32.09 | 88.93 | 0.9259 | 21.93 | model \| log |
-| Poolformer       |  200 epoch |  37.1M |  14.1G | 341 | 31.79 | 88.48 | 0.9271 | 22.03 | model \| log |
-| ConvNeXt         |  200 epoch |  37.3M |  14.1G | 344 | 26.94 | 77.23 | 0.9397 | 22.74 | model \| log |
-| VAN              |  200 epoch |  44.5M |  16.0G | 288 | 26.10 | 76.11 | 0.9417 | 22.89 | model \| log |
-| HorNet           |  200 epoch |  45.7M |  16.3G | 287 | 29.64 | 83.26 | 0.9331 | 22.26 | model \| log |
-| MogaNet          |  200 epoch |  46.8M |  16.5G | 255 | 25.57 | 75.19 | 0.9429 | 22.99 | model \| log |
-| TAU              |  200 epoch |  44.7M |  16.0G | 283 | 24.60 | 71.93 | 0.9454 | 23.19 | model \| log |
-| IncepU (SimVPv1) | 2000 epoch |  58.0M |  19.4G | 209 | 21.15 | 64.15 | 0.9536 | 23.99 | model \| log |
-| gSTA (SimVPv2)   | 2000 epoch |  46.8M |  16.5G | 282 | 15.05 | 49.80 | 0.9675 | 25.97 | model \| log |
-| ViT              | 2000 epoch |  46.1M | 16.9.G | 290 | 19.74 | 61.65 | 0.9539 | 24.59 | model \| log |
-| Swin Transformer | 2000 epoch |  46.1M |  16.4G | 294 | 19.11 | 59.84 | 0.9584 | 24.53 | model \| log |
-| Uniformer        | 2000 epoch |  44.8M |  16.5G | 296 | 18.01 | 57.52 | 0.9609 | 24.92 | model \| log |
-| MLP-Mixer        | 2000 epoch |  38.2M |  14.7G | 334 | 18.85 | 59.86 | 0.9589 | 24.58 | model \| log |
-| ConvMixer        | 2000 epoch |   3.9M |   5.5G | 658 | 22.30 | 67.37 | 0.9507 | 23.73 | model \| log |
-| Poolformer       | 2000 epoch |  37.1M |  14.1G | 341 | 20.96 | 64.31 | 0.9539 | 24.15 | model \| log |
-| ConvNeXt         | 2000 epoch |  37.3M |  14.1G | 344 | 17.58 | 55.76 | 0.9617 | 25.06 | model \| log |
-| VAN              | 2000 epoch |  44.5M |  16.0G | 288 | 16.21 | 53.57 | 0.9646 | 25.49 | model \| log |
-| HorNet           | 2000 epoch |  45.7M |  16.3G | 287 | 17.40 | 55.70 | 0.9624 | 25.14 | model \| log |
-| MogaNet          | 2000 epoch |  46.8M |  16.5G | 255 | 15.67 | 51.84 | 0.9661 | 25.70 | model \| log |
-| TAU              | 2000 epoch |  44.7M |  16.0G | 283 | 15.69 | 51.46 | 0.9661 | 25.71 | model \| log |
+| IncepU (SimVPv1) |  200 epoch |  58.0M |  19.4G | 209 | 32.15 | 89.05 | 0.9268 | 21.84 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep200.log) |
+| gSTA (SimVPv2)   |  200 epoch |  46.8M |  16.5G | 282 | 26.69 | 77.19 | 0.9402 | 22.78 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep200.log) |
+| ViT              |  200 epoch |  46.1M |  16.9G | 290 | 35.15 | 95.87 | 0.9139 | 21.67 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_vit_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_vit_one_ep200.log) |
+| Swin Transformer |  200 epoch |  46.1M |  16.4G | 294 | 29.70 | 84.05 | 0.9331 | 22.22 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_swin_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_swin_one_ep200.log) |
+| Uniformer        |  200 epoch |  44.8M |  16.5G | 296 | 30.38 | 85.87 | 0.9308 | 22.13 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_uniformer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_uniformer_one_ep200.log) |
+| MLP-Mixer        |  200 epoch |  38.2M |  14.7G | 334 | 29.52 | 83.36 | 0.9338 | 22.22 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_mlpmixer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_mlpmixer_one_ep200.log) |
+| ConvMixer        |  200 epoch |   3.9M |   5.5G | 658 | 32.09 | 88.93 | 0.9259 | 21.93 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convmixer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convmixer_one_ep200.log) |
+| Poolformer       |  200 epoch |  37.1M |  14.1G | 341 | 31.79 | 88.48 | 0.9271 | 22.03 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_poolformer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_poolformer_one_ep200.log) |
+| ConvNeXt         |  200 epoch |  37.3M |  14.1G | 344 | 26.94 | 77.23 | 0.9397 | 22.74 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convnext_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convnext_one_ep200.log) |
+| VAN              |  200 epoch |  44.5M |  16.0G | 288 | 26.10 | 76.11 | 0.9417 | 22.89 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_van_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_van_one_ep200.log) |
+| HorNet           |  200 epoch |  45.7M |  16.3G | 287 | 29.64 | 83.26 | 0.9331 | 22.26 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_hornet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_hornet_one_ep200.log) |
+| MogaNet          |  200 epoch |  46.8M |  16.5G | 255 | 25.57 | 75.19 | 0.9429 | 22.99 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_moganet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_moganet_one_ep200.log) |
+| TAU              |  200 epoch |  44.7M |  16.0G | 283 | 24.60 | 71.93 | 0.9454 | 23.19 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep200.log) |
+| IncepU (SimVPv1) | 2000 epoch |  58.0M |  19.4G | 209 | 21.15 | 64.15 | 0.9536 | 23.99 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep2000.log) |
+| gSTA (SimVPv2)   | 2000 epoch |  46.8M |  16.5G | 282 | 15.05 | 49.80 | 0.9675 | 25.97 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep2000.log) |
+| ViT              | 2000 epoch |  46.1M | 16.9.G | 290 | 19.74 | 61.65 | 0.9539 | 24.59 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_vit_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_vit_one_ep2000.log) |
+| Swin Transformer | 2000 epoch |  46.1M |  16.4G | 294 | 19.11 | 59.84 | 0.9584 | 24.53 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_swin_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_swin_one_ep2000.log) |
+| Uniformer        | 2000 epoch |  44.8M |  16.5G | 296 | 18.01 | 57.52 | 0.9609 | 24.92 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_uniformer_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_uniformer_one_ep2000.log) |
+| MLP-Mixer        | 2000 epoch |  38.2M |  14.7G | 334 | 18.85 | 59.86 | 0.9589 | 24.58 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_mlpmixer_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_mlpmixer_one_ep2000.log) |
+| ConvMixer        | 2000 epoch |   3.9M |   5.5G | 658 | 22.30 | 67.37 | 0.9507 | 23.73 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convmixer_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convmixer_one_ep2000.log) |
+| Poolformer       | 2000 epoch |  37.1M |  14.1G | 341 | 20.96 | 64.31 | 0.9539 | 24.15 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_poolformer_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_poolformer_one_ep2000.log) |
+| ConvNeXt         | 2000 epoch |  37.3M |  14.1G | 344 | 17.58 | 55.76 | 0.9617 | 25.06 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convnext_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_convnext_one_ep2000.log) |
+| VAN              | 2000 epoch |  44.5M |  16.0G | 288 | 16.21 | 53.57 | 0.9646 | 25.49 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_van_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_van_one_ep2000.log) |
+| HorNet           | 2000 epoch |  45.7M |  16.3G | 287 | 17.40 | 55.70 | 0.9624 | 25.14 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_hornet_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_hornet_one_ep2000.log) |
+| MogaNet          | 2000 epoch |  46.8M |  16.5G | 255 | 15.67 | 51.84 | 0.9661 | 25.70 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_moganet_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_moganet_one_ep2000.log) |
+| TAU              | 2000 epoch |  44.7M |  16.0G | 283 | 15.69 | 51.46 | 0.9661 | 25.71 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep2000.log) |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Moving FMNIST Benchmarks
 
-Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we also provide the advanced version of MNIST, i.e., MFMNIST benchmark results, using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
+Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we also provide the advanced version of MNIST, i.e., MFMNIST benchmark results, using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
 
 ### **STL Benchmarks on MFMNIST**
 
@@ -112,46 +112,46 @@ For a fair comparison of different methods, we report the best results when mode
 
 | Method       |   Setting  | Params |  FLOPs | FPS  |  MSE   |   MAE  |  SSIM  |  PSNR |   Download   |
 |--------------|:----------:|:------:|:------:|:----:|:------:|:------:|:------:|:-----:|:------------:|
-| ConvLSTM-S   |  200 epoch |  15.0M |  56.8G |  113 |  28.87 | 113.20 | 0.8793 | 22.07 | model \| log |
-| ConvLSTM-L   |  200 epoch |  33.8M | 127.0G |   50 |  25.51 | 104.85 | 0.8928 | 22.67 | model \| log |
-| PredNet      |  200 epoch |  12.5M |   8.6G |  659 | 185.94 | 318.30 | 0.6713 | 14.83 | model \| log |
-| PhyDNet      |  200 epoch |  3.1M  |  15.3G |  182 |  34.75 | 125.66 | 0.8567 | 22.03 | model \| log |
-| PredRNN      |  200 epoch |  23.8M | 116.0G |   54 |  22.01 |  91.74 | 0.9091 | 23.42 | model \| log |
-| PredRNN++    |  200 epoch |  38.6M | 171.7G |   38 |  21.71 |  91.97 | 0.9097 | 23.45 | model \| log |
-| MIM          |  200 epoch |  38.0M | 179.2G |   37 |  23.09 |  96.37 | 0.9043 | 23.13 | model \| log |
-| MAU          |  200 epoch |   4.5M |  17.8G |  201 |  26.56 | 104.39 | 0.8916 | 22.51 | model \| log |
-| E3D-LSTM     |  200 epoch |  51.0M | 298.9G |   18 |  35.35 | 110.09 | 0.8722 | 21.27 | model \| log |
-| PredRNN.V2   |  200 epoch |  23.9M | 116.6G |   52 |  24.13 |  97.46 | 0.9004 | 22.96 | model \| log |
-| DMVFN        |  200 epoch |   3.5M |   0.2G | 1145 | 118.32 | 220.02 | 0.7572 | 16.76 | model \| log |
-| SimVP+IncepU |  200 epoch |  58.0M |  19.4G |  209 |  30.77 | 113.94 | 0.8740 | 21.81 | model \| log |
-| SimVP+gSTA-S |  200 epoch |  46.8M |  16.5G |  282 |  25.86 | 101.22 | 0.8933 | 22.61 | model \| log |
-| TAU          |  200 epoch |  44.7M |  16.0G |  283 |  24.24 |  96.72 | 0.8995 | 22.87 | model \| log |
+| ConvLSTM-S   |  200 epoch |  15.0M |  56.8G |  113 |  28.87 | 113.20 | 0.8793 | 22.07 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_convlstm_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_convlstm_one_ep200.log) |
+| ConvLSTM-L   |  200 epoch |  33.8M | 127.0G |   50 |  25.51 | 104.85 | 0.8928 | 22.67 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_convlstm_l_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_convlstm_l_one_ep200.log) |
+| PredNet      |  200 epoch |  12.5M |   8.6G |  659 | 185.94 | 318.30 | 0.6713 | 14.83 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_prednet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_prednet_one_ep200.log) |
+| PhyDNet      |  200 epoch |  3.1M  |  15.3G |  182 |  34.75 | 125.66 | 0.8567 | 22.03 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_phydnet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_phydnet_one_ep200.log) |
+| PredRNN      |  200 epoch |  23.8M | 116.0G |   54 |  22.01 |  91.74 | 0.9091 | 23.42 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_predrnn_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_predrnn_one_ep200.log) |
+| PredRNN++    |  200 epoch |  38.6M | 171.7G |   38 |  21.71 |  91.97 | 0.9097 | 23.45 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_predrnnpp_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_predrnnpp_one_ep200.log) |
+| MIM          |  200 epoch |  38.0M | 179.2G |   37 |  23.09 |  96.37 | 0.9043 | 23.13 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_mim_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_mim_one_ep200.log) |
+| MAU          |  200 epoch |   4.5M |  17.8G |  201 |  26.56 | 104.39 | 0.8916 | 22.51 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_mau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_mau_one_ep200.log) |
+| E3D-LSTM     |  200 epoch |  51.0M | 298.9G |   18 |  35.35 | 110.09 | 0.8722 | 21.27 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_e3dlstm_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_e3dlstm_one_ep200.log) |
+| PredRNN.V2   |  200 epoch |  23.9M | 116.6G |   52 |  24.13 |  97.46 | 0.9004 | 22.96 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_predrnnv2_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_predrnnv2_one_ep200.log) |
+| DMVFN        |  200 epoch |   3.5M |   0.2G | 1145 | 118.32 | 220.02 | 0.7572 | 16.76 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_dmvfn_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/mfmnist_dmvfn_one_ep200.log) |
+| SimVP+IncepU |  200 epoch |  58.0M |  19.4G |  209 |  30.77 | 113.94 | 0.8740 | 21.81 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_incepu_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_incepu_one_ep200.log) |
+| SimVP+gSTA-S |  200 epoch |  46.8M |  16.5G |  282 |  25.86 | 101.22 | 0.8933 | 22.61 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_gsta_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_gsta_one_ep200.log) |
+| TAU          |  200 epoch |  44.7M |  16.0G |  283 |  24.24 |  96.72 | 0.8995 | 22.87 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_tau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_tau_one_ep200.log) |
 
 ### **Benchmark of MetaFormers Based on SimVP (MetaVP)**
 
-Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200 epochs. We provide config file in [configs/mfmnist/simvp](https://github.com/chengtan9907/OpenSTL/configs/mfmnist/simvp/).
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200 epochs. We provide config files in [configs/mfmnist/simvp](https://github.com/chengtan9907/OpenSTL/configs/mfmnist/simvp/).
 
 | MetaFormer       |   Setting  | Params |  FLOPs | FPS |  MSE  |   MAE  |  SSIM  |  PSNR |   Download   |
 |------------------|:----------:|:------:|:------:|:---:|:-----:|:------:|:------:|:-----:|:------------:|
-| IncepU (SimVPv1) |  200 epoch |  58.0M |  19.4G | 209 | 30.77 | 113.94 | 0.8740 | 21.81 | model \| log |
-| gSTA (SimVPv2)   |  200 epoch |  46.8M |  16.5G | 282 | 25.86 | 101.22 | 0.8933 | 22.61 | model \| log |
-| ViT              |  200 epoch |  46.1M | 16.9.G | 290 | 31.05 | 115.59 | 0.8712 | 21.83 | model \| log |
-| Swin Transformer |  200 epoch |  46.1M |  16.4G | 294 | 28.66 | 108.93 | 0.8815 | 22.08 | model \| log |
-| Uniformer        |  200 epoch |  44.8M |  16.5G | 296 | 29.56 | 111.72 | 0.8779 | 21.97 | model \| log |
-| MLP-Mixer        |  200 epoch |  38.2M |  14.7G | 334 | 28.83 | 109.51 | 0.8803 | 22.01 | model \| log |
-| ConvMixer        |  200 epoch |   3.9M |   5.5G | 658 | 31.21 | 115.74 | 0.8709 | 21.71 | model \| log |
-| Poolformer       |  200 epoch |  37.1M |  14.1G | 341 | 30.02 | 113.07 | 0.8750 | 21.95 | model \| log |
-| ConvNeXt         |  200 epoch |  37.3M |  14.1G | 344 | 26.41 | 102.56 | 0.8908 | 22.49 | model \| log |
-| VAN              |  200 epoch |  44.5M |  16.0G | 288 | 31.39 | 116.28 | 0.8703 | 22.82 | model \| log |
-| HorNet           |  200 epoch |  45.7M |  16.3G | 287 | 29.19 | 110.17 | 0.8796 | 22.03 | model \| log |
-| MogaNet          |  200 epoch |  46.8M |  16.5G | 255 | 25.14 |  99.69 | 0.8960 | 22.73 | model \| log |
-| TAU              |  200 epoch |  44.7M |  16.0G | 283 | 24.24 |  96.72 | 0.8995 | 22.87 | model \| log |
+| IncepU (SimVPv1) |  200 epoch |  58.0M |  19.4G | 209 | 30.77 | 113.94 | 0.8740 | 21.81 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_incepu_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_incepu_one_ep200.log) |
+| gSTA (SimVPv2)   |  200 epoch |  46.8M |  16.5G | 282 | 25.86 | 101.22 | 0.8933 | 22.61 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_gsta_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_gsta_one_ep200.log) |
+| ViT              |  200 epoch |  46.1M | 16.9.G | 290 | 31.05 | 115.59 | 0.8712 | 21.83 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_vit_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_vit_one_ep200.log) |
+| Swin Transformer |  200 epoch |  46.1M |  16.4G | 294 | 28.66 | 108.93 | 0.8815 | 22.08 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_swin_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_swin_one_ep200.log) |
+| Uniformer        |  200 epoch |  44.8M |  16.5G | 296 | 29.56 | 111.72 | 0.8779 | 21.97 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_uniformer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_uniformer_one_ep200.log) |
+| MLP-Mixer        |  200 epoch |  38.2M |  14.7G | 334 | 28.83 | 109.51 | 0.8803 | 22.01 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_mlpmixer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_mlpmixer_one_ep200.log) |
+| ConvMixer        |  200 epoch |   3.9M |   5.5G | 658 | 31.21 | 115.74 | 0.8709 | 21.71 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_convmixer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_convmixer_one_ep200.log) |
+| Poolformer       |  200 epoch |  37.1M |  14.1G | 341 | 30.02 | 113.07 | 0.8750 | 21.95 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_poolformer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_poolformer_one_ep200.log) |
+| ConvNeXt         |  200 epoch |  37.3M |  14.1G | 344 | 26.41 | 102.56 | 0.8908 | 22.49 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_convnext_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_convnext_one_ep200.log) |
+| VAN              |  200 epoch |  44.5M |  16.0G | 288 | 31.39 | 116.28 | 0.8703 | 22.82 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_van_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_van_one_ep200.log) |
+| HorNet           |  200 epoch |  45.7M |  16.3G | 287 | 29.19 | 110.17 | 0.8796 | 22.03 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_hornet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_hornet_one_ep200.log) |
+| MogaNet          |  200 epoch |  46.8M |  16.5G | 255 | 25.14 |  99.69 | 0.8960 | 22.73 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_moganet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_simvp_moganet_one_ep200.log) |
+| TAU              |  200 epoch |  44.7M |  16.0G | 283 | 24.24 |  96.72 | 0.8995 | 22.87 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_tau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mfmnist-weights/fmnist_tau_one_ep200.log) |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Moving MNIST-CIFAR Benchmarks
 
-Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we further design the advanced version of MNIST with complex backgrounds from CIFAR-10, i.e., MMNIST-CIFAR benchmark, using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
+Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we further design the advanced version of MNIST with complex backgrounds from CIFAR-10, i.e., MMNIST-CIFAR benchmark, using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
 
 ### **STL Benchmarks on MMNIST-CIFAR**
 
@@ -159,46 +159,46 @@ For a fair comparison of different methods, we report the best results when mode
 
 | Method       |   Setting  | Params |  FLOPs | FPS |  MSE   |   MAE  |  SSIM  |  PSNR |   Download   |
 |--------------|:----------:|:------:|:------:|:---:|:------:|:------:|:------:|:-----:|:------------:|
-| ConvLSTM-S   |  200 epoch |  15.5M |  58.8G | 113 |  73.31 | 338.56 | 0.9204 | 23.09 | model \| log |
-| ConvLSTM-L   |  200 epoch |  34.4M | 130.0G |  50 |  62.86 | 291.05 | 0.9337 | 23.83 | model \| log |
-| PredNet      |  200 epoch |  12.5M |   8.6G | 945 | 286.70 | 514.14 | 0.8139 | 17.49 | model \| log |
-| PhyDNet      |  200 epoch |   3.1M |  15.3G | 182 | 142.54 | 700.37 | 0.8276 | 19.92 | model \| log |
-| PredRNN      |  200 epoch |  23.8M | 116.0G |  54 |  50.09 | 225.04 | 0.9499 | 24.90 | model \| log |
-| PredRNN++    |  200 epoch |  38.6M | 171.7G |  38 |  44.19 | 198.27 | 0.9567 | 25.60 | model \| log |
-| MIM          |  200 epoch |  38.8M | 183.0G |  37 |  48.63 | 213.44 | 0.9521 | 25.08 | model \| log |
-| MAU          |  200 epoch |   4.5M |  17.8G | 201 |  58.84 | 255.76 | 0.9408 | 24.19 | model \| log |
-| E3D-LSTM     |  200 epoch |  52.8M | 306.0G |  18 |  80.79 | 214.86 | 0.9314 | 22.89 | model \| log |
-| PredRNN.V2   |  200 epoch |  23.9M | 116.6G |  52 |  57.27 | 252.29 | 0.9419 | 24.24 | model \| log |
-| DMVFN        |  200 epoch |   3.6M |   0.2G | 960 | 298.73 | 606.92 | 0.7765 | 17.07 | model \| log |
-| SimVP+IncepU |  200 epoch |  58.0M |  19.4G | 209 |  59.83 | 214.54 | 0.9414 | 24.15 | model \| log |
-| SimVP+gSTA-S |  200 epoch |  46.8M |  16.5G | 282 |  51.13 | 185.13 | 0.9512 | 24.93 | model \| log |
-| TAU          |  200 epoch |  44.7M |  16.0G | 275 |  48.17 | 177.35 | 0.9539 | 25.21 | model \| log |
+| ConvLSTM-S   |  200 epoch |  15.5M |  58.8G | 113 |  73.31 | 338.56 | 0.9204 | 23.09 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_convlstm_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_convlstm_one_ep200.log) |
+| ConvLSTM-L   |  200 epoch |  34.4M | 130.0G |  50 |  62.86 | 291.05 | 0.9337 | 23.83 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_convlstm_l_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_convlstm_l_one_ep200.log) |
+| PredNet      |  200 epoch |  12.5M |   8.6G | 945 | 286.70 | 514.14 | 0.8139 | 17.49 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_prednet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_prednet_one_ep200.log) |
+| PhyDNet      |  200 epoch |   3.1M |  15.3G | 182 | 142.54 | 700.37 | 0.8276 | 19.92 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_phydnet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_phydnet_one_ep200.log) |
+| PredRNN      |  200 epoch |  23.8M | 116.0G |  54 |  50.09 | 225.04 | 0.9499 | 24.90 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_predrnn_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_predrnn_one_ep200.log) |
+| PredRNN++    |  200 epoch |  38.6M | 171.7G |  38 |  44.19 | 198.27 | 0.9567 | 25.60 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_predrnnpp_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_predrnnpp_one_ep200.log) |
+| MIM          |  200 epoch |  38.8M | 183.0G |  37 |  48.63 | 213.44 | 0.9521 | 25.08 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_mim_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_mim_one_ep200.log) |
+| MAU          |  200 epoch |   4.5M |  17.8G | 201 |  58.84 | 255.76 | 0.9408 | 24.19 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_mau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_mau_one_ep200.log) |
+| E3D-LSTM     |  200 epoch |  52.8M | 306.0G |  18 |  80.79 | 214.86 | 0.9314 | 22.89 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_e3dlstm_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_e3dlstm_one_ep200.log) |
+| PredRNN.V2   |  200 epoch |  23.9M | 116.6G |  52 |  57.27 | 252.29 | 0.9419 | 24.24 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_predrnnv2_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_predrnnv2_one_ep200.log) |
+| DMVFN        |  200 epoch |   3.6M |   0.2G | 960 | 298.73 | 606.92 | 0.7765 | 17.07 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_dmvfn_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_dmvfn_one_ep200.log) |
+| SimVP+IncepU |  200 epoch |  58.0M |  19.4G | 209 |  59.83 | 214.54 | 0.9414 | 24.15 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_incepu_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_incepu_one_ep200.log) |
+| SimVP+gSTA-S |  200 epoch |  46.8M |  16.5G | 282 |  51.13 | 185.13 | 0.9512 | 24.93 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_gsta_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_gsta_one_ep200.log) |
+| TAU          |  200 epoch |  44.7M |  16.0G | 275 |  48.17 | 177.35 | 0.9539 | 25.21 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_tau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_tau_one_ep200.log) |
 
 ### **Benchmark of MetaFormers Based on SimVP (MetaVP)**
 
-Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200 epochs. We provide config file in [configs/mmnist_cifar/simvp](https://github.com/chengtan9907/OpenSTL/configs/mmnist_cifar/simvp/).
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with training times of 200 epochs. We provide config files in [configs/mmnist_cifar/simvp](https://github.com/chengtan9907/OpenSTL/configs/mmnist_cifar/simvp/).
 
 | MetaFormer       |   Setting  | Params | FLOPs | FPS |  MSE  |   MAE  |  SSIM  |  PSNR |   Download   |
 |------------------|:----------:|:------:|:-----:|:---:|:-----:|:------:|:------:|:-----:|:------------:|
-| IncepU (SimVPv1) |  200 epoch |  58.0M | 19.4G | 209 | 59.83 | 214.54 | 0.9414 | 24.15 | model \| log |
-| gSTA (SimVPv2)   |  200 epoch |  46.8M | 16.5G | 282 | 51.13 | 185.13 | 0.9512 | 24.93 | model \| log |
-| ViT              |  200 epoch |  46.1M | 16.9G | 290 | 64.94 | 234.01 | 0.9354 | 23.90 | model \| log |
-| Swin Transformer |  200 epoch |  46.1M | 16.4G | 294 | 57.11 | 207.45 | 0.9443 | 24.34 | model \| log |
-| Uniformer        |  200 epoch |  44.8M | 16.5G | 296 | 56.96 | 207.51 | 0.9442 | 24.38 | model \| log |
-| MLP-Mixer        |  200 epoch |  38.2M | 14.7G | 334 | 57.03 | 206.46 | 0.9446 | 24.34 | model \| log |
-| ConvMixer        |  200 epoch |   3.9M |  5.5G | 658 | 59.29 | 219.76 | 0.9403 | 24.17 | model \| log |
-| Poolformer       |  200 epoch |  37.1M | 14.1G | 341 | 60.98 | 219.50 | 0.9399 | 24.16 | model \| log |
-| ConvNeXt         |  200 epoch |  37.3M | 14.1G | 344 | 51.39 | 187.17 | 0.9503 | 24.89 | model \| log |
-| VAN              |  200 epoch |  44.5M | 16.0G | 288 | 59.59 | 221.32 | 0.9398 | 25.20 | model \| log |
-| HorNet           |  200 epoch |  45.7M | 16.3G | 287 | 55.79 | 202.73 | 0.9456 | 24.49 | model \| log |
-| MogaNet          |  200 epoch |  46.8M | 16.5G | 255 | 49.48 | 184.11 | 0.9521 | 25.07 | model \| log |
-| TAU              |  200 epoch |  44.7M | 16.0G | 275 | 48.17 | 177.35 | 0.9539 | 25.21 | model \| log |
+| IncepU (SimVPv1) |  200 epoch |  58.0M | 19.4G | 209 | 59.83 | 214.54 | 0.9414 | 24.15 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_incepu_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_incepu_one_ep200.log) |
+| gSTA (SimVPv2)   |  200 epoch |  46.8M | 16.5G | 282 | 51.13 | 185.13 | 0.9512 | 24.93 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_gsta_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_gsta_one_ep200.log) |
+| ViT              |  200 epoch |  46.1M | 16.9G | 290 | 64.94 | 234.01 | 0.9354 | 23.90 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_vit_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_vit_one_ep200.log) |
+| Swin Transformer |  200 epoch |  46.1M | 16.4G | 294 | 57.11 | 207.45 | 0.9443 | 24.34 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_swin_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_swin_one_ep200.log) |
+| Uniformer        |  200 epoch |  44.8M | 16.5G | 296 | 56.96 | 207.51 | 0.9442 | 24.38 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_uniformer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_uniformer_one_ep200.log) |
+| MLP-Mixer        |  200 epoch |  38.2M | 14.7G | 334 | 57.03 | 206.46 | 0.9446 | 24.34 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_mlpmixer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_mlpmixer_one_ep200.log) |
+| ConvMixer        |  200 epoch |   3.9M |  5.5G | 658 | 59.29 | 219.76 | 0.9403 | 24.17 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_convmixer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_convmixer_one_ep200.log) |
+| Poolformer       |  200 epoch |  37.1M | 14.1G | 341 | 60.98 | 219.50 | 0.9399 | 24.16 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_poolformer_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_poolformer_one_ep200.log) |
+| ConvNeXt         |  200 epoch |  37.3M | 14.1G | 344 | 51.39 | 187.17 | 0.9503 | 24.89 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_convnext_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_convnext_one_ep200.log) |
+| VAN              |  200 epoch |  44.5M | 16.0G | 288 | 59.59 | 221.32 | 0.9398 | 25.20 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_van_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_van_one_ep200.log) |
+| HorNet           |  200 epoch |  45.7M | 16.3G | 287 | 55.79 | 202.73 | 0.9456 | 24.49 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_hornet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_hornet_one_ep200.log) |
+| MogaNet          |  200 epoch |  46.8M | 16.5G | 255 | 49.48 | 184.11 | 0.9521 | 25.07 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_moganet_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_simvp_moganet_one_ep200.log) |
+| TAU              |  200 epoch |  44.7M | 16.0G | 275 | 48.17 | 177.35 | 0.9539 | 25.21 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_tau_one_ep200.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-cifar-weights/mmnist_cifar_tau_one_ep200.log) |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## KittiCaltech Benchmarks
 
-We provide benchmark results on [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) dataset using $10\rightarrow 1$ frames prediction setting following [PredNet](https://arxiv.org/abs/1605.08104). Metrics (MSE, MAE, SSIM, pSNR, LPIPS) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with Onecycle scheduler on **single GPU**, while some computational consuming methods (denoted by \*) using **4GPUs**.
+We provide benchmark results on [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) dataset using $10\rightarrow 1$ frames prediction setting following [PredNet](https://arxiv.org/abs/1605.08104). Metrics (MSE, MAE, SSIM, pSNR, LPIPS) of the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with Onecycle scheduler on **single GPU**, while some computational consuming methods (denoted by \*) using **4GPUs**.
 
 ### **STL Benchmarks on KittiCaltech**
 
@@ -206,85 +206,85 @@ For a fair comparison of different methods, we report the best results when mode
 
 | Method       |  Setting  | Params |  FLOPs | FPS |  MSE  |   MAE  |  SSIM  |  PSNR |  LPIPS  |   Download   |
 |--------------|:---------:|:------:|:------:|:---:|:-----:|:------:|:------:|:-----:|:-------:|:------------:|
-| ConvLSTM-S   | 100 epoch |  15.0M | 595.0G |  33 | 139.6 | 1583.3 | 0.9345 | 27.46 | 0.08575 | model \| log |
-| E3D-LSTM\*   | 100 epoch |  54.9M |  1004G |  10 | 200.6 | 1946.2 | 0.9047 | 25.45 | 0.12602 | model \| log |
-| PredNet      | 100 epoch |  12.5M |  42.8G |  94 | 159.8 | 1568.9 | 0.9286 | 27.21 | 0.11289 | model \| log |
-| PhyDNet      | 100 epoch |   3.1M |  40.4G | 117 | 312.2 | 2754.8 | 0.8615 | 23.26 | 0.32194 | model \| log |
-| MAU          | 100 epoch |  24.3M | 172.0G |  16 | 177.8 | 1800.4 | 0.9176 | 26.14 | 0.09673 | model \| log |
-| MIM          | 100 epoch |  49.2M |  1858G |  39 | 125.1 | 1464.0 | 0.9409 | 28.10 | 0.06353 | model \| log |
-| PredRNN      | 100 epoch |  23.7M |  1216G |  17 | 130.4 | 1525.5 | 0.9374 | 27.81 | 0.07395 | model \| log |
-| PredRNN++    | 100 epoch |  38.5M |  1803G |  12 | 125.5 | 1453.2 | 0.9433 | 28.02 | 0.13210 | model \| log |
-| PredRNN.V2   | 100 epoch |  23.8M |  1223G |  52 | 147.8 | 1610.5 | 0.9330 | 27.12 | 0.08920 | model \| log |
-| DMVFN        | 100 epoch |   3.6M |   1.2G | 557 | 183.9 | 1531.1 | 0.9314 | 26.95 | 0.04942 | model \| log |
-| SimVP+IncepU | 100 epoch |   8.6M |  60.6G |  57 | 160.2 | 1690.8 | 0.9338 | 26.81 | 0.06755 | model \| log |
-| SimVP+gSTA-S | 100 epoch |  15.6M |  96.3G |  40 | 129.7 | 1507.7 | 0.9454 | 27.89 | 0.05736 | model \| log |
-| TAU          | 100 epoch |  44.7M |  80.0G |  55 | 131.1 | 1507.8 | 0.9456 | 27.83 | 0.05494 | model \| log |
+| ConvLSTM-S   | 100 epoch |  15.0M | 595.0G |  33 | 139.6 | 1583.3 | 0.9345 | 27.46 | 0.08575 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_convlstm_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_convlstm_one_ep100.log) |
+| E3D-LSTM\*   | 100 epoch |  54.9M |  1004G |  10 | 200.6 | 1946.2 | 0.9047 | 25.45 | 0.12602 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_e3dlstm_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_e3dlstm_one_ep100.log) |
+| PredNet      | 100 epoch |  12.5M |  42.8G |  94 | 159.8 | 1568.9 | 0.9286 | 27.21 | 0.11289 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_prednet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_prednet_one_ep100.log) |
+| PhyDNet      | 100 epoch |   3.1M |  40.4G | 117 | 312.2 | 2754.8 | 0.8615 | 23.26 | 0.32194 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_phydnet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_phydnet_one_ep100.log) |
+| MAU          | 100 epoch |  24.3M | 172.0G |  16 | 177.8 | 1800.4 | 0.9176 | 26.14 | 0.09673 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_mau_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_mau_one_ep100.log) |
+| MIM          | 100 epoch |  49.2M |  1858G |  39 | 125.1 | 1464.0 | 0.9409 | 28.10 | 0.06353 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_mim_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_mim_one_ep100.log) |
+| PredRNN      | 100 epoch |  23.7M |  1216G |  17 | 130.4 | 1525.5 | 0.9374 | 27.81 | 0.07395 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_predrnn_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_predrnn_one_ep100.log) |
+| PredRNN++    | 100 epoch |  38.5M |  1803G |  12 | 125.5 | 1453.2 | 0.9433 | 28.02 | 0.13210 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_predrnnpp_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_predrnnpp_one_ep100.log) |
+| PredRNN.V2   | 100 epoch |  23.8M |  1223G |  52 | 147.8 | 1610.5 | 0.9330 | 27.12 | 0.08920 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_predrnnv2_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_predrnnv2_one_ep100.log) |
+| DMVFN        | 100 epoch |   3.6M |   1.2G | 557 | 183.9 | 1531.1 | 0.9314 | 26.95 | 0.04942 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_dmvfn_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_dmvfn_one_ep100.log) |
+| SimVP+IncepU | 100 epoch |   8.6M |  60.6G |  57 | 160.2 | 1690.8 | 0.9338 | 26.81 | 0.06755 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_incepu_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_incepu_one_ep100.log) |
+| SimVP+gSTA-S | 100 epoch |  15.6M |  96.3G |  40 | 129.7 | 1507.7 | 0.9454 | 27.89 | 0.05736 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_gsta_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_gsta_one_ep100.log) |
+| TAU          | 100 epoch |  44.7M |  80.0G |  55 | 131.1 | 1507.8 | 0.9456 | 27.83 | 0.05494 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_tau_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_tau_one_ep100.log) |
 
 ### **Benchmark of MetaFormers Based on SimVP (MetaVP)**
 
-Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with 100-epoch training. We provide config file in [configs/kitticaltech/simvp](https://github.com/chengtan9907/OpenSTL/configs/kitticaltech/simvp/).
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with 100-epoch training. We provide config files in [configs/kitticaltech/simvp](https://github.com/chengtan9907/OpenSTL/configs/kitticaltech/simvp/).
 
 | MetaFormer       |  Setting  | Params |  FLOPs | FPS |  MSE  |  MAE   |  SSIM  |  PSNR |  LPIPS  |   Download   |
 |------------------|:---------:|:------:|:------:|:---:|:-----:|:------:|:------:|:-----:|:-------:|:------------:|
-| IncepU (SimVPv1) | 100 epoch |   8.6M |  60.6G |  57 | 160.2 | 1690.8 | 0.9338 | 26.81 | 0.06755 | model \| log |
-| gSTA (SimVPv2)   | 100 epoch |  15.6M |  96.3G |  40 | 129.7 | 1507.7 | 0.9454 | 27.89 | 0.05736 | model \| log |
-| ViT\*            | 100 epoch |  12.7M | 155.0G |  25 | 146.4 | 1615.8 | 0.9379 | 27.43 | 0.06659 | model \| log |
-| Swin Transformer | 100 epoch |  15.3M |  95.2G |  49 | 155.2 | 1588.9 | 0.9299 | 27.25 | 0.08113 | model \| log |
-| Uniformer\*      | 100 epoch |  11.8M | 104.0G |  28 | 135.9 | 1534.2 | 0.9393 | 27.66 | 0.06867 | model \| log |
-| MLP-Mixer        | 100 epoch |  22.2M |  83.5G |  60 | 207.9 | 1835.9 | 0.9133 | 26.29 | 0.07750 | model \| log |
-| ConvMixer        | 100 epoch |   1.5M |  23.1G | 129 | 174.7 | 1854.3 | 0.9232 | 26.23 | 0.07758 | model \| log |
-| Poolformer       | 100 epoch |  12.4M |  79.8G |  51 | 153.4 | 1613.5 | 0.9334 | 27.38 | 0.07000 | model \| log |
-| ConvNeXt         | 100 epoch |  12.5M |  80.2G |  54 | 146.8 | 1630.0 | 0.9336 | 27.19 | 0.06987 | model \| log |
-| VAN              | 100 epoch |  14.9M |  92.5G |  41 | 127.5 | 1476.5 | 0.9462 | 27.98 | 0.05500 | model \| log |
-| HorNet           | 100 epoch |  15.3M |  94.4G |  43 | 152.8 | 1637.9 | 0.9365 | 27.09 | 0.06004 | model \| log |
-| MogaNet          | 100 epoch |  15.6M |  96.2G |  36 | 131.4 | 1512.1 | 0.9442 | 27.79 | 0.05394 | model \| log |
-| TAU              | 100 epoch |  44.7M |  80.0G |  55 | 131.1 | 1507.8 | 0.9456 | 27.83 | 0.05494 | model \| log |
+| IncepU (SimVPv1) | 100 epoch |   8.6M |  60.6G |  57 | 160.2 | 1690.8 | 0.9338 | 26.81 | 0.06755 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_incepu_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_incepu_one_ep100.log) |
+| gSTA (SimVPv2)   | 100 epoch |  15.6M |  96.3G |  40 | 129.7 | 1507.7 | 0.9454 | 27.89 | 0.05736 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_gsta_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_gsta_one_ep100.log) |
+| ViT\*            | 100 epoch |  12.7M | 155.0G |  25 | 146.4 | 1615.8 | 0.9379 | 27.43 | 0.06659 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_vit_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_vit_one_ep100.log) |
+| Swin Transformer | 100 epoch |  15.3M |  95.2G |  49 | 155.2 | 1588.9 | 0.9299 | 27.25 | 0.08113 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_swin_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_swin_one_ep100.log) |
+| Uniformer\*      | 100 epoch |  11.8M | 104.0G |  28 | 135.9 | 1534.2 | 0.9393 | 27.66 | 0.06867 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_uniformer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_uniformer_one_ep100.log) |
+| MLP-Mixer        | 100 epoch |  22.2M |  83.5G |  60 | 207.9 | 1835.9 | 0.9133 | 26.29 | 0.07750 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_mlpmixer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_mlpmixer_one_ep100.log) |
+| ConvMixer        | 100 epoch |   1.5M |  23.1G | 129 | 174.7 | 1854.3 | 0.9232 | 26.23 | 0.07758 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_convmixer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_convmixer_one_ep100.log) |
+| Poolformer       | 100 epoch |  12.4M |  79.8G |  51 | 153.4 | 1613.5 | 0.9334 | 27.38 | 0.07000 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_poolformer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_poolformer_one_ep100.log) |
+| ConvNeXt         | 100 epoch |  12.5M |  80.2G |  54 | 146.8 | 1630.0 | 0.9336 | 27.19 | 0.06987 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_convnext_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_convnext_one_ep100.log) |
+| VAN              | 100 epoch |  14.9M |  92.5G |  41 | 127.5 | 1476.5 | 0.9462 | 27.98 | 0.05500 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_van_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_van_one_ep100.log) |
+| HorNet           | 100 epoch |  15.3M |  94.4G |  43 | 152.8 | 1637.9 | 0.9365 | 27.09 | 0.06004 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_hornet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_hornet_one_ep100.log) |
+| MogaNet          | 100 epoch |  15.6M |  96.2G |  36 | 131.4 | 1512.1 | 0.9442 | 27.79 | 0.05394 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_moganet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_simvp_moganet_one_ep100.log) |
+| TAU              | 100 epoch |  44.7M |  80.0G |  55 | 131.1 | 1507.8 | 0.9456 | 27.83 | 0.05494 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_tau_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kitti-weights/kitticaltech_tau_one_ep100.log) |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## KTH Benchmarks
 
-We provide long-term prediction benchmark results on [KTH Action](https://ieeexplore.ieee.org/document/1334462) dataset using $10\rightarrow 20$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR, LPIPS) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with a batch size of 16 and Onecycle scheduler on **single GPU** or **4GPUs**, and we report the used GPU setups for each methods (also shown in the config).
+We provide long-term prediction benchmark results on [KTH Action](https://ieeexplore.ieee.org/document/1334462) dataset using $10\rightarrow 20$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR, LPIPS) of the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with a batch size of 16 and Onecycle scheduler on **single GPU** or **4GPUs**, and we report the used GPU setups for each method (also shown in the config).
 
-### **STL Benchmarks on KittiCaltech**
+### **STL Benchmarks on KTH**
 
 For a fair comparison of different methods, we report the best results when models are trained to convergence. We provide config files in [configs/kth](https://github.com/chengtan9907/OpenSTL/configs/kth). Notice that `4xbs4` indicates 4GPUs DDP training with the batch size of 4 on each GPU.
 
 | Method       |  Setting  |  GPUs  | Params |  FLOPs  | FPS |  MSE   |  MAE  |  SSIM  |  PSNR |  LPIPS  |   Download   |
 |--------------|:---------:|:------:|:------:|:-------:|:---:|:------:|:-----:|:------:|:-----:|:-------:|:------------:|
-| ConvLSTM-S   | 100 epoch | 1xbs16 |  14.9M | 1368.0G |  16 |  47.65 | 445.5 | 0.8977 | 26.99 | 0.26686 | model \| log |
-| E3D-LSTM     | 100 epoch |  2xbs8 |  53.5M |  217.0G |  17 | 136.40 | 892.7 | 0.8153 | 21.78 | 0.48358 | model \| log |
-| PredNet      | 100 epoch | 1xbs16 |  12.5M |    3.4G | 399 | 152.11 | 783.1 | 0.8094 | 22.45 | 0.32159 | model \| log |
-| PhyDNet      | 100 epoch | 1xbs16 |   3.1M |   93.6G |  58 |  91.12 | 765.6 | 0.8322 | 23.41 | 0.50155 | model \| log |
-| MAU          | 100 epoch | 1xbs16 |  20.1M |  399.0G |   8 |  51.02 | 471.2 | 0.8945 | 26.73 | 0.25442 | model \| log |
-| MIM          | 100 epoch | 1xbs16 |  39.8M | 1099.0G |  17 |  40.73 | 380.8 | 0.9025 | 27.78 | 0.18808 | model \| log |
-| PredRNN      | 100 epoch | 1xbs16 |  23.6M | 2800.0G |   7 |  41.07 | 380.6 | 0.9097 | 27.95 | 0.21892 | model \| log |
-| PredRNN++    | 100 epoch | 1xbs16 |  38.3M | 4162.0G |   5 |  39.84 | 370.4 | 0.9124 | 28.13 | 0.19871 | model \| log |
-| PredRNN.V2   | 100 epoch | 1xbs16 |  23.6M | 2815.0G |   7 |  39.57 | 368.8 | 0.9099 | 28.01 | 0.21478 | model \| log |
-| DMVFN        | 100 epoch | 1xbs16 |   3.5M |   0.88G | 727 |  59.61 | 413.2 | 0.8976 | 26.65 | 0.12842 | model \| log |
-| SimVP+IncepU | 100 epoch |  2xbs8 |  12.2M |   62.8G |  77 |  41.11 | 397.1 | 0.9065 | 27.46 | 0.26496 | model \| log |
-| SimVP+gSTA-S | 100 epoch |  4xbs4 |  15.6M |   76.8G |  53 |  45.02 | 417.8 | 0.9049 | 27.04 | 0.25240 | model \| log |
-| TAU          | 100 epoch |  4xbs4 |  15.0M |   73.8G |  55 |  45.32 | 421.7 | 0.9086 | 27.10 | 0.22856 | model \| log |
+| ConvLSTM-S   | 100 epoch | 1xbs16 |  14.9M | 1368.0G |  16 |  47.65 | 445.5 | 0.8977 | 26.99 | 0.26686 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_convlstm_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_convlstm_one_ep100.log) |
+| E3D-LSTM     | 100 epoch |  2xbs8 |  53.5M |  217.0G |  17 | 136.40 | 892.7 | 0.8153 | 21.78 | 0.48358 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_e3dlstm_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_e3dlstm_one_ep100.log) |
+| PredNet      | 100 epoch | 1xbs16 |  12.5M |    3.4G | 399 | 152.11 | 783.1 | 0.8094 | 22.45 | 0.32159 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_prednet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_prednet_one_ep100.log) |
+| PhyDNet      | 100 epoch | 1xbs16 |   3.1M |   93.6G |  58 |  91.12 | 765.6 | 0.8322 | 23.41 | 0.50155 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_phydnet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_phydnet_one_ep100.log) |
+| MAU          | 100 epoch | 1xbs16 |  20.1M |  399.0G |   8 |  51.02 | 471.2 | 0.8945 | 26.73 | 0.25442 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_mau_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_mau_one_ep100.log) |
+| MIM          | 100 epoch | 1xbs16 |  39.8M | 1099.0G |  17 |  40.73 | 380.8 | 0.9025 | 27.78 | 0.18808 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_mim_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_mim_one_ep100.log) |
+| PredRNN      | 100 epoch | 1xbs16 |  23.6M | 2800.0G |   7 |  41.07 | 380.6 | 0.9097 | 27.95 | 0.21892 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_predrnn_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_predrnn_one_ep100.log) |
+| PredRNN++    | 100 epoch | 1xbs16 |  38.3M | 4162.0G |   5 |  39.84 | 370.4 | 0.9124 | 28.13 | 0.19871 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_predrnnpp_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_predrnnpp_one_ep100.log) |
+| PredRNN.V2   | 100 epoch | 1xbs16 |  23.6M | 2815.0G |   7 |  39.57 | 368.8 | 0.9099 | 28.01 | 0.21478 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_predrnnv2_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_predrnnv2_one_ep100.log) |
+| DMVFN        | 100 epoch | 1xbs16 |   3.5M |   0.88G | 727 |  59.61 | 413.2 | 0.8976 | 26.65 | 0.12842 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_dmvfn_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_dmvfn_one_ep100.log) |
+| SimVP+IncepU | 100 epoch |  2xbs8 |  12.2M |   62.8G |  77 |  41.11 | 397.1 | 0.9065 | 27.46 | 0.26496 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_incepu_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_incepu_one_ep100.log) |
+| SimVP+gSTA-S | 100 epoch |  4xbs4 |  15.6M |   76.8G |  53 |  45.02 | 417.8 | 0.9049 | 27.04 | 0.25240 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_gsta_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_gsta_one_ep100.log) |
+| TAU          | 100 epoch |  4xbs4 |  15.0M |   73.8G |  55 |  45.32 | 421.7 | 0.9086 | 27.10 | 0.22856 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_tau_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_tau_one_ep100.log) |
 
 ### **Benchmark of MetaFormers Based on SimVP (MetaVP)**
 
-Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with 100-epoch training. We provide config file in [configs/kth/simvp](https://github.com/chengtan9907/OpenSTL/configs/kth/simvp/).
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with 100-epoch training. We provide config files in [configs/kth/simvp](https://github.com/chengtan9907/OpenSTL/configs/kth/simvp/).
 
 | MetaFormer       |  Setting  |  GPUs  | Params |  FLOPs | FPS |  MSE  |  MAE  |  SSIM  |  PSNR |  LPIPS  |   Download   |
 |------------------|:---------:|:------:|:------:|:------:|:---:|:-----:|:-----:|:------:|:-----:|:-------:|:------------:|
-| IncepU (SimVPv1) | 100 epoch |  2xbs8 |  12.2M |  62.8G |  77 | 41.11 | 397.1 | 0.9065 | 27.46 | 0.26496 | model \| log |
-| gSTA (SimVPv2)   | 100 epoch |  2xbs8 |  15.6M |  76.8G |  53 | 45.02 | 417.8 | 0.9049 | 27.04 | 0.25240 | model \| log |
-| ViT              | 100 epoch |  2xbs8 |  12.7M | 112.0G |  28 | 56.57 | 459.3 | 0.8947 | 26.19 | 0.27494 | model \| log |
-| Swin Transformer | 100 epoch |  2xbs8 |  15.3M |  75.9G |  65 | 45.72 | 405.7 | 0.9039 | 27.01 | 0.25178 | model \| log |
-| Uniformer        | 100 epoch |  2xbs8 |  11.8M |  78.3G |  43 | 44.71 | 404.6 | 0.9058 | 27.16 | 0.24174 | model \| log |
-| MLP-Mixer        | 100 epoch |  2xbs8 |  20.3M |  66.6G |  34 | 57.74 | 517.4 | 0.8886 | 25.72 | 0.28799 | model \| log |
-| ConvMixer        | 100 epoch |  2xbs8 |   1.5M |  18.3G | 175 | 47.31 | 446.1 | 0.8993 | 26.66 | 0.28149 | model \| log |
-| Poolformer       | 100 epoch |  2xbs8 |  12.4M |  63.6G |  67 | 45.44 | 400.9 | 0.9065 | 27.22 | 0.24763 | model \| log |
-| ConvNeXt         | 100 epoch |  2xbs8 |  12.5M |  63.9G |  72 | 45.48 | 428.3 | 0.9037 | 26.96 | 0.26253 | model \| log |
-| VAN              | 100 epoch |  2xbs8 |  14.9M |  73.8G |  55 | 45.05 | 409.1 | 0.9074 | 27.07 | 0.23116 | model \| log |
-| HorNet           | 100 epoch |  2xbs8 |  15.3M |  75.3G |  58 | 46.84 | 421.2 | 0.9005 | 26.80 | 0.26921 | model \| log |
-| MogaNet          | 100 epoch |  2xbs8 |  15.6M |  76.7G |  48 | 42.98 | 418.7 | 0.9065 | 27.16 | 0.25146 | model \| log |
-| TAU              | 100 epoch |  2xbs8 |  15.0M |  73.8G |  55 | 45.32 | 421.7 | 0.9086 | 27.10 | 0.22856 | model \| log |
+| IncepU (SimVPv1) | 100 epoch |  2xbs8 |  12.2M |  62.8G |  77 | 41.11 | 397.1 | 0.9065 | 27.46 | 0.26496 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_incepu_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_incepu_one_ep100.log) |
+| gSTA (SimVPv2)   | 100 epoch |  2xbs8 |  15.6M |  76.8G |  53 | 45.02 | 417.8 | 0.9049 | 27.04 | 0.25240 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_gsta_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_gsta_one_ep100.log) |
+| ViT              | 100 epoch |  2xbs8 |  12.7M | 112.0G |  28 | 56.57 | 459.3 | 0.8947 | 26.19 | 0.27494 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_vit_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_vit_one_ep100.log) |
+| Swin Transformer | 100 epoch |  2xbs8 |  15.3M |  75.9G |  65 | 45.72 | 405.7 | 0.9039 | 27.01 | 0.25178 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_swin_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_swin_one_ep100.log) |
+| Uniformer        | 100 epoch |  2xbs8 |  11.8M |  78.3G |  43 | 44.71 | 404.6 | 0.9058 | 27.16 | 0.24174 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_uniformer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_uniformer_one_ep100.log) |
+| MLP-Mixer        | 100 epoch |  2xbs8 |  20.3M |  66.6G |  34 | 57.74 | 517.4 | 0.8886 | 25.72 | 0.28799 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_mlpmixer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_mlpmixer_one_ep100.log) |
+| ConvMixer        | 100 epoch |  2xbs8 |   1.5M |  18.3G | 175 | 47.31 | 446.1 | 0.8993 | 26.66 | 0.28149 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_convmixer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_convmixer_one_ep100.log) |
+| Poolformer       | 100 epoch |  2xbs8 |  12.4M |  63.6G |  67 | 45.44 | 400.9 | 0.9065 | 27.22 | 0.24763 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_poolformer_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_poolformer_one_ep100.log) |
+| ConvNeXt         | 100 epoch |  2xbs8 |  12.5M |  63.9G |  72 | 45.48 | 428.3 | 0.9037 | 26.96 | 0.26253 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_convnext_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_convnext_one_ep100.log) |
+| VAN              | 100 epoch |  2xbs8 |  14.9M |  73.8G |  55 | 45.05 | 409.1 | 0.9074 | 27.07 | 0.23116 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_van_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_van_one_ep100.log) |
+| HorNet           | 100 epoch |  2xbs8 |  15.3M |  75.3G |  58 | 46.84 | 421.2 | 0.9005 | 26.80 | 0.26921 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_hornet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_hornet_one_ep100.log) |
+| MogaNet          | 100 epoch |  2xbs8 |  15.6M |  76.7G |  48 | 42.98 | 418.7 | 0.9065 | 27.16 | 0.25146 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_moganet_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_simvp_moganet_one_ep100.log) |
+| TAU              | 100 epoch |  2xbs8 |  15.0M |  73.8G |  55 | 45.32 | 421.7 | 0.9086 | 27.10 | 0.22856 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_tau_one_ep100.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/kth20-weights/kth20_tau_one_ep100.log) |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
