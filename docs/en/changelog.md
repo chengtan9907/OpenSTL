@@ -1,5 +1,17 @@
 ## Changelog
 
+### v0.3.0 (19/06/2023)
+
+Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenSTL/issues/25).
+
+#### New Features
+
+* Support visualization tools in [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py), config files in [configs](https://github.com/chengtan9907/OpenSTL/tree/master/configs), and trained files (models, logs, and visualizations) in [v0.3.0](https://github.com/chengtan9907/OpenSTL/releases/tag/v0.3.0) of STL methods on various datasets (on updating).
+
+#### Update Documents
+
+* Update benchmark results of video prediction, traffic prediction, and weather prediction benchmarks in `docs/en/model_zoos`.
+
 ### v0.2.0 (21/04/2023)
 
 Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenSTL/issues/20).
@@ -33,7 +45,7 @@ Release version to OpenSTL V0.2.0 as [#20](https://github.com/chengtan9907/OpenS
 * Fig bugs of building distributed dataloaders and preparation of DDP training.
 * Fix bugs of some STL methods (CrevNet, DMVFN, PreDNet, and TAU).
 * Fix bugs in datasets: fixing Caltech dataset for evaluation (28/05/2023 updating [Baidu Cloud](https://pan.baidu.com/s/1fudsBHyrf3nbt-7d42YWWg?pwd=kjfk)).
-* Fix the bug of `PSNR` (changing the implementation from E3D-LSTM to the corrent version) and update results in the benchmarks.
+* Fix the bug of `PSNR` (changing the implementation from E3D-LSTM to the current version) and update results in the benchmarks.
 
 ### v0.1.0 (18/02/2023)
 

@@ -47,7 +47,7 @@ We provide temperature prediction benchmark results on the popular [WeatherBench
 
 ### **STL Benchmarks on Temperature (t2m)**
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `t2m` (K). We provide config files in [configs/weather/t2m_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/t2m_5_625/) for `5.625` settings ($32\times 64$ resolutions).
+Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark STL methods and Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `t2m` (K). We provide config files in [configs/weather/t2m_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/t2m_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
 | Method           |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
@@ -74,9 +74,9 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 
 Then, we also provide the high-resolution benchmark of `t2m` using the similar training settings with **4GPUs** (4xbs4). The config files are in [configs/weather/t2m_1_40625](https://github.com/chengtan9907/OpenSTL/configs/weather/t2m_1_40625/) for `1.40625` settings ($128\times 256$ resolutions).
 
-| Method           |  Setting | Params | FLOPs | FPS |  MSE  |   MAE  |  RMSE |   Download   |
-|------------------|:--------:|:------:|:-----:|:---:|:-----:|:------:|:-----:|:------------:|
-| ConvLSTM         | 50 epoch | 15.08M |  550G |  35 | 1.0625 | 0.6517 | 1.031 | model \| log |
+| Method           |  Setting | Params | FLOPs | FPS |  MSE  |   MAE  |   RMSE  |   Download   |
+|------------------|:--------:|:------:|:-----:|:---:|:-----:|:------:|:-------:|:------------:|
+| ConvLSTM         | 50 epoch | 15.08M |  550G |  35 | 1.0625 | 0.6517 |  1.031 | model \| log |
 | PhyDNet          | 50 epoch |  3.09M |  148G |  41 | 297.34 | 8.9788 | 17.243 | model \| log |
 | PredRNN          | 50 epoch | 23.84M | 1123G |   3 | 0.8966 | 0.5869 | 0.9469 | model \| log |
 | PredRNN++        | 50 epoch | 38.58M | 1663G |   2 | 0.8538 | 0.5708 | 0.9240 | model \| log |
@@ -97,9 +97,11 @@ Then, we also provide the high-resolution benchmark of `t2m` using the similar t
 | MogaNet          | 50 epoch | 12.76M |  112G |  27 | 0.7517 | 0.5232 | 0.8670 | model \| log |
 | TAU              | 50 epoch | 12.29M | 36.1G |  94 | 0.8316 | 0.5615 | 0.9119 | model \| log |
 
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 ### **STL Benchmarks on Humidity (r)**
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `r` (%). We provide config files in [configs/weather/r_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/r_5_625/) for `5.625` settings ($32\times 64$ resolutions).
+Similar to [Weather Benchmark](weather_benchmarks.md#weatherBench-benchmarks), we benchmark STL methods and Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `r` (%). We provide config files in [configs/weather/r_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/r_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
 | Method           |  Setting | Params | FLOPs |  FPS |  MSE   |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:-----:|:------------:|
@@ -107,7 +109,7 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 | PhyDNet          | 50 epoch |  3.09M | 36.8G |  177 | 239.00 |  8.975 | 15.46 | model \| log |
 | PredRNN          | 50 epoch | 23.57M |  278G |   22 | 37.611 |  4.096 | 6.133 | model \| log |
 | PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 35.146 |  4.012 | 5.928 | model \| log |
-| MIM              | 50 epoch | 37.75M |  109G |  126 | | | | model \| log |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | 36.534 |  4.100 | 6.044 | model \| log |
 | MAU              | 50 epoch |  5.46M | 39.6G |  237 | 34.529 |  4.004 | 5.876 | model \| log |
 | PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 36.508 |  4.087 | 6.042 | model \| log |
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 34.355 |  3.994 | 5.861 | model \| log |
@@ -126,7 +128,7 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 
 ### **STL Benchmarks on Wind Component (uv10)**
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `uv10` (ms-1). We provide config files in [configs/weather/uv10_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/uv10_5_625/) for `5.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
+Similar to [Weather Benchmark](weather_benchmarks.md#weatherBench-benchmarks), we benchmark STL methods and Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `uv10` (ms-1). We provide config files in [configs/weather/uv10_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/uv10_5_625/) for `5.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
 
 | Method           |  Setting | Params | FLOPs |  FPS |   MSE  |   MAE  |  RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:------:|:------------:|
@@ -153,7 +155,7 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 
 ### **STL Benchmarks on Cloud Cover (tcc)**
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `tcc` (%). We provide config files in [configs/weather/tcc_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/tcc_5_625/) for `5.625` settings ($32\times 64$ resolutions).
+Similar to [Weather Benchmark](weather_benchmarks.md#weatherBench-benchmarks), we benchmark STL methods and Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `tcc` (%). We provide config files in [configs/weather/tcc_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/tcc_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
 | Method           |  Setting | Params | FLOPs |  FPS |   MSE   |    MAE  |   RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-------:|:-------:|:-------:|:------------:|
@@ -161,7 +163,7 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 | PhyDNet          | 50 epoch |  3.09M | 36.8G |  172 | 0.09913 | 0.22614 | 0.31485 | model \| log |
 | PredRNN          | 50 epoch | 23.57M |  278G |   22 | 0.05504 | 0.15877 | 0.23461 | model \| log |
 | PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 0.05479 | 0.15435 | 0.23407 | model \| log |
-| MIM              | 50 epoch | 37.75M |  109G |  126 | | | | model \| log |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | 0.05729 | 0.15293 | 0.23936 | model \| log |
 | MAU              | 50 epoch |  5.46M | 39.6G |  237 | 0.04955 | 0.15158 | 0.22260 | model \| log |
 | PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 0.05051 | 0.15867 | 0.22475 | model \| log |
 | IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 0.04765 | 0.15029 | 0.21829 | model \| log |
@@ -177,5 +179,126 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 | HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 0.04692 | 0.14751 | 0.21661 | model \| log |
 | MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 0.04699 | 0.14802 | 0.21676 | model \| log |
 | TAU              | 50 epoch | 12.22M | 6.70G |  511 | 0.04723 | 0.14604 | 0.21733 | model \| log |
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+### **STL Benchmarks on Multiple Variants (MV)**
+
+Using the similar setting as [Weather Benchmark](weather_benchmarks.md#weatherBench-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `r`, `t`, `u`, `v`, which have 13 levels and we chose 3 levels (150m, 500m, and 850m). We provide config files in [configs/weather/mv_4_s6_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/mv_4_s6_5_625/) for `5.625` settings ($32\times 64$ resolutions). Here, we employ Adam optimizer with Cosine Annealing scheduler (5-epoch warmup and min lr is 1e-6) to various methods. We provide results of each variant and the sum of four variants.
+
+| Method (`sum`)   | Params |  FLOPs |  FPS | MSE(sum) | MAE(sum) | RMSE(sum)|   Download   |
+|------------------|:------:|:------:|:----:|:--------:|:--------:|:--------:|:------------:|
+| ConvLSTM         | 15.50M | 43.33G |      |  108.81  | 5.7439   |  8.1810  | model \| log |
+| PhyDNet          |  3.10M | 11.25G |      |  228.83  | 10.109   |  13.213  | model \| log |
+| PredRNN          | 24.56M | 88.02G |      |  104.16  | 5.5373   |  7.9553  | model \| log |
+| PredRNN++        | 39.31M | 129.0G |      |  106.77  | 5.5821   |  8.0568  | model \| log |
+| MIM              | 41.71M | 35.77G |      |  121.95  | 6.2786   |  8.7376  | model \| log |
+| MAU              |  5.46M | 12.07G |      |  106.13  | 5.6487   |  7.9928  | model \| log |
+| PredRNNv2        | 24.58M | 88.49G |      |  108.94  | 5.7747   |  8.1872  | model \| log |
+| IncepU (SimVPv1) | 13.80M |  7.26G |      |  108.50  | 5.7360   |  8.1165  | model \| log |
+| gSTA (SimVPv2)   |  9.96M |  5.25G |      |  103.36  | 5.4856   |  7.9059  | model \| log |
+| ViT              |  9.66M |  6.12G |      |  102.90  | 5.4776   |  7.8643  | model \| log |
+| Swin Transformer |  9.66M |  5.15G |      |  102.14  | 5.4400   |  7.8325  | model \| log |
+| Uniformer        |  9.53M |  5.85G |      |  102.39  | 5.4361   |  7.8225  | model \| log |
+| MLP-Mixer        |  8.74M |  4.39G |      |  107.65  | 5.6820   |  8.1058  | model \| log |
+| ConvMixer        |  0.85M |  0.49G |      |  112.76  | 5.9114   |  8.3238  | model \| log |
+| Poolformer       |  7.76M |  4.14G |      |  114.05  | 5.9979   |  8.4760  | model \| log |
+| ConvNeXt         |  7.85M |  4.19G |      |  108.66  | 5.7432   |  8.1763  | model \| log |
+| VAN              |  9.49M |  5.01G |      |  99.816  | 5.3351   |  7.7075  | model \| log |
+| HorNet           |  9.68M |  5.12G |      |  104.21  | 5.5181   |  7.9854  | model \| log |
+| MogaNet          |  9.97M |  5.25G |      |  98.664  | 5.3003   |  7.6539  | model \| log |
+| TAU              |  9.55M |  5.01G |      |  99.428  | 5.3282   |  7.6855  | model \| log |
+
+| Method (`r`)     | Params |  FLOPs |  FPS |  MSE(r)  |  MAE(r)  |  RMSE(r) |   Download   |
+|------------------|:------:|:------:|:----:|:--------:|:--------:|:--------:|:------------:|
+| ConvLSTM         | 15.50M | 43.33G |      |  368.15  | 13.490   |  19.187  | model \| log |
+| PhyDNet          |  3.10M | 11.25G |      |  668.40  | 21.398   |  25.853  | model \| log |
+| PredRNN          | 24.56M | 88.02G |      |  354.57  | 13.169   |  18.830  | model \| log |
+| PredRNN++        | 39.31M | 129.0G |      |  363.15  | 13.246   |  19.056  | model \| log |
+| MIM              | 41.71M | 35.77G |      |  408.24  | 14.658   |  20.205  | model \| log |
+| MAU              |  5.46M | 12.07G |      |  363.36  | 13.503   |  19.062  | model \| log |
+| PredRNNv2        | 24.58M | 88.49G |      |  368.52  | 13.594   |  19.197  | model \| log |
+| IncepU (SimVPv1) | 13.80M |  7.26G |      |  370.03  | 13.584   |  19.236  | model \| log |
+| gSTA (SimVPv2)   |  9.96M |  5.25G |      |  352.79  | 13.021   |  18.783  | model \| log |
+| ViT              |  9.66M |  6.12G |      |  352.36  | 13.056   |  18.771  | model \| log |
+| Swin Transformer |  9.66M |  5.15G |      |  349.92  | 12.984   |  18.706  | model \| log |
+| Uniformer        |  9.53M |  5.85G |      |  351.66  | 12.994   |  18.753  | model \| log |
+| MLP-Mixer        |  8.74M |  4.39G |      |  365.48  | 13.408   |  19.118  | model \| log |
+| ConvMixer        |  0.85M |  0.49G |      |  381.85  | 13.917   |  19.541  | model \| log |
+| Poolformer       |  7.76M |  4.14G |      |  380.18  | 13.908   |  19.498  | model \| log |
+| ConvNeXt         |  7.85M |  4.19G |      |  367.39  | 13.516   |  19.168  | model \| log |
+| VAN              |  9.49M |  5.01G |      |  343.61  | 12.790   |  18.537  | model \| log |
+| HorNet           |  9.68M |  5.12G |      |  353.02  | 13.024   |  18.789  | model \| log |
+| MogaNet          |  9.97M |  5.25G |      |  340.06  | 12.738   |  18.441  | model \| log |
+| TAU              |  9.55M |  5.01G |      |  342.63  | 12.801   |  18.510  | model \| log |
+
+| Method (`t`)     | Params |  FLOPs |  FPS |  MSE(t)  |  MAE(t)  |  RMSE(t) |   Download   |
+|------------------|:------:|:------:|:----:|:--------:|:--------:|:--------:|:------------:|
+| ConvLSTM         | 15.50M | 43.33G |      |  6.3034  | 1.7695   |  2.5107  | model \| log |
+| PhyDNet          |  3.10M | 11.25G |      |  95.113  | 6.4749   |  9.7526  | model \| log |
+| PredRNN          | 24.56M | 88.02G |      |  5.5966  | 1.6411   |  2.3657  | model \| log |
+| PredRNN++        | 39.31M | 129.0G |      |  5.6471  | 1.6433   |  2.3763  | model \| log |
+| MIM              | 41.71M | 35.77G |      |  7.5152  | 1.9650   |  2.7414  | model \| log |
+| MAU              |  5.46M | 12.07G |      |  5.6287  | 1.6810   |  2.3725  | model \| log |
+| PredRNNv2        | 24.58M | 88.49G |      |  6.3078  | 1.7770   |  2.5110  | model \| log |
+| IncepU (SimVPv1) | 13.80M |  7.26G |      |  6.1068  | 1.7554   |  2.4712  | model \| log |
+| gSTA (SimVPv2)   |  9.96M |  5.25G |      |  5.4382  | 1.6129   |  2.3319  | model \| log |
+| ViT              |  9.66M |  6.12G |      |  5.2722  | 1.6005   |  2.2961  | model \| log |
+| Swin Transformer |  9.66M |  5.15G |      |  5.2486  | 1.5856   |  2.2910  | model \| log |
+| Uniformer        |  9.53M |  5.85G |      |  5.1174  | 1.5758   |  2.2622  | model \| log |
+| MLP-Mixer        |  8.74M |  4.39G |      |  5.8546  | 1.6948   |  2.4196  | model \| log |
+| ConvMixer        |  0.85M |  0.49G |      |  6.5838  | 1.8228   |  2.5660  | model \| log |
+| Poolformer       |  7.76M |  4.14G |      |  7.1077  | 1.8791   |  2.6660  | model \| log |
+| ConvNeXt         |  7.85M |  4.19G |      |  6.1749  | 1.7448   |  2.4849  | model \| log |
+| VAN              |  9.49M |  5.01G |      |  4.9396  | 1.5390   |  2.2225  | model \| log |
+| HorNet           |  9.68M |  5.12G |      |  5.5856  | 1.6198   |  2.3634  | model \| log |
+| MogaNet          |  9.97M |  5.25G |      |  4.8335  | 1.5246   |  2.1985  | model \| log |
+| TAU              |  9.55M |  5.01G |      |  4.9042  | 1.5341   |  2.2145  | model \| log |
+
+| Method (`u`)     | Params |  FLOPs |  FPS |  MSE(u)  |  MAE(u)  |  RMSE(u) |   Download   |
+|------------------|:------:|:------:|:----:|:--------:|:--------:|:--------:|:------------:|
+| ConvLSTM         | 15.50M | 43.33G |      |  30.002  | 3.8923   |  5.4774  | model \| log |
+| PhyDNet          |  3.10M | 11.25G |      |  97.424  | 7.3637   |  9.8704  | model \| log |
+| PredRNN          | 24.56M | 88.02G |      |  27.484  | 3.6776   |  5.2425  | model \| log |
+| PredRNN++        | 39.31M | 129.0G |      |  28.396  | 3.7322   |  5.3288  | model \| log |
+| MIM              | 41.71M | 35.77G |      |  35.586  | 4.2842   |  5.9654  | model \| log |
+| MAU              |  5.46M | 12.07G |      |  27.582  | 3.7409   |  5.2519  | model \| log |
+| PredRNNv2        | 24.58M | 88.49G |      |  29.833  | 3.8870   |  5.4620  | model \| log |
+| IncepU (SimVPv1) | 13.80M |  7.26G |      |  28.782  | 3.8435   |  5.3649  | model \| log |
+| gSTA (SimVPv2)   |  9.96M |  5.25G |      |  27.166  | 3.6747   |  5.2121  | model \| log |
+| ViT              |  9.66M |  6.12G |      |  26.595  | 3.6472   |  5.1570  | model \| log |
+| Swin Transformer |  9.66M |  5.15G |      |  26.292  | 3.6133   |  5.1276  | model \| log |
+| Uniformer        |  9.53M |  5.85G |      |  25.994  | 3.6069   |  5.0985  | model \| log |
+| MLP-Mixer        |  8.74M |  4.39G |      |  29.242  | 3.8407   |  5.4076  | model \| log |
+| ConvMixer        |  0.85M |  0.49G |      |  30.983  | 3.9949   |  5.5662  | model \| log |
+| Poolformer       |  7.76M |  4.14G |      |  33.757  | 4.1280   |  5.8101  | model \| log |
+| ConvNeXt         |  7.85M |  4.19G |      |  29.764  | 3.8688   |  5.4556  | model \| log |
+| VAN              |  9.49M |  5.01G |      |  24.991  | 3.5254   |  4.9991  | model \| log |
+| HorNet           |  9.68M |  5.12G |      |  28.192  | 3.7142   |  5.3096  | model \| log |
+| MogaNet          |  9.97M |  5.25G |      |  24.535  | 3.4882   |  4.9533  | model \| log |
+| TAU              |  9.55M |  5.01G |      |  24.719  | 3.5060   |  4.9719  | model \| log |
+
+| Method (`v`)     | Params |  FLOPs |  FPS |  MSE(v)  |  MAE(v)  |  RMSE(v) |   Download   |
+|------------------|:------:|:------:|:----:|:--------:|:--------:|:--------:|:------------:|
+| ConvLSTM         | 15.50M | 43.33G |      |  30.789  | 3.8238   |  5.5488  | model \| log |
+| PhyDNet          |  3.10M | 11.25G |      |  54.389  | 5.1996   |  7.3749  | model \| log |
+| PredRNN          | 24.56M | 88.02G |      |  28.973  | 3.6617   |  5.3827  | model \| log |
+| PredRNN++        | 39.31M | 129.0G |      |  29.872  | 3.7067   |  5.4655  | model \| log |
+| MIM              | 41.71M | 35.77G |      |  36.464  | 4.2066   |  6.0386  | model \| log |
+| MAU              |  5.46M | 12.07G |      |  27.929  | 3.6700   |  5.2848  | model \| log |
+| PredRNNv2        | 24.58M | 88.49G |      |  31.119  | 3.8406   |  5.5785  | model \| log |
+| IncepU (SimVPv1) | 13.80M |  7.26G |      |  29.094  | 3.7614   |  5.3939  | model \| log |
+| gSTA (SimVPv2)   |  9.96M |  5.25G |      |  28.058  | 3.6335   |  5.2970  | model \| log |
+| ViT              |  9.66M |  6.12G |      |  27.381  | 3.6068   |  5.2327  | model \| log |
+| Swin Transformer |  9.66M |  5.15G |      |  27.097  | 3.5777   |  5.2055  | model \| log |
+| Uniformer        |  9.53M |  5.85G |      |  26.799  | 3.5676   |  5.1768  | model \| log |
+| MLP-Mixer        |  8.74M |  4.39G |      |  30.014  | 3.7840   |  5.4785  | model \| log |
+| ConvMixer        |  0.85M |  0.49G |      |  31.609  | 3.9104   |  5.6222  | model \| log |
+| Poolformer       |  7.76M |  4.14G |      |  35.161  | 4.0764   |  5.9296  | model \| log |
+| ConvNeXt         |  7.85M |  4.19G |      |  31.326  | 3.8435   |  5.5969  | model \| log |
+| VAN              |  9.49M |  5.01G |      |  25.720  | 3.4858   |  5.0715  | model \| log |
+| HorNet           |  9.68M |  5.12G |      |  30.028  | 3.7148   |  5.4798  | model \| log |
+| MogaNet          |  9.97M |  5.25G |      |  25.232  | 3.4509   |  5.0231  | model \| log |
+| TAU              |  9.55M |  5.01G |      |  25.456  | 3.4723   |  5.0454  | model \| log |
 
 <p align="right">(<a href="#top">back to top</a>)</p>

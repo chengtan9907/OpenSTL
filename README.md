@@ -22,6 +22,7 @@
 [📘Documentation](https://openstl.readthedocs.io/en/latest/) |
 [🛠️Installation](docs/en/install.md) |
 [🚀Model Zoo](docs/en/model_zoos/video_benchmarks.md) |
+[👀Visualization](docs/en/visualization/video_visualization.md) |
 [🆕News](docs/en/changelog.md)
 
 ## Introduction
@@ -65,7 +66,7 @@ OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, en
 
 ## News and Updates
 
-[2023-05-28] `OpenSTL` v0.2.0 is released and enhanced. Some bugs in the training loop, datasets, and dataloaders are fixed.
+[2023-06-19] `OpenSTL` v0.3.0 is released and will be enhanced in [#25](https://github.com/chengtan9907/OpenSTL/issues/25).
 
 ## Installation
 

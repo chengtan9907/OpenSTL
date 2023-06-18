@@ -302,9 +302,9 @@ For a fair comparison of different methods, we report the best results when mode
 | E3D-LSTM     |  50 epoch |  4xbs4 |  60.9M |  542.0 |   7 | 143.3 | 1442.5 | 0.9803 | 32.52 | 0.04133 | model \| log |
 | PredNet      |  50 epoch | 1xbs16 |  12.5M |   13.7 | 176 |  |  |  |  |  | model \| log |
 | PhyDNet      |  50 epoch | 1xbs16 |   4.2M |   19.1 |  57 |  |  |  |  |  | model \| log |
-| MAU          |  50 epoch | 1xbs16 |  20.2M |  105.0 |   6 |  |  |  |  |  | model \| log |
+| MAU          |  50 epoch | 1xbs16 |  20.2M |  105.0 |   6 | 127.3 | 1577.0 | 0.9812 | 33.33 | 0.03561 | model \| log |
 | MIM          |  50 epoch |  4xbs4 |  47.6M | 1051.0 |  17 | 112.1 | 1467.1 | 0.9829 | 33.97 | 0.03338 | model \| log |
-| PredRNN      |  50 epoch | 1xbs16 |  24.6M |  704.0 |  25 | 113.2 | 1458.3 | 0.9831 | 33.94 | 0.032450 | model \| log |
+| PredRNN      |  50 epoch | 1xbs16 |  24.6M |  704.0 |  25 | 113.2 | 1458.3 | 0.9831 | 33.94 | 0.03245 | model \| log |
 | PredRNN++    |  50 epoch | 1xbs16 |  39.3M | 1033.0 |  18 | 110.0 | 1452.2 | 0.9832 | 34.02 | 0.03196 | model \| log |
 | PredRNN.V2   |  50 epoch | 1xbs16 |  24.6M |  708.0 |  24 | 114.9 | 1484.7 | 0.9827 | 33.84 | 0.03334 | model \| log |
 | DMVFN        |  50 epoch | 1xbs16 |   8.6M |   63.6 | 341 | 109.3 | 1449.3 | 0.9833 | 34.05 | 0.03189 | model \| log |
@@ -321,7 +321,7 @@ Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be 
 | IncepU (SimVPv1) |  50 epoch | 1xbs16 |  41.2M | 197.0 |  26 | 115.8 | 1511.5 | 0.9822 | 33.73 | 0.03467 | model \| log |
 | gSTA (SimVPv2)   |  50 epoch | 1xbs16 |  11.3M |  74.6 |  52 | 108.4 | 1441.0 | 0.9834 | 34.08 | 0.03224 | model \| log |
 | ViT              |  50 epoch |  4xbs4 |  28.3M | 239.0 |  17 | 136.3 | 1603.5 | 0.9796 | 33.10 | 0.03729 | model \| log |
-| Swin Transformer |  50 epoch | 1xbs16 |  38.8M | 188.0 |  28 |  |  |  |  |  | model \| log |
+| Swin Transformer |  50 epoch | 1xbs16 |  38.8M | 188.0 |  28 | 133.2 | 1599.7 | 0.9799 | 33.16 | 0.03766 | model \| log |
 | Uniformer        |  50 epoch |  4xbs4 |  27.7M | 211.0 |  14 | 116.3 | 1497.7 | 0.9824 | 33.76 | 0.03385 | model \| log |
 | MLP-Mixer        |  50 epoch | 1xbs16 |  47.0M | 164.0 |  34 | 125.7 | 1511.9 | 0.9819 | 33.49 | 0.03417 | model \| log |
 | ConvMixer        |  50 epoch | 1xbs16 |   3.1M |  39.4 |  84 | 115.8 | 1527.4 | 0.9822 | 33.67 | 0.03436 | model \| log |
