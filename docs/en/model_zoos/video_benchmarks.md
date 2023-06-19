@@ -290,7 +290,7 @@ Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be 
 
 ## Human 3.6M Benchmarks
 
-We further provide high-resolution benchmark results on [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) dataset using $4\rightarrow 4$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR, LPIPS) of the the best models are reported in three trials. We use the 256x256 resolutions, similar to [STRPM](https://github.com/ZhengChang467/STRPM). Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with a batch size of 16 and Cosine scheduler (no warm-up) on **single GPU** or **4GPUs**, and we report the used GPU setups for each methods (also shown in the config).
+We further provide high-resolution benchmark results on [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) dataset using $4\rightarrow 4$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR, LPIPS) of the best models are reported in three trials. We use 256x256 resolutions, similar to [STRPM](https://github.com/ZhengChang467/STRPM). Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with a batch size of 16 and Cosine scheduler (no warm-up) on **single GPU** or **4GPUs**, and we report the used GPU setups for each method (also shown in the config).
 
 ### **STL Benchmarks on Human 3.6M**
 
@@ -298,38 +298,38 @@ For a fair comparison of different methods, we report the best results when mode
 
 | Method       |  Setting  |  GPUs  | Params | FLOPs  | FPS |  MSE  |   MAE  |  SSIM  |  PSNR |  LPIPS  |   Download   |
 |--------------|:---------:|:------:|:------:|:------:|:---:|:-----:|:------:|:------:|:-----:|:-------:|:------------:|
-| ConvLSTM-S   |  50 epoch | 1xbs16 |  15.5M |  347.0 |  52 | 125.5 | 1566.7 | 0.9813 | 33.40 | 0.03557 | model \| log |
-| E3D-LSTM     |  50 epoch |  4xbs4 |  60.9M |  542.0 |   7 | 143.3 | 1442.5 | 0.9803 | 32.52 | 0.04133 | model \| log |
-| PredNet      |  50 epoch | 1xbs16 |  12.5M |   13.7 | 176 |  |  |  |  |  | model \| log |
-| PhyDNet      |  50 epoch | 1xbs16 |   4.2M |   19.1 |  57 |  |  |  |  |  | model \| log |
-| MAU          |  50 epoch | 1xbs16 |  20.2M |  105.0 |   6 | 127.3 | 1577.0 | 0.9812 | 33.33 | 0.03561 | model \| log |
-| MIM          |  50 epoch |  4xbs4 |  47.6M | 1051.0 |  17 | 112.1 | 1467.1 | 0.9829 | 33.97 | 0.03338 | model \| log |
-| PredRNN      |  50 epoch | 1xbs16 |  24.6M |  704.0 |  25 | 113.2 | 1458.3 | 0.9831 | 33.94 | 0.03245 | model \| log |
-| PredRNN++    |  50 epoch | 1xbs16 |  39.3M | 1033.0 |  18 | 110.0 | 1452.2 | 0.9832 | 34.02 | 0.03196 | model \| log |
-| PredRNN.V2   |  50 epoch | 1xbs16 |  24.6M |  708.0 |  24 | 114.9 | 1484.7 | 0.9827 | 33.84 | 0.03334 | model \| log |
-| DMVFN        |  50 epoch | 1xbs16 |   8.6M |   63.6 | 341 | 109.3 | 1449.3 | 0.9833 | 34.05 | 0.03189 | model \| log |
-| SimVP+IncepU |  50 epoch | 1xbs16 |  41.2M |  197.0 |  26 | 115.8 | 1511.5 | 0.9822 | 33.73 | 0.03467 | model \| log |
-| SimVP+gSTA-S |  50 epoch | 1xbs16 |  11.3M |   74.6 |  52 | 108.4 | 1441.0 | 0.9834 | 34.08 | 0.03224 | model \| log |
-| TAU          |  50 epoch | 1xbs16 |  37.6M |  182.0 |  26 | 113.3 | 1390.7 | 0.9839 | 34.03 | 0.02783 | model \| log |
+| ConvLSTM-S   |  50 epoch | 1xbs16 |  15.5M |  347.0 |  52 | 125.5 | 1566.7 | 0.9813 | 33.40 | 0.03557 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_convlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_convlstm_cos_ep50.log) |
+| E3D-LSTM     |  50 epoch |  4xbs4 |  60.9M |  542.0 |   7 | 143.3 | 1442.5 | 0.9803 | 32.52 | 0.04133 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_s3dlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_s3dlstm_cos_ep50.log) |
+| PredNet      |  50 epoch | 1xbs16 |  12.5M |   13.7 | 176 | 261.9 | 1625.3 | 0.9786 | 31.76 | 0.03264 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_prednet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_prednet_cos_ep50.log) |
+| PhyDNet      |  50 epoch | 1xbs16 |   4.2M |   19.1 |  57 | 125.7 | 1614.7 | 0.9804 | 39.84 | 0.03709 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_phydnet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_phydnet_cos_ep50.log) |
+| MAU          |  50 epoch | 1xbs16 |  20.2M |  105.0 |   6 | 127.3 | 1577.0 | 0.9812 | 33.33 | 0.03561 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_mau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_mau_cos_ep50.log) |
+| MIM          |  50 epoch |  4xbs4 |  47.6M | 1051.0 |  17 | 112.1 | 1467.1 | 0.9829 | 33.97 | 0.03338 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_mim_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_mim_cos_ep50.log) |
+| PredRNN      |  50 epoch | 1xbs16 |  24.6M |  704.0 |  25 | 113.2 | 1458.3 | 0.9831 | 33.94 | 0.03245 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnn_cos_ep50.log) |
+| PredRNN++    |  50 epoch | 1xbs16 |  39.3M | 1033.0 |  18 | 110.0 | 1452.2 | 0.9832 | 34.02 | 0.03196 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnpp_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnpp_cos_ep50.log) |
+| PredRNN.V2   |  50 epoch | 1xbs16 |  24.6M |  708.0 |  24 | 114.9 | 1484.7 | 0.9827 | 33.84 | 0.03334 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnv2_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnv2_cos_ep50.log) |
+| DMVFN        |  50 epoch | 1xbs16 |   8.6M |   63.6 | 341 | 109.3 | 1449.3 | 0.9833 | 34.05 | 0.03189 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_dmvfn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_dmvfn_cos_ep50.log) |
+| SimVP+IncepU |  50 epoch | 1xbs16 |  41.2M |  197.0 |  26 | 115.8 | 1511.5 | 0.9822 | 33.73 | 0.03467 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_incepu_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_incepu_cos_ep50.log) |
+| SimVP+gSTA-S |  50 epoch | 1xbs16 |  11.3M |   74.6 |  52 | 108.4 | 1441.0 | 0.9834 | 34.08 | 0.03224 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_gsta_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_gsta_cos_ep50.log) |
+| TAU          |  50 epoch | 1xbs16 |  37.6M |  182.0 |  26 | 113.3 | 1390.7 | 0.9839 | 34.03 | 0.02783 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_tau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_tau_cos_ep50.log) |
 
 ### **Benchmark of MetaFormers Based on SimVP (MetaVP)**
 
-Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with 100-epoch training. We provide config file in [configs/kth/human](https://github.com/chengtan9907/OpenSTL/configs/human/simvp/).
+Since the hidden Translator in [SimVP](https://arxiv.org/abs/2211.12509) can be replaced by any [Metaformer](https://arxiv.org/abs/2111.11418) block which achieves `token mixing` and `channel mixing`, we benchmark popular Metaformer architectures on SimVP with 100-epoch training. We provide config files in [configs/kth/human](https://github.com/chengtan9907/OpenSTL/configs/human/simvp/).
 
 | MetaFormer       |  Setting  |  GPUs  | Params | FLOPs | FPS |  MSE  |  MAE   |  SSIM  |  PSNR |  LPIPS  |   Download   |
 |------------------|:---------:|:------:|:------:|:-----:|:---:|:-----:|:------:|:------:|:-----:|:-------:|:------------:|
-| IncepU (SimVPv1) |  50 epoch | 1xbs16 |  41.2M | 197.0 |  26 | 115.8 | 1511.5 | 0.9822 | 33.73 | 0.03467 | model \| log |
-| gSTA (SimVPv2)   |  50 epoch | 1xbs16 |  11.3M |  74.6 |  52 | 108.4 | 1441.0 | 0.9834 | 34.08 | 0.03224 | model \| log |
-| ViT              |  50 epoch |  4xbs4 |  28.3M | 239.0 |  17 | 136.3 | 1603.5 | 0.9796 | 33.10 | 0.03729 | model \| log |
-| Swin Transformer |  50 epoch | 1xbs16 |  38.8M | 188.0 |  28 | 133.2 | 1599.7 | 0.9799 | 33.16 | 0.03766 | model \| log |
-| Uniformer        |  50 epoch |  4xbs4 |  27.7M | 211.0 |  14 | 116.3 | 1497.7 | 0.9824 | 33.76 | 0.03385 | model \| log |
-| MLP-Mixer        |  50 epoch | 1xbs16 |  47.0M | 164.0 |  34 | 125.7 | 1511.9 | 0.9819 | 33.49 | 0.03417 | model \| log |
-| ConvMixer        |  50 epoch | 1xbs16 |   3.1M |  39.4 |  84 | 115.8 | 1527.4 | 0.9822 | 33.67 | 0.03436 | model \| log |
-| Poolformer       |  50 epoch | 1xbs16 |  31.2M | 156.0 |  30 | 118.4 | 1484.1 | 0.9827 | 33.78 | 0.03313 | model \| log |
-| ConvNeXt         |  50 epoch | 1xbs16 |  31.4M | 157.0 |  33 | 113.4 | 1469.7 | 0.9828 | 33.86 | 0.03305 | model \| log |
-| VAN              |  50 epoch | 1xbs16 |  37.5M | 182.0 |  24 |  |  |  |  |  | model \| log |
-| HorNet           |  50 epoch | 1xbs16 |  28.1M | 143.0 |  33 | 118.1 | 1481.1 | 0.9824 | 33.73 | 0.03333 | model \| log |
-| MogaNet          |  50 epoch | 1xbs16 |   8.6M |  63.6 |  56 | 109.1 | 1446.4 | 0.9834 | 34.05 | 0.03163 | model \| log |
-| TAU              |  50 epoch | 1xbs16 |  37.6M | 182.0 |  26 | 113.3 | 1390.7 | 0.9839 | 34.03 | 0.02783 | model \| log |
+| IncepU (SimVPv1) |  50 epoch | 1xbs16 |  41.2M | 197.0 |  26 | 115.8 | 1511.5 | 0.9822 | 33.73 | 0.03467 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_incepu_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_incepu_cos_ep50.log) |
+| gSTA (SimVPv2)   |  50 epoch | 1xbs16 |  11.3M |  74.6 |  52 | 108.4 | 1441.0 | 0.9834 | 34.08 | 0.03224 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_gsta_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_gsta_cos_ep50.log) |
+| ViT              |  50 epoch |  4xbs4 |  28.3M | 239.0 |  17 | 136.3 | 1603.5 | 0.9796 | 33.10 | 0.03729 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_vit_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_vit_cos_ep50.log) |
+| Swin Transformer |  50 epoch | 1xbs16 |  38.8M | 188.0 |  28 | 133.2 | 1599.7 | 0.9799 | 33.16 | 0.03766 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_swin_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_swin_cos_ep50.log) |
+| Uniformer        |  50 epoch |  4xbs4 |  27.7M | 211.0 |  14 | 116.3 | 1497.7 | 0.9824 | 33.76 | 0.03385 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_uniformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_uniformer_cos_ep50.log) |
+| MLP-Mixer        |  50 epoch | 1xbs16 |  47.0M | 164.0 |  34 | 125.7 | 1511.9 | 0.9819 | 33.49 | 0.03417 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_mlpmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_mlpmixer_cos_ep50.log) |
+| ConvMixer        |  50 epoch | 1xbs16 |   3.1M |  39.4 |  84 | 115.8 | 1527.4 | 0.9822 | 33.67 | 0.03436 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_convmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_convmixer_cos_ep50.log) |
+| Poolformer       |  50 epoch | 1xbs16 |  31.2M | 156.0 |  30 | 118.4 | 1484.1 | 0.9827 | 33.78 | 0.03313 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_poolformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_poolformer_cos_ep50.log) |
+| ConvNeXt         |  50 epoch | 1xbs16 |  31.4M | 157.0 |  33 | 113.4 | 1469.7 | 0.9828 | 33.86 | 0.03305 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_convnext_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_convnext_cos_ep50.log) |
+| VAN              |  50 epoch | 1xbs16 |  37.5M | 182.0 |  24 | 111.4 | 1454.5 | 0.9831 | 33.93 | 0.03335 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_van_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_van_cos_ep50.log) |
+| HorNet           |  50 epoch | 1xbs16 |  28.1M | 143.0 |  33 | 118.1 | 1481.1 | 0.9824 | 33.73 | 0.03333 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_hornet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_hornet_cos_ep50.log) |
+| MogaNet          |  50 epoch | 1xbs16 |   8.6M |  63.6 |  56 | 109.1 | 1446.4 | 0.9834 | 34.05 | 0.03163 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_moganet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_moganet_cos_ep50.log) |
+| TAU              |  50 epoch | 1xbs16 |  37.6M | 182.0 |  26 | 113.3 | 1390.7 | 0.9839 | 34.03 | 0.02783 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_tau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_tau_cos_ep50.log) |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
