@@ -51,26 +51,27 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 
 | Method           |  Setting | Params | FLOPs |  FPS |  MSE  |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-----:|:------:|:-----:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 1.521 | 0.7949 | 1.233 | model \| log |
-| PhyDNet          | 50 epoch |  3.09M | 36.8G |  177 | 285.9 | 8.7370 | 16.91 | model \| log |
-| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 1.331 | 0.7246 | 1.154 | model \| log |
-| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 1.634 | 0.7883 | 1.278 | model \| log |
-| MIM              | 50 epoch | 37.75M |  109G |  126 | 1.784 | 0.8716 | 1.336 | model \| log |
-| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 1.251 | 0.7036 | 1.119 | model \| log |
-| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 1.545 | 0.7986 | 1.243 | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 1.238 | 0.7037 | 1.113 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 1.105 | 0.6567 | 1.051 | model \| log |
-| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 1.146 | 0.6712 | 1.070 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 1.143 | 0.6735 | 1.069 | model \| log |
-| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 1.204 | 0.6885 | 1.097 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 1.255 | 0.7011 | 1.119 | model \| log |
-| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 1.267 | 0.7073 | 1.126 | model \| log |
-| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 1.156 | 0.6715 | 1.075 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 1.277 | 0.7220 | 1.130 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 1.150 | 0.6803 | 1.072 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 1.201 | 0.6906 | 1.096 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 1.152 | 0.6665 | 1.073 | model \| log |
-| TAU              | 50 epoch | 12.22M | 6.70G |  511 | 1.162 | 0.6707 | 1.078 | model \| log |
+| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 1.521 | 0.7949 | 1.233 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_convlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_convlstm_cos_ep50.log) |
+| E3D-LSTM         | 50 epoch | 51.09M |  169G |   35 | 1.592 | 0.8059 | 1.262 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_e3dlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_e3dlstm_cos_ep50.log) |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  177 | 285.9 | 8.7370 | 16.91 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_phydnet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_phydnet_cos_ep50.log) |
+| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 1.331 | 0.7246 | 1.154 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_predrnn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_predrnn_cos_ep50.log) |
+| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 1.634 | 0.7883 | 1.278 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_predrnnpp_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_predrnnpp_cos_ep50.log) |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | 1.784 | 0.8716 | 1.336 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_mim_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_mim_cos_ep50.log) |
+| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 1.251 | 0.7036 | 1.119 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_mau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_mau_cos_ep50.log) |
+| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 1.545 | 0.7986 | 1.243 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_predrnnv2_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_predrnnv2_cos_ep50.log) |
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 1.238 | 0.7037 | 1.113 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_incepu_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_incepu_cos_ep50.log) |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 1.105 | 0.6567 | 1.051 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_gsta_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_gsta_cos_ep50.log) |
+| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 1.146 | 0.6712 | 1.070 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_vit_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_vit_cos_ep50.log) |
+| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 1.143 | 0.6735 | 1.069 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_swin_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_swin_cos_ep50.log) |
+| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 1.204 | 0.6885 | 1.097 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_uniformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_uniformer_cos_ep50.log) |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 1.255 | 0.7011 | 1.119 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_mlpmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_mlpmixer_cos_ep50.log) |
+| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 1.267 | 0.7073 | 1.126 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_convmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_convmixer_cos_ep50.log) |
+| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 1.156 | 0.6715 | 1.075 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_poolformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_poolformer_cos_ep50.log) |
+| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 1.277 | 0.7220 | 1.130 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_convnext_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_convnext_cos_ep50.log) |
+| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 1.150 | 0.6803 | 1.072 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_van_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_van_cos_ep50.log) |
+| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 1.201 | 0.6906 | 1.096 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_hornet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_hornet_cos_ep50.log) |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 1.152 | 0.6665 | 1.073 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_moganet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_simvp_moganet_cos_ep50.log) |
+| TAU              | 50 epoch | 12.22M | 6.70G |  511 | 1.162 | 0.6707 | 1.078 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_tau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_t2m_tau_cos_ep50.log) |
 
 Then, we also provide the high-resolution benchmark of `t2m` using the similar training settings with **4GPUs** (4xbs4). The config files are in [configs/weather/t2m_1_40625](https://github.com/chengtan9907/OpenSTL/configs/weather/t2m_1_40625/) for `1.40625` settings ($128\times 256$ resolutions).
 
@@ -105,26 +106,27 @@ Similar to [Weather Benchmark](weather_benchmarks.md#weatherBench-benchmarks), w
 
 | Method           |  Setting | Params | FLOPs |  FPS |  MSE   |   MAE  |  RMSE |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:-----:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 35.146 |  4.012 | 5.928 | model \| log |
-| PhyDNet          | 50 epoch |  3.09M | 36.8G |  177 | 239.00 |  8.975 | 15.46 | model \| log |
-| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 37.611 |  4.096 | 6.133 | model \| log |
-| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 35.146 |  4.012 | 5.928 | model \| log |
-| MIM              | 50 epoch | 37.75M |  109G |  126 | 36.534 |  4.100 | 6.044 | model \| log |
-| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 34.529 |  4.004 | 5.876 | model \| log |
-| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 36.508 |  4.087 | 6.042 | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 34.355 |  3.994 | 5.861 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 31.426 |  3.765 | 5.606 | model \| log |
-| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 32.616 |  3.852 | 5.711 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 31.332 |  3.776 | 5.597 | model \| log |
-| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 32.199 |  3.864 | 5.674 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 34.467 |  3.950 | 5.871 | model \| log |
-| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 32.829 |  3.909 | 5.730 | model \| log |
-| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 31.989 |  3.803 | 5.656 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 33.179 |  3.928 | 5.760 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 31.712 |  3.812 | 5.631 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 32.081 |  3.826 | 5.664 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 31.795 |  3.816 | 5.639 | model \| log |
-| TAU              | 50 epoch | 12.22M | 6.70G |  511 | 31.831 |  3.818 | 5.642 | model \| log |
+| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 35.146 |  4.012 | 5.928 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_convlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_convlstm_cos_ep50.log) |
+| E3D-LSTM         | 50 epoch | 51.09M |  169G |   35 | 36.534 |  4.100 | 6.044 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_e3dlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_e3dlstm_cos_ep50.log) |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  177 | 239.00 |  8.975 | 15.46 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_phydnet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_phydnet_cos_ep50.log) |
+| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 37.611 |  4.096 | 6.133 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_predrnn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_predrnn_cos_ep50.log) |
+| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 35.146 |  4.012 | 5.928 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_predrnnpp_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_predrnnpp_cos_ep50.log) |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | 36.534 |  4.100 | 6.044 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_mim_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_mim_cos_ep50.log) |
+| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 34.529 |  4.004 | 5.876 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_mau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_mau_cos_ep50.log) |
+| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 36.508 |  4.087 | 6.042 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_predrnnv2_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_predrnnv2_cos_ep50.log) |
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 34.355 |  3.994 | 5.861 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_incepu_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_incepu_cos_ep50.log) |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 31.426 |  3.765 | 5.606 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_gsta_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_gsta_cos_ep50.log) |
+| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 32.616 |  3.852 | 5.711 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_vit_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_vit_cos_ep50.log) |
+| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 31.332 |  3.776 | 5.597 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_swin_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_swin_cos_ep50.log) |
+| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 32.199 |  3.864 | 5.674 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_uniformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_uniformer_cos_ep50.log) |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 34.467 |  3.950 | 5.871 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_mlpmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_mlpmixer_cos_ep50.log) |
+| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 32.829 |  3.909 | 5.730 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_convmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_convmixer_cos_ep50.log) |
+| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 31.989 |  3.803 | 5.656 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_poolformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_poolformer_cos_ep50.log) |
+| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 33.179 |  3.928 | 5.760 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_convnext_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_convnext_cos_ep50.log) |
+| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 31.712 |  3.812 | 5.631 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_van_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_van_cos_ep50.log) |
+| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 32.081 |  3.826 | 5.664 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_hornet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_hornet_cos_ep50.log) |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 31.795 |  3.816 | 5.639 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_moganet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_simvp_moganet_cos_ep50.log) |
+| TAU              | 50 epoch | 12.22M | 6.70G |  511 | 31.831 |  3.818 | 5.642 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_tau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_r_tau_cos_ep50.log) |
 
 ### **STL Benchmarks on Wind Component (uv10)**
 
@@ -132,26 +134,27 @@ Similar to [Weather Benchmark](weather_benchmarks.md#weatherBench-benchmarks), w
 
 | Method           |  Setting | Params | FLOPs |  FPS |   MSE  |   MAE  |  RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:------:|:------:|:------:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   43 | 1.8976 | 0.9215 | 1.3775 | model \| log |
-| PhyDNet          | 50 epoch |  3.09M | 36.8G |  172 | 16.798 | 2.9208 | 4.0986 | model \| log |
-| PredRNN          | 50 epoch | 23.65M |  279G |   21 | 1.8810 | 0.9068 | 1.3715 | model \| log |
-| PredRNN++        | 50 epoch | 38.40M |  414G |   14 | 1.8727 | 0.9019 | 1.3685 | model \| log |
-| MIM              | 50 epoch | 37.75M |  109G |  122 | 3.1399 | 1.1837 | 1.7720 | model \| log |
-| MAU              | 50 epoch |  5.46M | 39.6G |  233 | 1.9001 | 0.9194 | 1.3784 | model \| log |
-| PredRNNv2        | 50 epoch | 23.68M |  280G |   21 | 2.0072 | 0.9413 | 1.4168 | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.04G |  154 | 1.9993 | 0.9510 | 1.4140 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.02G |  498 | 1.5069 | 0.8142 | 1.2276 | model \| log |
-| ViT              | 50 epoch | 12.42M |  8.0G |  427 | 1.6262 | 0.8438 | 1.2752 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.89G |  577 | 1.4996 | 0.8145 | 1.2246 | model \| log |
-| Uniformer        | 50 epoch | 12.03M | 7.46G |  459 | 1.4850 | 0.8085 | 1.2186 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.93G |  707 | 1.6066 | 0.8395 | 1.2675 | model \| log |
-| ConvMixer        | 50 epoch |  1.14M | 0.96G | 1698 | 1.7067 | 0.8714 | 1.3064 | model \| log |
-| Poolformer       | 50 epoch |  9.99M | 5.62G |  717 | 1.6123 | 0.8410 | 1.2698 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.67G |  682 | 1.6914 | 0.8698 | 1.3006 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.71G |  520 | 1.5958 | 0.8371 | 1.2632 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.85G |  513 | 1.5539 | 0.8254 | 1.2466 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  411 | 1.6072 | 0.8451 | 1.2678 | model \| log |
-| TAU              | 50 epoch | 12.22M | 6.70G |  505 | 1.5925 | 0.8426 | 1.2619 | model \| log |
+| ConvLSTM         | 50 epoch | 14.98M |  136G |   43 | 1.8976 | 0.9215 | 1.3775 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_convlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_convlstm_cos_ep50.log) |
+| E3D-LSTM         | 50 epoch | 51.81M |  171G |   35 | 2.4111 | 1.0342 | 1.5528 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_e3dlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_e3dlstm_cos_ep50.log) |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  172 | 16.798 | 2.9208 | 4.0986 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_phydnet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_phydnet_cos_ep50.log) |
+| PredRNN          | 50 epoch | 23.65M |  279G |   21 | 1.8810 | 0.9068 | 1.3715 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_predrnn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_predrnn_cos_ep50.log) |
+| PredRNN++        | 50 epoch | 38.40M |  414G |   14 | 1.8727 | 0.9019 | 1.3685 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_predrnnpp_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_predrnnpp_cos_ep50.log) |
+| MIM              | 50 epoch | 37.75M |  109G |  122 | 3.1399 | 1.1837 | 1.7720 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_mim_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_mim_cos_ep50.log) |
+| MAU              | 50 epoch |  5.46M | 39.6G |  233 | 1.9001 | 0.9194 | 1.3784 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_mau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_mau_cos_ep50.log) |
+| PredRNNv2        | 50 epoch | 23.68M |  280G |   21 | 2.0072 | 0.9413 | 1.4168 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_predrnnv2_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_predrnnv2_cos_ep50.log) |
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.04G |  154 | 1.9993 | 0.9510 | 1.4140 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_incepu_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_incepu_cos_ep50.log) |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.02G |  498 | 1.5069 | 0.8142 | 1.2276 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_gsta_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_gsta_cos_ep50.log) |
+| ViT              | 50 epoch | 12.42M |  8.0G |  427 | 1.6262 | 0.8438 | 1.2752 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_vit_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_vit_cos_ep50.log) |
+| Swin Transformer | 50 epoch | 12.42M | 6.89G |  577 | 1.4996 | 0.8145 | 1.2246 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_swin_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_swin_cos_ep50.log) |
+| Uniformer        | 50 epoch | 12.03M | 7.46G |  459 | 1.4850 | 0.8085 | 1.2186 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_uniformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_uniformer_cos_ep50.log) |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.93G |  707 | 1.6066 | 0.8395 | 1.2675 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_mlpmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_mlpmixer_cos_ep50.log) |
+| ConvMixer        | 50 epoch |  1.14M | 0.96G | 1698 | 1.7067 | 0.8714 | 1.3064 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_convmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_convmixer_cos_ep50.log) |
+| Poolformer       | 50 epoch |  9.99M | 5.62G |  717 | 1.6123 | 0.8410 | 1.2698 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_poolformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_poolformer_cos_ep50.log) |
+| ConvNeXt         | 50 epoch | 10.09M | 5.67G |  682 | 1.6914 | 0.8698 | 1.3006 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_convnext_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_convnext_cos_ep50.log) |
+| VAN              | 50 epoch | 12.15M | 6.71G |  520 | 1.5958 | 0.8371 | 1.2632 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_van_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_van_cos_ep50.log) |
+| HorNet           | 50 epoch | 12.42M | 6.85G |  513 | 1.5539 | 0.8254 | 1.2466 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_hornet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_hornet_cos_ep50.log) |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  411 | 1.6072 | 0.8451 | 1.2678 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_moganet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_simvp_moganet_cos_ep50.log) |
+| TAU              | 50 epoch | 12.22M | 6.70G |  505 | 1.5925 | 0.8426 | 1.2619 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_tau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_uv10_tau_cos_ep50.log) |
 
 ### **STL Benchmarks on Cloud Cover (tcc)**
 
@@ -159,26 +162,27 @@ Similar to [Weather Benchmark](weather_benchmarks.md#weatherBench-benchmarks), w
 
 | Method           |  Setting | Params | FLOPs |  FPS |   MSE   |    MAE  |   RMSE  |   Download   |
 |------------------|:--------:|:------:|:-----:|:----:|:-------:|:-------:|:-------:|:------------:|
-| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 0.04944 | 0.15419 | 0.22234 | model \| log |
-| PhyDNet          | 50 epoch |  3.09M | 36.8G |  172 | 0.09913 | 0.22614 | 0.31485 | model \| log |
-| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 0.05504 | 0.15877 | 0.23461 | model \| log |
-| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 0.05479 | 0.15435 | 0.23407 | model \| log |
-| MIM              | 50 epoch | 37.75M |  109G |  126 | 0.05729 | 0.15293 | 0.23936 | model \| log |
-| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 0.04955 | 0.15158 | 0.22260 | model \| log |
-| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 0.05051 | 0.15867 | 0.22475 | model \| log |
-| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 0.04765 | 0.15029 | 0.21829 | model \| log |
-| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 0.04657 | 0.14688 | 0.21580 | model \| log |
-| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 0.04778 | 0.15026 | 0.21859 | model \| log |
-| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 0.04639 | 0.14729 | 0.21539 | model \| log |
-| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 0.04680 | 0.14777 | 0.21634 | model \| log |
-| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 0.04925 | 0.15264 | 0.22192 | model \| log |
-| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 0.04717 | 0.14874 | 0.21718 | model \| log |
-| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 0.04694 | 0.14884 | 0.21667 | model \| log |
-| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 0.04742 | 0.14867 | 0.21775 | model \| log |
-| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 0.04694 | 0.14725 | 0.21665 | model \| log |
-| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 0.04692 | 0.14751 | 0.21661 | model \| log |
-| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 0.04699 | 0.14802 | 0.21676 | model \| log |
-| TAU              | 50 epoch | 12.22M | 6.70G |  511 | 0.04723 | 0.14604 | 0.21733 | model \| log |
+| ConvLSTM         | 50 epoch | 14.98M |  136G |   46 | 0.04944 | 0.15419 | 0.22234 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_convlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_convlstm_cos_ep50.log) |
+| E3D-LSTM         | 50 epoch | 51.09M |  169G |   35 | 0.05729 | 0.15293 | 0.23936 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_e3dlstm_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_e3dlstm_cos_ep50.log) |
+| PhyDNet          | 50 epoch |  3.09M | 36.8G |  172 | 0.09913 | 0.22614 | 0.31485 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_phydnet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_phydnet_cos_ep50.log) |
+| PredRNN          | 50 epoch | 23.57M |  278G |   22 | 0.05504 | 0.15877 | 0.23461 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_predrnn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_predrnn_cos_ep50.log) |
+| PredRNN++        | 50 epoch | 38.31M |  413G |   15 | 0.05479 | 0.15435 | 0.23407 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_predrnnpp_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_predrnnpp_cos_ep50.log) |
+| MIM              | 50 epoch | 37.75M |  109G |  126 | 0.05729 | 0.15293 | 0.23936 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_mim_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_mim_cos_ep50.log) |
+| MAU              | 50 epoch |  5.46M | 39.6G |  237 | 0.04955 | 0.15158 | 0.22260 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_mau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_mau_cos_ep50.log) |
+| PredRNNv2        | 50 epoch | 23.59M |  279G |   22 | 0.05051 | 0.15867 | 0.22475 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_predrnnv2_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_predrnnv2_cos_ep50.log) |
+| IncepU (SimVPv1) | 50 epoch | 14.67M | 8.03G |  160 | 0.04765 | 0.15029 | 0.21829 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_incepu_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_incepu_cos_ep50.log) |
+| gSTA (SimVPv2)   | 50 epoch | 12.76M | 7.01G |  504 | 0.04657 | 0.14688 | 0.21580 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_gsta_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_gsta_cos_ep50.log) |
+| ViT              | 50 epoch | 12.41M | 7.99G |  432 | 0.04778 | 0.15026 | 0.21859 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_vit_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_vit_cos_ep50.log) |
+| Swin Transformer | 50 epoch | 12.42M | 6.88G |  581 | 0.04639 | 0.14729 | 0.21539 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_swin_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_swin_cos_ep50.log) |
+| Uniformer        | 50 epoch | 12.02M | 7.45G |  465 | 0.04680 | 0.14777 | 0.21634 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_uniformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_uniformer_cos_ep50.log) |
+| MLP-Mixer        | 50 epoch | 11.10M | 5.92G |  713 | 0.04925 | 0.15264 | 0.22192 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_mlpmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_mlpmixer_cos_ep50.log) |
+| ConvMixer        | 50 epoch |  1.13M | 0.95G | 1705 | 0.04717 | 0.14874 | 0.21718 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_convmixer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_convmixer_cos_ep50.log) |
+| Poolformer       | 50 epoch |  9.98M | 5.61G |  722 | 0.04694 | 0.14884 | 0.21667 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_poolformer_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_poolformer_cos_ep50.log) |
+| ConvNeXt         | 50 epoch | 10.09M | 5.66G |  689 | 0.04742 | 0.14867 | 0.21775 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_convnext_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_convnext_cos_ep50.log) |
+| VAN              | 50 epoch | 12.15M | 6.70G |  523 | 0.04694 | 0.14725 | 0.21665 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_van_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_van_cos_ep50.log) |
+| HorNet           | 50 epoch | 12.42M | 6.84G |  517 | 0.04692 | 0.14751 | 0.21661 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_hornet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_hornet_cos_ep50.log) |
+| MogaNet          | 50 epoch | 12.76M | 7.01G |  416 | 0.04699 | 0.14802 | 0.21676 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_moganet_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_simvp_moganet_cos_ep50.log) |
+| TAU              | 50 epoch | 12.22M | 6.70G |  511 | 0.04723 | 0.14604 | 0.21733 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_tau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/weather-5-625-weights/weather_tcc_tau_cos_ep50.log) |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
