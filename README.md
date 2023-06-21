@@ -5,8 +5,8 @@
 # OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning
 
 <p align="left">
-<!-- <a href="https://arxiv.org/abs/2211.12509" alt="arXiv">
-    <img src="https://img.shields.io/badge/arXiv-2211.12509-b31b1b.svg?style=flat" /></a> -->
+<a href="https://arxiv.org/abs/2306.11249" alt="arXiv">
+    <img src="https://img.shields.io/badge/arXiv-2306.11249-b31b1b.svg?style=flat" /></a>
 <a href="https://github.com/chengtan9907/OpenSTL/blob/master/LICENSE" alt="license">
     <img src="https://img.shields.io/badge/license-Apache--2.0-%23002FA7" /></a>
 <a href="https://openstl.readthedocs.io/en/latest/" alt="docs">
@@ -186,12 +186,13 @@ If you are interested in our repository or our paper, please cite the following 
   journal={arXiv preprint arXiv:2211.12509},
   year={2022}
 }
-
-@misc{li2023openstl,
-  title={OpenSTL: Open-source Toolbox for SpatioTemporal Predictive Learning},
-  author={Li, Siyuan and Tan, Cheng and Gao, Zhangyang and Li, Stan Z},
-  howpublished = {\url{https://github.com/chengtan9907/OpenSTL}},
-  year={2023}
+@misc{tan2023openstl,
+  title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning}, 
+  author={Cheng Tan and Siyuan Li and Zhangyang Gao and Wenfei Guan and Zedong Wang and Zicheng Liu and Lirong Wu and Stan Z. Li},
+  year={2023},
+  eprint={2306.11249},
+  archivePrefix={arXiv},
+  primaryClass={cs.CV}
 }
 ```
 
