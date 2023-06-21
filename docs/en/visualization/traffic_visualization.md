@@ -1,6 +1,6 @@
 # Traffic Prediction Visualization
 
-**We provide visualization of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Visualization of *GIF* will be released soon (you can contact us if you require these files).
+**We provide visualization of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Visualization of *GIF* is released.
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
@@ -41,8 +41,96 @@
 </details>
 
 
-## TaxiBJ Benchmarks
+## Visualization of TaxiBJ Benchmarks
 
-We provide traffic benchmark results on the popular [TaxiBJ](https://arxiv.org/abs/1610.00081) dataset using $4\rightarrow 4$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (5 epochs warmup and min lr is 1e-6) and **single GPU**.
+We provide visualization figures of various traffic prediction methods on various benchmarks. You can plot your own visualization with tested results (e.g., `work_dirs/EXP/saved`) by [vis_video.py](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py). For example, run plotting with the script:
+```shell
+python tools/visualizations/vis_video.py -d taxibj -w work_dirs/EXP/ --index 0 --save_dirs fig_taxibj_vis
+```
+* We provide GIF visualizations of experiments in [configs/taxibj](https://github.com/chengtan9907/OpenSTL/configs/taxibj) for [TaxiBJ](https://arxiv.org/abs/1610.00081) (32x32 resolutions).
+
+| ConvLSTM (in flow) | ConvLSTM (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_ConvLSTM.gif' height="auto" width="260" ></div> |
+
+| DMVFN (in flow) | DMVFN (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_DMVFN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_DMVFN.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | E3D-LSTM (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_E3DLSTM.gif' height="auto" width="260" ></div> |
+
+| MAU (in flow) | MAU (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_MAU.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM (in flow) | MIM (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_MIM.gif' height="auto" width="260" ></div> |
+
+| PhyDNet (in flow) | PhyDNet (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_PhyDNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN (in flow) | PredRNN (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_PredRNN.gif' height="auto" width="260" ></div> |
+
+| PredRNN++ (in flow) | PredRNN++ (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_PredRNNpp.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 (in flow) | PredRNN-V2 (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_PredRNNv2.gif' height="auto" width="260" ></div> |
+
+| SimVP-V1 (in flow) | SimVP-V1 (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_IncepU.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 (in flow) | SimVP-V2 (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_gSTA.gif' height="auto" width="260" ></div> |
+
+| TAU (in flow) | TAU (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_TAU.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer (in flow) | SimVP-ConvMixer (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_Convmixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvNeXt (in flow) | SimVP-ConvNeXt (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_ConvNext.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_ConvNext.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet (in flow) | SimVP-HorNet (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_HorNet.gif' height="auto" width="260" ></div> |
+
+| SimVP-MLPMixer (in flow) | SimVP-MLPMixer (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_MLPMixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet (in flow) | SimVP-MogaNet (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_MogaNet.gif' height="auto" width="260" ></div> |
+
+| SimVP-Poolformer (in flow) | SimVP-Poolformer (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_Poolformer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Uniformer (in flow) | SimVP-Uniformer (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_Uniformer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN (in flow) | SimVP-VAN (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_VAN.gif' height="auto" width="260" ></div> |
+
+| SimVP-ViT (in flow) | SimVP-ViT (out flow) |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_in_flow_SimVP_ViT.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-traffic/taxibj_out_flow_SimVP_ViT.gif' height="auto" width="260" ></div> |
 
 <p align="right">(<a href="#top">back to top</a>)</p>

@@ -58,6 +58,22 @@ dataset_parameters = {
         'total_length': 11,
         'metrics': ['mse', 'mae', 'ssim', 'psnr', 'lpips'],
     },
+    **dict.fromkeys(['kinetics400', 'kinetics'], {
+        'in_shape': [4, 3, 256, 256],
+        'pre_seq_length': 4,
+        'aft_seq_length': 4,
+        'total_length': 8,
+        'data_name': 'kinetics400',
+        'metrics': ['mse', 'mae', 'ssim', 'psnr', 'lpips'],
+    }),
+    'kinetics600': {
+        'in_shape': [4, 3, 256, 256],
+        'pre_seq_length': 4,
+        'aft_seq_length': 4,
+        'total_length': 8,
+        'data_name': 'kinetics600',
+        'metrics': ['mse', 'mae', 'ssim', 'psnr', 'lpips'],
+    },
     **dict.fromkeys(['weather', 'weather_t2m_5_625'], {  # 2m_temperature
         'in_shape': [12, 1, 32, 64],
         'pre_seq_length': 12,

@@ -20,9 +20,12 @@ def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, dist
     elif 'kth' in dataname:  # 'kth', 'kth20', 'kth40'
         from .dataloader_kth import load_data
         return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
-    elif 'mnist' in dataname:  # 'mmnist', 'mfmnist'
-        from .dataloader_moving_mnist import load_data
-        cfg_dataloader['data_name'] = kwargs.get('data_name', 'mnist')
+    elif 'kth' in dataname:  # 'k400', 'kth20',
+        from .dataloader_kth import load_data
+        return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
+    elif 'kinetics' in dataname:  # 'kinetics400', 'kinetics600'
+        from .dataloader_kinetics import load_data
+        cfg_dataloader['data_name'] = kwargs.get('data_name', 'kinetics400')
         return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
     elif dataname == 'taxibj':
         from .dataloader_taxibj import load_data

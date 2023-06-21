@@ -26,9 +26,17 @@ python setup.py develop  # or `pip install -e .`
 <summary>Dependencies</summary>
 
 * argparse
+* dask
+* decord
 * fvcore
-* numpy
 * hickle
+* lpips
+* matplotlib
+* netcdf4
+* numpy
+* opencv-python
+* packaging
+* pandas
 * scikit-image
 * scikit-learn
 * torch
@@ -66,6 +74,12 @@ OpenSTL
     |   ├── images
     |   ├── test.txt
     |   ├── train.txt
+    ├── kinetics400
+    │   ├── annotations
+    │   ├── replacement
+    │   ├── test
+    │   ├── train
+    │   ├── val
     |── kitti_hkl
     |   ├── sources_test_mini.hkl
     |   ├── ...
@@ -106,6 +120,10 @@ The [KTH Action](https://ieeexplore.ieee.org/document/1334462) dataset contains 
 ### Human 3.6M
 
 The [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) dataset contains high-resolution videos (1024x1024 resolutions) of seventeen scenarios of human actions performed by eleven professional actors, which can be downloaded from [Human3.6M download](http://vision.imar.ro/human3.6m/description.php). We provide [download_human3.6m.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_human3.6m.sh) to prepare the dataset. We borrow the train and test splitting files from [STRPM](https://github.com/ZhengChang467/STRPM) but use 256x256 resolutions in our experiments.
+
+### Kinetics-400
+
+The [Kinetics-400](https://arxiv.org/abs/1705.06950) dataset contains real-world human action videos (around 256x320 resolutions) of 400 human actions classes, with at least 400 video clips for each action. Each clip lasts around 10s and is taken from a different YouTube video. It has 246534 and 39805 videos for the train and test sets, which can be downloaded from [Kinetics download](https://www.deepmind.com/open-source/kinetics). We provide [download_kinetics.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_kinetics.sh) to prepare the dataset according to [kinetics-dataset](https://github.com/cvdfoundation/kinetics-dataset). Similar to Human 3.6M, we use 256x256 resolutions in our experiments for faster training.
 
 ### WeatherBench
 

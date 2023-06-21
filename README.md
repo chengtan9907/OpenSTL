@@ -83,9 +83,17 @@ python setup.py develop
 <summary>Dependencies</summary>
 
 * argparse
+* dask
+* decord
 * fvcore
-* numpy
 * hickle
+* lpips
+* matplotlib
+* netcdf4
+* numpy
+* opencv-python
+* packaging
+* pandas
 * scikit-image
 * scikit-learn
 * torch
@@ -155,9 +163,10 @@ We support various spatiotemporal prediction methods and will provide benchmarks
     <details open>
     <summary>Currently supported datasets</summary>
 
-    - [x] [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) (TPAMI'2014)  [[download](http://vision.imar.ro/human3.6m/description.php)] [[config](configs/human)]
-    - [x] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004)  [[download](https://www.csc.kth.se/cvap/actions/)] [[config](configs/kth)]
+    - [x] [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) (TPAMI'2014) [[download](http://vision.imar.ro/human3.6m/description.php)] [[config](configs/human)]
+    - [x] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004) [[download](https://www.csc.kth.se/cvap/actions/)] [[config](configs/kth)]
     - [x] [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://www.dropbox.com/s/rpwlnn6j39jjme4/kitti_data.zip)] [[config](configs/kitticaltech)]
+    - [x] [Kinetics-400](https://arxiv.org/abs/1705.06950) (ArXiv'2017) [[download](https://deepmind.com/research/open-source/kinetics)] [[config](configs/kinetics)]
     - [x] [Moving MNIST](http://arxiv.org/abs/1502.04681) (ICML'2015) [[download](http://www.cs.toronto.edu/~nitish/unsupervised_video/)] [[config](configs/mmnist)]
     - [x] [Moving FMNIST](http://arxiv.org/abs/1502.04681) (ICML'2015) [[download](https://pan.baidu.com/s/1fudsBHyrf3nbt-7d42YWWg?pwd=kjfk)] [[config](configs/mfmnist)]
     - [x] [TaxiBJ](https://arxiv.org/abs/1610.00081) (AAAI'2017) [[download](https://github.com/TolicWang/DeepST/tree/master/data/TaxiBJ)] [[config](configs/taxibj)]
@@ -180,19 +189,17 @@ OpenSTL is an open-source project for STL algorithms created by researchers in *
 If you are interested in our repository or our paper, please cite the following paper:
 
 ```
-@article{tan2022simvp,
+@article{tan2023openstl,
+  title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning}, 
+  author={Cheng Tan and Siyuan Li and Zhangyang Gao and Wenfei Guan and Zedong Wang and Zicheng Liu and Lirong Wu and Stan Z. Li},
+  journal={arXiv preprint arXiv:2306.11249},
+  year={2023},
+}
+@article{tan2022simvpv2,
   title={SimVP: Towards Simple yet Powerful Spatiotemporal Predictive Learning},
   author={Tan, Cheng and Gao, Zhangyang and Li, Siyuan and Li, Stan Z},
   journal={arXiv preprint arXiv:2211.12509},
   year={2022}
-}
-@misc{tan2023openstl,
-  title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning}, 
-  author={Cheng Tan and Siyuan Li and Zhangyang Gao and Wenfei Guan and Zedong Wang and Zicheng Liu and Lirong Wu and Stan Z. Li},
-  year={2023},
-  eprint={2306.11249},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV}
 }
 ```
 

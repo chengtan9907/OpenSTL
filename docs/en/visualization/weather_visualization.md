@@ -1,6 +1,6 @@
 # Weather Prediction Visualization
 
-**We provide benchmark results of spatiotemporal prediction learning (STL) methods on famous weather prediction datasets, WeatherBench. More STL methods will be supported in the future. Issues and PRs are welcome!** Visualization of *GIF* will be released soon (you can contact us if you require these files).
+**We provide benchmark results of spatiotemporal prediction learning (STL) methods on famous weather prediction datasets, WeatherBench. More STL methods will be supported in the future. Issues and PRs are welcome!**  Visualization of *GIF* is released.
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
@@ -40,25 +40,38 @@
 
 </details>
 
+We provide visualization figures of various weather prediction methods on Weather Bench (single variable). You can plot your own visualization with tested results (e.g., `work_dirs/EXP/saved`) by [vis_video.py](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py). For example, run plotting with the script:
+```shell
+python tools/visualizations/vis_video.py -d weather_t2m_5_625 -w work_dirs/EXP/ --index 0 --save_dirs fig_w_t2m_5_625_vis
+```
 
-## WeatherBench Benchmarks
+## WeatherBench Benchmarks Visualization
 
-We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (temperature prediction `t2m`) using $12\rightarrow 12$ frames prediction setting. Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Cosine Annealing scheduler (no warmup and min lr is 1e-6).
+We provide temperature prediction benchmark results on the popular [WeatherBench](https://arxiv.org/abs/2002.00469) dataset (temperature prediction `t2m`) using $12\rightarrow 12$ frames prediction setting.
 
-### **STL Benchmarks on Temperature (t2m)**
+### **Visualization of STL Benchmarks on Temperature (t2m)**
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `t2m` (K). We provide config files in [configs/weather/t2m_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/t2m_5_625/) for `5.625` settings ($32\times 64$ resolutions).
+Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular STL methods training 50 epochs with **single GPU** on `t2m` (K) in [configs/weather/t2m_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/t2m_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
-### **STL Benchmarks on Humidity (r)**
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `r` (%). We provide config files in [configs/weather/r_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/r_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
-### **STL Benchmarks on Wind Component (uv10)**
+### **Visualization of STL Benchmarks on Humidity (r)**
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `uv10` (ms-1). We provide config files in [configs/weather/uv10_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/uv10_5_625/) for `5.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
+Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark STL methods training 50 epochs with **single GPU** on `r` (%). We provide config files in [configs/weather/r_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/r_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
-### **STL Benchmarks on Cloud Cover (tcc)**
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular Metaformer architectures on [SimVP](https://arxiv.org/abs/2211.12509) training 50 epochs with **single GPU** on `tcc` (%). We provide config files in [configs/weather/tcc_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/tcc_5_625/) for `5.625` settings ($32\times 64$ resolutions).
+
+### **Visualization of STL Benchmarks on Wind Component (uv10)**
+
+Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular STL methods training 50 epochs with **single GPU** on `uv10` (ms-1). We provide config files in [configs/weather/uv10_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/uv10_5_625/) for `5.625` settings ($32\times 64$ resolutions). Notice that the input data of `uv10` has two channels.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+### **Visualization of STL Benchmarks on Cloud Cover (tcc)**
+
+Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular STL methods training 50 epochs with **single GPU** on `tcc` (%). We provide config files in [configs/weather/tcc_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/tcc_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
 <p align="right">(<a href="#top">back to top</a>)</p>

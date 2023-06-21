@@ -136,3 +136,4 @@ figs
 # temp
 configs_test/
 api/test.py
+configs/kinetics/simvp

@@ -10,7 +10,8 @@ from openstl.datasets.utils import create_loader
 
 
 class HumanDataset(Dataset):
-    """Human 3.6M Dataset
+    """ Human 3.6M Dataset
+        <http://vision.imar.ro/human3.6m/pami-h36m.pdf>`_
 
     Args:
         data_root (str): Path to the dataset.

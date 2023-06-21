@@ -1,6 +1,6 @@
 # Video Prediction Visualization
 
-**We provide benchmark results of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Visualization of *GIF* will be released soon (you can contact us if you require these files).
+**We provide benchmark results of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Visualization of *GIF* is released.
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
@@ -40,17 +40,92 @@
 
 </details>
 
+We provide visualization figures of various video prediction methods on various benchmarks. You can plot your own visualization with tested results (e.g., `work_dirs/EXP/saved`) by [vis_video.py](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py). For example, run plotting with the script:
+```shell
+python tools/visualizations/vis_video.py -d mmnist -w work_dirs/EXP/ --index 0 --save_dirs fig_mmnist_vis
+```
 
-## Moving MNIST Benchmarks
+## Visualization of Moving MNIST Benchmarks
 
-We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
+We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/1502.04681) dataset using $10\rightarrow 10$ frames prediction setting in [configs/mmnist](https://github.com/chengtan9907/OpenSTL/configs/mmnist).
 
-## Moving FMNIST Benchmarks
+| ConvLSTM | DMVFN |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_DMVFN.gif' height="auto" width="260" ></div> |
 
-Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we also provide the advanced version of MNIST, i.e., MFMNIST benchmark results, using $10\rightarrow 10$ frames prediction setting following [PredRNN](https://dl.acm.org/doi/abs/10.5555/3294771.3294855). Metrics (MSE, MAE, SSIM, pSNR) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. All methods are trained by Adam optimizer with Onecycle scheduler and **single GPU**.
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_MAU.gif' height="auto" width="260" ></div> |
 
-## KittiCaltech Benchmarks
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_PhyDNet.gif' height="auto" width="260" ></div> |
 
-We provide benchmark results on [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) dataset using $10\rightarrow 1$ frames prediction setting following [PredNet](https://arxiv.org/abs/1605.08104). Metrics (MSE, MAE, SSIM, pSNR, LPIPS) of the the best models are reported in three trials. Parameters (M), FLOPs (G), and V100 inference FPS (s) are also reported for all methods. The default training setup is trained 100 epochs by Adam optimizer with Onecycle scheduler on **single GPU**, while some computational consuming methods (denoted by \*) using **4GPUs**.
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/mmnist_SimVP_ViT.gif' height="auto" width="260" ></div> |
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Visualization of Moving FMNIST Benchmarks
+
+Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we also provide the advanced version of MNIST, i.e., MFMNIST benchmark results, using $10\rightarrow 10$ frames prediction setting in [configs/mfmnist](https://github.com/chengtan9907/OpenSTL/configs/mfmnist).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Visualization of Moving MNIST-CIFAR Benchmarks
+
+Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we further design the advanced version of MNIST with complex backgrounds from CIFAR-10, i.e., MMNIST-CIFAR benchmark, using $10\rightarrow 10$ frames prediction setting in [configs/mmnist_cifar](https://github.com/chengtan9907/OpenSTL/configs/mmnist_cifar).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Visualization of KittiCaltech Benchmarks
+
+We provide benchmark results on [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) dataset using $10\rightarrow 1$ frames prediction setting in [configs/kitticaltech](https://github.com/chengtan9907/OpenSTL/configs/kitticaltech).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Visualization of KTH Benchmarks
+
+We provide long-term prediction benchmark results on [KTH Action](https://ieeexplore.ieee.org/document/1334462) dataset using $10\rightarrow 20$ frames prediction setting in [configs/kth](https://github.com/chengtan9907/OpenSTL/configs/kth).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Visualization of Human 3.6M Benchmarks
+
+We further provide high-resolution benchmark results on [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) dataset using $4\rightarrow 4$ frames prediction setting in [configs/human](https://github.com/chengtan9907/OpenSTL/configs/human).
 
 <p align="right">(<a href="#top">back to top</a>)</p>

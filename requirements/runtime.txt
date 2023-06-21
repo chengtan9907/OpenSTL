@@ -1,4 +1,5 @@
 dask
+decord
 future
 fvcore
 hickle
@@ -9,6 +10,7 @@ netcdf4
 numpy
 opencv-python
 packaging
+pandas
 scikit-image
 six
 scikit-learn
