@@ -53,12 +53,100 @@ We provide temperature prediction benchmark results on the popular [WeatherBench
 
 Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular STL methods training 50 epochs with **single GPU** on `t2m` (K) in [configs/weather/t2m_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/t2m_5_625/) for `5.625` settings ($32\times 64$ resolutions).
 
+| ConvLSTM |
+| :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_ConvLSTM.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_temperature_5_625_SimVP_ViT.gif' height="auto" width="260" ></div> |
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 ### **Visualization of STL Benchmarks on Humidity (r)**
 
 Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark STL methods training 50 epochs with **single GPU** on `r` (%). We provide config files in [configs/weather/r_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/r_5_625/) for `5.625` settings ($32\times 64$ resolutions).
+
+| ConvLSTM |
+| :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_ConvLSTM.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_humidity_5_625_SimVP_ViT.gif' height="auto" width="260" ></div> |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -73,5 +161,49 @@ Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks
 ### **Visualization of STL Benchmarks on Cloud Cover (tcc)**
 
 Similar to [Moving MNIST Benchmarks](video_benchmarks.md#moving-mnist-benchmarks), we benchmark popular STL methods training 50 epochs with **single GPU** on `tcc` (%). We provide config files in [configs/weather/tcc_5_625](https://github.com/chengtan9907/OpenSTL/configs/weather/tcc_5_625/) for `5.625` settings ($32\times 64$ resolutions).
+
+| ConvLSTM |
+| :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_ConvLSTM.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_SimVP_ViT.gif' height="auto" width="260" ></div> |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
