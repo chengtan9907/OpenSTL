@@ -2,6 +2,14 @@
 
 **We provide benchmark results of spatiotemporal prediction learning (STL) methods on famous weather prediction datasets, WeatherBench. More STL methods will be supported in the future. Issues and PRs are welcome!**  Visualization of *GIF* is released.
 
+## Table of Contents
+
+- [WeatherBench Benchmarks Visualization](#weatherbench-benchmarks-visualization)
+    - [Visualization of STL Benchmarks on Temperature (t2m)](#visualization-of-stl-benchmarks-on-temperature-t2m)
+    - [Visualization of STL Benchmarks on Humidity (r)](#visualization-of-stl-benchmarks-on-humidity-r)
+    - [Visualization of STL Benchmarks on Wind Component (uv10)](#visualization-of-stl-benchmarks-on-wind-component-uv10)
+    - [Visualization of STL Benchmarks on Cloud Cover (tcc)](#visualization-of-stl-benchmarks-on-cloud-cover-tcc)
+
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
 

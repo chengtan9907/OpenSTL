@@ -2,6 +2,15 @@
 
 **We provide benchmark results of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Visualization of *GIF* is released.
 
+## Table of Contents
+
+- [Visualization of Moving MNIST Benchmarks](#visualization-of-moving-mnist-benchmarks)
+- [Visualization of Moving FashionMNIST Benchmarks](#visualization-of-moving-fmnist-benchmarks)
+- [Visualization of Moving MNIST-CIFAR Benchmarks](#visualization-of-moving-mnist-cifar-benchmarks)
+- [Visualization of KittiCaltech Benchmarks](#visualization-of-kitticaltech-benchmarks)
+- [Visualization of KTH Benchmarks](#visualization-of-kth-benchmarks)
+- [Visualization of Human 3.6M Benchmarks](#visualization-of-human-36m-benchmarks)
+
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
 

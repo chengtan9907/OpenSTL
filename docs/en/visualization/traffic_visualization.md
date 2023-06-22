@@ -4,8 +4,7 @@
 
 ## Table of Contents
 
-- [STL Benchmarks on TaxiBJ](#stl-benchmarks-on-taxibj)
-- [Benchmark of MetaFormers on SimVP (MetaVP)](#benchmark-of-metaformers-on-simvp-metavp)
+- [TaxiBJ Benchmarks](#visualization-of-taxibj-benchmarks)
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>

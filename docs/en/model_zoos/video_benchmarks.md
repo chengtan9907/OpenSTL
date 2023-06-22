@@ -2,6 +2,27 @@
 
 **We provide benchmark results of spatiotemporal prediction learning (STL) methods on various video prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Currently, we only provide benchmark results, trained models and logs will be released soon (you can contact us if you require these files). You can download model files from [Baidu Cloud (tgr6)](https://pan.baidu.com/s/1XPzEtiIbNJqTmVyb3IXKwA?pwd=tgr6).
 
+## Table of Contents
+
+- [Moving MNIST Benchmarks](#moving-mnist-benchmarks)
+    - [STL Benchmarks on Moving MNIST](#stl-benchmarks-on-mmnist)
+    - [MetaVP Benchmarks on Moving MNIST](#benchmark-of-metaformers-based-on-simvp-metavp)
+- [Moving Fashion Benchmarks](#moving-fmnist-benchmarks)
+    - [STL Benchmarks on Moving Fashion MNIST](#stl-benchmarks-on-mfmnist)
+    - [MetaVP Benchmarks on Moving Fashion MNIST](#benchmark-of-metaformers-based-on-simvp-metavp-1)
+- [Moving MNIST-CIFAR Benchmarks](#moving-mnist-cifar-benchmarks)
+    - [STL Benchmarks on Moving MNIST-CIFAR](#stl-benchmarks-on-mmnist-cifar)
+    - [MetaVP Benchmarks on Moving MNIST-CIFAR](#benchmark-of-metaformers-based-on-simvp-metavp-2)
+- [KittiCaltech Benchmarks](#kitticaltech-benchmarks)
+    - [STL Benchmarks on KittiCaltech](#stl-benchmarks-on-kitticaltech)
+    - [MetaVP Benchmarks on KittiCaltech](#benchmark-of-metaformers-based-on-simvp-metavp-3)
+- [KTH Benchmarks](#kth-benchmarks)
+    - [STL Benchmarks on KTH](#stl-benchmarks-on-kth)
+    - [MetaVP Benchmarks on KTH](#benchmark-of-metaformers-based-on-simvp-metavp-4)
+- [Human 3.6M Benchmarks](#human-36m-benchmarks)
+    - [STL Benchmarks on Human 3.6M](#stl-benchmarks-on-human-36m)
+    - [MetaVP Benchmarks on Human 3.6M](#benchmark-of-metaformers-based-on-simvp-metavp-5)
+
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
 

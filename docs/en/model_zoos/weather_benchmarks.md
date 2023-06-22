@@ -2,6 +2,15 @@
 
 **We provide benchmark results of spatiotemporal prediction learning (STL) methods on the famous weather prediction datasets, WeatherBench. More STL methods will be supported in the future. Issues and PRs are welcome!** Currently, we only provide benchmark results, trained models and logs will be released soon (you can contact us if you require these files). You can download model files from [Baidu Cloud (brlk)](https://pan.baidu.com/s/1na73RW4I1sUme53WemnKeg?pwd=brlk).
 
+## Table of Contents
+
+- [WeatherBench Benchmarks](#weatherbench-benchmarks)
+    - [STL/MetaVP Benchmarks on Temperature (t2m)](#stl-benchmarks-on-temperature-t2m)
+    - [STL/MetaVP Benchmarks on Humidity (r)](#stl-benchmarks-on-humidity-r)
+    - [STL/MetaVP Benchmarks on Wind Component (uv10)](#stl-benchmarks-on-wind-component-uv10)
+    - [STL/MetaVP Benchmarks on Cloud Cover (tcc)](#stl-benchmarks-on-cloud-cover-tcc)
+    - [STL/MetaVP Benchmarks on Multiple Variants (MV)](#stl-benchmarks-on-multiple-variants-mv)
+
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
 
