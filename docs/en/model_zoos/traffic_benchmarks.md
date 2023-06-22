@@ -2,6 +2,9 @@
 
 **We provide benchmark results of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Currently, we only provide benchmark results, trained models and logs will be released soon (you can contact us if you require these files). You can download model files from [Baidu Cloud (3t2t)](https://pan.baidu.com/s/1dH3gS9pyl3SQP8mL2FBgoA?pwd=3t2t).
 
+- [STL Benchmarks on TaxiBJ](#stl-benchmarks-on-taxibj)
+- [Benchmark of MetaFormers on SimVP (MetaVP)](#benchmark-of-metaformers-on-simvp-metavp)
+
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
 

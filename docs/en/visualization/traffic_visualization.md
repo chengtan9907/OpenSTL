@@ -2,6 +2,11 @@
 
 **We provide visualization of spatiotemporal prediction learning (STL) methods on popular traffic prediction datasets. More STL methods will be supported in the future. Issues and PRs are welcome!** Visualization of *GIF* is released.
 
+## Table of Contents
+
+- [STL Benchmarks on TaxiBJ](#stl-benchmarks-on-taxibj)
+- [Benchmark of MetaFormers on SimVP (MetaVP)](#benchmark-of-metaformers-on-simvp-metavp)
+
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
 
