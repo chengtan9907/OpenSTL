@@ -109,12 +109,99 @@ We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/
 
 Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we also provide the advanced version of MNIST, i.e., MFMNIST benchmark results, using $10\rightarrow 10$ frames prediction setting in [configs/mfmnist](https://github.com/chengtan9907/OpenSTL/configs/mfmnist).
 
-<p align="right">(<a href="#top">back to top</a>)</p>
+| ConvLSTM | DMVFN |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_DMVFN.gif' height="auto" width="260" ></div> |
 
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_SimVP_ViT.gif' height="auto" width="260" ></div> |
+
+<p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Visualization of Moving MNIST-CIFAR Benchmarks
 
 Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we further design the advanced version of MNIST with complex backgrounds from CIFAR-10, i.e., MMNIST-CIFAR benchmark, using $10\rightarrow 10$ frames prediction setting in [configs/mmnist_cifar](https://github.com/chengtan9907/OpenSTL/configs/mmnist_cifar).
+
+| ConvLSTM | DMVFN |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_DMVFN.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_SimVP_ViT.gif' height="auto" width="260" ></div> |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -123,6 +210,50 @@ Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we further design th
 
 We provide benchmark results on [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) dataset using $10\rightarrow 1$ frames prediction setting in [configs/kitticaltech](https://github.com/chengtan9907/OpenSTL/configs/kitticaltech).
 
+| ConvLSTM | DMVFN |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_DMVFN.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kitticaltech_SimVP_ViT.gif' height="auto" width="260" ></div> |
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -130,11 +261,99 @@ We provide benchmark results on [KittiCaltech Pedestrian](https://dl.acm.org/doi
 
 We provide long-term prediction benchmark results on [KTH Action](https://ieeexplore.ieee.org/document/1334462) dataset using $10\rightarrow 20$ frames prediction setting in [configs/kth](https://github.com/chengtan9907/OpenSTL/configs/kth).
 
+| ConvLSTM | DMVFN |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_DMVFN.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/kth20_SimVP_ViT.gif' height="auto" width="260" ></div> |
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
 ## Visualization of Human 3.6M Benchmarks
 
 We further provide high-resolution benchmark results on [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) dataset using $4\rightarrow 4$ frames prediction setting in [configs/human](https://github.com/chengtan9907/OpenSTL/configs/human).
+
+| ConvLSTM | DMVFN |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_DMVFN.gif' height="auto" width="260" ></div> |
+
+| E3D-LSTM | MAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_E3DLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_MAU.gif' height="auto" width="260" ></div> |
+
+| MIM | PhyDNet |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_MIM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_PhyDNet.gif' height="auto" width="260" ></div> |
+
+| PredRNN | PredRNN++ |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_PredRNN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_PredRNNpp.gif' height="auto" width="260" ></div> |
+
+| PredRNN-V2 | SimVP-V1 |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_PredRNNv2.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_IncepU.gif' height="auto" width="260" ></div> |
+
+| SimVP-V2 | TAU |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_gSTA.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_TAU.gif' height="auto" width="260" ></div> |
+
+| SimVP-ConvMixer | SimVP-ConvNeXt |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_Convmixer.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_ConvNeXt.gif' height="auto" width="260" ></div> |
+
+| SimVP-HorNet | SimVP-MLPMixer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_HorNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_MLPMixer.gif' height="auto" width="260" ></div> |
+
+| SimVP-MogaNet | SimVP-Poolformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_MogaNet.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_Poolformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-Swin | SimVP-Uniformer |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_Swin.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_Uniformer.gif' height="auto" width="260" ></div> |
+
+| SimVP-VAN | SimVP-ViT |
+| :---: | :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_VAN.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/human_SimVP_ViT.gif' height="auto" width="260" ></div> |
 
 <p align="right">(<a href="#top">back to top</a>)</p>
