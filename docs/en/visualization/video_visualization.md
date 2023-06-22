@@ -109,9 +109,9 @@ We provide benchmark results on the popular [Moving MNIST](http://arxiv.org/abs/
 
 Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we also provide the advanced version of MNIST, i.e., MFMNIST benchmark results, using $10\rightarrow 10$ frames prediction setting in [configs/mfmnist](https://github.com/chengtan9907/OpenSTL/configs/mfmnist).
 
-| ConvLSTM | DMVFN |
-| :---: | :---: |
-| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_DMVFN.gif' height="auto" width="260" ></div> |
+| ConvLSTM |
+| :---: | 
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_fashionmnist_ConvLSTM.gif' height="auto" width="260" ></div> | 
 
 | E3D-LSTM | MAU |
 | :---: | :---: |
@@ -159,9 +159,9 @@ Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we also provide the 
 
 Similar to [Moving MNIST](http://arxiv.org/abs/1502.04681), we further design the advanced version of MNIST with complex backgrounds from CIFAR-10, i.e., MMNIST-CIFAR benchmark, using $10\rightarrow 10$ frames prediction setting in [configs/mmnist_cifar](https://github.com/chengtan9907/OpenSTL/configs/mmnist_cifar).
 
-| ConvLSTM | DMVFN |
-| :---: | :---: |
-| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_ConvLSTM.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_DMVFN.gif' height="auto" width="260" ></div> |
+| ConvLSTM | 
+| :---: |
+| <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-video/moving_mnist_cifar_ConvLSTM.gif' height="auto" width="260" ></div> | 
 
 | E3D-LSTM | MAU |
 | :---: | :---: |
