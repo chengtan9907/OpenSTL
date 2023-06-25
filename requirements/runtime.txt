@@ -11,7 +11,7 @@ numpy
 opencv-python
 packaging
 pandas
-scikit-image
+scikit-image<=0.19.3
 six
 scikit-learn
 timm>=0.5.4,<=0.6.11

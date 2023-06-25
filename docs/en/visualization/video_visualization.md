@@ -49,9 +49,9 @@
 
 </details>
 
-We provide visualization figures of various video prediction methods on various benchmarks. You can plot your own visualization with tested results (e.g., `work_dirs/EXP/saved`) by [vis_video.py](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py). For example, run plotting with the script:
+We provide visualization figures of various video prediction methods on various benchmarks. You can plot your own visualization with tested results (e.g., `work_dirs/exp_name/saved`) by [vis_video.py](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py). Note that `--vis_dirs` denotes visualize all experimental folders under the path, and `--vis_channel` can select the channel for visualization. For example, run plotting with the script:
 ```shell
-python tools/visualizations/vis_video.py -d mmnist -w work_dirs/EXP/ --index 0 --save_dirs fig_mmnist_vis
+python tools/visualizations/vis_video.py -d mmnist -w work_dirs/exp_name --index 0 --save_dirs fig_mmnist_vis
 ```
 
 ## Visualization of Moving MNIST Benchmarks
