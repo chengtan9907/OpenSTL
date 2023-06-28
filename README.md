@@ -116,6 +116,10 @@ python tools/train.py -d mmnist --lr 1e-3 -c configs/mmnist/simvp/SimVP_gSTA.py 
 
 For the convenience of users, we provide a tutorial on how to train, evaluate, and visualize with OpenSTL on custom data. This tutorial enables users to quickly build their own projects using OpenSTL. For more details, please refer to the [`tutorial.ipynb`](examples/tutorial.ipynb) in the `examples/` directory.
 
+We also provide a Colab demo of this tutorial:
+
+<a href="https://colab.research.google.com/drive/19uShc-1uCcySrjrRP3peXf2RUNVzCjHh?usp=sharing" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Overview of Model Zoo and Datasets
