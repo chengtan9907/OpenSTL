@@ -16,7 +16,7 @@ dependencies:
     - fvcore
     - lpips
     - pandas
-    - scikit-image
-    - timm
+    - scikit-image<=0.19.3
+    - timm<=0.6.11
     - tqdm
 prefix: /opt/anaconda3/envs/openstl

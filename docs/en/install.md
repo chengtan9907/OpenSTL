@@ -115,7 +115,7 @@ The KittiCaltech Pedestrian dataset uses [Kitti Pedestrian](https://dl.acm.org/d
 
 ### KTH Action
 
-The [KTH Action](https://ieeexplore.ieee.org/document/1334462) dataset contains grey-scale videos (128x128 resolutions) of six types of human actions performed several times by 25 subjects in four different scenarios. It has 5200 and 3167 videos for the train and test sets and can be downloaded from [KTH download](https://www.csc.kth.se/cvap/actions/). We provide [download_kth.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_kth.sh) to prepare the dataset. The data preprocessing and experiment settings are adopted from [KTH](https://ieeexplore.ieee.org/document/1334462) and [PredRNN](https://github.com/thuml/predrnn-pytorch).
+The [KTH Action](https://ieeexplore.ieee.org/document/1334462) dataset contains grey-scale videos (resizing 160x120 to 128x128 resolutions) of six types of human actions performed several times by 25 subjects in four different scenarios. It has 5200 and 3167 videos for the train and test sets and can be downloaded from [KTH download](https://www.csc.kth.se/cvap/actions/), which are in the `avi` format. For convinience, we use the image version released in [PredRNN](https://github.com/thuml/predrnn-pytorch) and provide [download_kth.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_kth.sh) to prepare the dataset. The data preprocessing and experiment settings are adopted from [KTH](https://ieeexplore.ieee.org/document/1334462) and [PredRNN](https://github.com/thuml/predrnn-pytorch).
 
 ### Human 3.6M
 
