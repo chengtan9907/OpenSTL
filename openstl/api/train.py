@@ -28,7 +28,7 @@ except ImportError:
 class BaseExperiment(object):
     """The basic class of PyTorch training and evaluation."""
 
-    def __init__(self, args):
+    def __init__(self, args, dataloaders=None):
         """Initialize experiments (non-dist as an example)"""
         self.args = args
         self.config = self.args.__dict__
@@ -45,7 +45,7 @@ class BaseExperiment(object):
         self._world_size = 1
         self._dist = self.args.dist
 
-        self._preparation()
+        self._preparation(dataloaders)
         if self._rank == 0:
             print_log(output_namespace(self.args))
             self.display_method_info()
@@ -69,7 +69,7 @@ class BaseExperiment(object):
                 assert False, "Distributed training requires GPUs"
         return device
 
-    def _preparation(self):
+    def _preparation(self, dataloaders=None):
         """Preparation of environment and basic experiment setups"""
         if 'LOCAL_RANK' not in os.environ:
             os.environ['LOCAL_RANK'] = str(self.args.local_rank)
@@ -126,7 +126,7 @@ class BaseExperiment(object):
         set_seed(seed)
 
         # prepare data
-        self._get_data()
+        self._get_data(dataloaders)
         # build the method
         self._build_method()
         # build hooks
@@ -193,10 +193,14 @@ class BaseExperiment(object):
                 stage_hook_infos.append(info)
         return '\n'.join(stage_hook_infos)
 
-    def _get_data(self):
+    def _get_data(self, dataloaders=None):
         """Prepare datasets and dataloaders"""
-        self.train_loader, self.vali_loader, self.test_loader = \
-            get_dataset(self.args.dataname, self.config)
+        if dataloaders is None:
+            self.train_loader, self.vali_loader, self.test_loader = \
+                get_dataset(self.args.dataname, self.config)
+        else:
+            self.train_loader, self.vali_loader, self.test_loader = dataloaders
+
         if self.vali_loader is None:
             self.vali_loader = self.test_loader
         self._max_iters = self._max_epochs * len(self.train_loader)

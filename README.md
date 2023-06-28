@@ -112,6 +112,10 @@ bash tools/prepare_data/download_mmnist.sh
 python tools/train.py -d mmnist --lr 1e-3 -c configs/mmnist/simvp/SimVP_gSTA.py --ex_name mmnist_simvp_gsta
 ```
 
+## Tutorial on using Custom Data
+
+For the convenience of users, we provide a tutorial on how to train, evaluate, and visualize with OpenSTL on custom data. This tutorial enables users to quickly build their own projects using OpenSTL. For more details, please refer to the [`tutorial.ipynb`](examples/tutorial.ipynb) in the `examples/` directory.
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Overview of Model Zoo and Datasets
