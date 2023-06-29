@@ -194,6 +194,7 @@ We present visualization examples of ConvLSTM below. For more detailed informati
 
 - For weather forecasting, visualization examples of other approaches are shown in [visualization/weather_visualization.md](docs/en/visualization/weather_visualization.md).
 
+<div align="center">
 
 | Moving MNIST | Moving FMNIST | 
 | :---: | :---: |
@@ -218,6 +219,8 @@ We present visualization examples of ConvLSTM below. For more detailed informati
 | Weather - Latitude Wind | Weather - Cloud Cover | 
 | :---: | :---: |
 | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_wind_latitude_ConvLSTM.gif' height="auto" width="360" ></div> | <div align=center><img src='https://github.com/chengtan9907/OpenSTL/releases/download/vis-weather-5-625/weather_cloud_cover_5_625_ConvLSTM.gif' height="auto" width="360" ></div> |
+
+</div>
 
 ## License
 
