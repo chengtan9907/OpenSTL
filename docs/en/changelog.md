@@ -7,12 +7,17 @@ Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenS
 #### New Features
 
 * Support visualization tools in [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py), config files in [configs](https://github.com/chengtan9907/OpenSTL/tree/master/configs), and trained files (models, logs, and visualizations) in [v0.3.0](https://github.com/chengtan9907/OpenSTL/releases/tag/v0.3.0) of STL methods on various datasets (on updating).
-* Support the dataloader of video classification datasets [Kinetics](https://deepmind.com/research/open-source/kinetics), which has the similar setting as Human3.6M dataloader. Relevent video transforms are supported according [VideoMAE](https://github.com/MCG-NJU/VideoMAE) and config files are provided.
-* Update STL results visualization by [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py) for video prediction, traffic prediction, weather prediction tasks in [video_visualization](https://github.com/chengtan9907/SimVPv2/docs/en/visualization/video_visualization.md), [traffic_visualization](https://github.com/chengtan9907/SimVPv2/docs/en/visualization/traffic_visualization.md), and [weather_visualization](https://github.com/chengtan9907/SimVPv2/docs/en/visualization/weather_visualization.md).
+* Support the dataloader of video classification datasets [Kinetics](https://deepmind.com/research/open-source/kinetics), which has a similar setting as the Human3.6M dataloader. Relevant video transforms are supported according to [VideoMAE](https://github.com/MCG-NJU/VideoMAE), and config files are provided.
+* Update STL results visualization by [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py) for video prediction, traffic prediction, weather prediction tasks in [video_visualization](https://github.com/chengtan9907/OpenSTL/docs/en/visualization/video_visualization.md), [traffic_visualization](https://github.com/chengtan9907/OpenSTL/docs/en/visualization/traffic_visualization.md), and [weather_visualization](https://github.com/chengtan9907/SimVPv2/docs/en/visualization/weather_visualization.md).
+* Support Jupyter notebook tutorials and video examples in [examples](https://github.com/chengtan9907/OpenSTL/tree/master/examples).
 
 #### Update Documents
 
 * Update benchmark results of video prediction, traffic prediction, and weather prediction benchmarks in `docs/en/model_zoos`.
+
+#### Fix Bugs
+
+* Fix bugs in the dataloader (issue [#26](https://github.com/chengtan9907/OpenSTL/issues/26)) and dataset prepration tools (issue [#27](https://github.com/chengtan9907/OpenSTL/issues/27) and [#28](https://github.com/chengtan9907/OpenSTL/issues/28)).
 
 ### v0.2.0 (21/04/2023)
 

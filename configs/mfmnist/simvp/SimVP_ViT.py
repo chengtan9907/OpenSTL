@@ -8,7 +8,7 @@ hid_T = 512
 N_T = 8
 N_S = 4
 # training
-lr = 1e-3
+lr = 5e-4
 batch_size = 16
 drop_path = 0
 sched = 'onecycle'

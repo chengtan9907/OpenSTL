@@ -17,6 +17,6 @@ patch_size = 4
 layer_norm = 0
 # training
 # lr = 1e-4
-batch_size = 4  # 4 x bs4 = bs16
+# batch_size = 4  # 4 x bs4 = bs16
 sched = 'cosine'
-warmup_epoch = 0
+warmup_epoch = 5
