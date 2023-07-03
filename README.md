@@ -236,16 +236,31 @@ If you are interested in our repository or our paper, please cite the following 
 
 ```
 @article{tan2023openstl,
-  title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning}, 
-  author={Cheng Tan and Siyuan Li and Zhangyang Gao and Wenfei Guan and Zedong Wang and Zicheng Liu and Lirong Wu and Stan Z. Li},
+  title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning},
+  author={Tan, Cheng and Li, Siyuan and Gao, Zhangyang and Guan, Wenfei and Wang, Zedong and Liu, Zicheng and Wu, Lirong and Li, Stan Z},
   journal={arXiv preprint arXiv:2306.11249},
-  year={2023},
+  year={2023}
+}
+
+@inproceedings{gao2022simvp,
+  title={Simvp: Simpler yet better video prediction},
+  author={Gao, Zhangyang and Tan, Cheng and Wu, Lirong and Li, Stan Z},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={3170--3180},
+  year={2022}
 }
 @article{tan2022simvpv2,
   title={SimVP: Towards Simple yet Powerful Spatiotemporal Predictive Learning},
   author={Tan, Cheng and Gao, Zhangyang and Li, Siyuan and Li, Stan Z},
   journal={arXiv preprint arXiv:2211.12509},
   year={2022}
+}
+@inproceedings{tan2023temporal,
+  title={Temporal attention unit: Towards efficient spatiotemporal predictive learning},
+  author={Tan, Cheng and Gao, Zhangyang and Wu, Lirong and Xu, Yongjie and Xia, Jun and Li, Siyuan and Li, Stan Z},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={18770--18782},
+  year={2023}
 }
 ```
 
