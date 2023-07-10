@@ -140,13 +140,11 @@ class DataProcess(object):
         Returns:
             A dataset and indices of the sequence.
         """
-        # path = paths[0]
+        assert mode in ['train', 'test']
         if mode == 'train':
             person_id = self.train_person
-        elif mode == 'test':
-            person_id = self.test_person
         else:
-            print('ERROR!')
+            person_id = self.test_person
         print('begin load data' + str(path))
 
         frames_np = []
@@ -198,7 +196,7 @@ class DataProcess(object):
             if frames_person_mark[index] == frames_person_mark[index - self.seq_len + 1]:
                 end = int(frames_file_name[index][6:10])
                 start = int(frames_file_name[index - self.seq_len + 1][6:10])
-                # TODO(yunbo): mode == 'test'
+
                 if end - start == self.seq_len - 1:
                     indices.append(index - self.seq_len + 1)
                     if frames_category[index] == 1:

@@ -11,7 +11,10 @@ def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, dist
         drop_last=kwargs.get('drop_last', False),
     )
 
-    if dataname == 'human':
+    if dataname == 'bair':
+        from .dataloader_bair import load_data
+        return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
+    elif dataname == 'human':
         from .dataloader_human import load_data
         return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
     elif dataname == 'kitticaltech':

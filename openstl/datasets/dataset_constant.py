@@ -1,4 +1,11 @@
 dataset_parameters = {
+    'bair': {
+        'in_shape': [4, 3, 64, 64],
+        'pre_seq_length': 4,
+        'aft_seq_length': 12,
+        'total_length': 16,
+        'metrics': ['mse', 'mae', 'ssim', 'psnr', 'lpips'],
+    },
     'mfmnist': {
         'in_shape': [10, 1, 64, 64],
         'pre_seq_length': 10,

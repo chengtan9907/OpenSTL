@@ -95,6 +95,9 @@ OpenSTL
     |── moving_mnist
     |   ├── mnist_test_seq.npy
     |   ├── train-images-idx3-ubyte.gz
+    ├── softmotion30_44k
+    │   ├── test
+    │   ├── train
     |── taxibj
     |   ├── dataset.npz
     |── weather
@@ -108,6 +111,10 @@ OpenSTL
 ### Moving MNIST / FMNIST
 
 [Moving MNIST](http://arxiv.org/abs/1502.04681) and [Moving FMNIST](http://arxiv.org/abs/1502.04681) are toy datasets, which generate gray-scale videos (64x64 resolutions) with two objects. We provide [download_mmnist.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_mmnist.sh) and [download_mfmnist.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_mfmnist.sh), which download datasets from [MMNIST download](http://www.cs.toronto.edu/~nitish/unsupervised_video/) and [MFMNIST download](http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz). Note that the train set is generated online while the test set is fixed to ensure the consistency of evaluation results.
+
+### BAIR Robot Pushing
+
+The BAIR dataset uses [BAIR Robot Pushing](https://arxiv.org/abs/1710.05268) as the train set (648960 videos) and the test set (3840 videos). We provide [download_bair.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_bair.sh) to prepare the datasets, and you can also download the data from [BAIR download](http://rail.eecs.berkeley.edu/datasets/bair_robot_pushing_dataset_v0.tar). The data preprocessing of RGB videos (64x64 resolutions) and experiment settings are adopted from [PredRNN](https://github.com/thuml/predrnn-pytorch).
 
 ### KittiCaltech Pedestrian
 

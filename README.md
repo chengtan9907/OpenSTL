@@ -171,6 +171,7 @@ We support various spatiotemporal prediction methods and will provide benchmarks
     <details open>
     <summary>Currently supported datasets</summary>
 
+    - [x] [BAIR Robot Pushing](https://arxiv.org/abs/1710.05268) (CoRL'2017) [[download](https://sites.google.com/berkeley.edu/robotic-interaction-datasets)] [[config](configs/bair)]
     - [x] [Human3.6M](http://vision.imar.ro/human3.6m/pami-h36m.pdf) (TPAMI'2014) [[download](http://vision.imar.ro/human3.6m/description.php)] [[config](configs/human)]
     - [x] [KTH Action](https://ieeexplore.ieee.org/document/1334462) (ICPR'2004) [[download](https://www.csc.kth.se/cvap/actions/)] [[config](configs/kth)]
     - [x] [KittiCaltech Pedestrian](https://dl.acm.org/doi/10.1177/0278364913491297) (IJRR'2013) [[download](https://www.dropbox.com/s/rpwlnn6j39jjme4/kitti_data.zip)] [[config](configs/kitticaltech)]
