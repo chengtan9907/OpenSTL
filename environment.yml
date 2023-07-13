@@ -4,7 +4,6 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - nni
   - numpy
   - hickle
   - pip
@@ -15,6 +14,7 @@ dependencies:
     - decord
     - fvcore
     - lpips
+    - nni
     - pandas
     - scikit-image<=0.19.3
     - timm<=0.6.11

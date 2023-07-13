@@ -151,7 +151,7 @@ We support various spatiotemporal prediction methods and will provide benchmarks
     <details open>
     <summary>Currently supported MetaFormer models for SimVP</summary>
 
-    - [x] [ViT](https://arxiv.org/abs/2010.11929) (ICLR'2021)
+    - [x] [ViT (Vision Transformer)](https://arxiv.org/abs/2010.11929) (ICLR'2021)
     - [x] [Swin-Transformer](https://arxiv.org/abs/2103.14030) (ICCV'2021)
     - [x] [MLP-Mixer](https://arxiv.org/abs/2105.01601) (NeurIPS'2021)
     - [x] [ConvMixer](https://arxiv.org/abs/2201.09792) (Openreview'2021)

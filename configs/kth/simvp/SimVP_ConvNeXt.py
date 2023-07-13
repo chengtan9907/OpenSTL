@@ -12,3 +12,4 @@ lr = 5e-3
 drop_path = 0.1
 batch_size = 8  # bs = 8 x 2GPUs
 sched = 'onecycle'
+# --broadcast_buffers is needed

@@ -13,6 +13,7 @@ Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenS
 
 #### Update Documents
 
+* Release arXiv preprint of [OpenSTL](https://arxiv.org/abs/2306.11249), which describes the overall framework, benchmark results, and experimental settings, etc.
 * Update benchmark results of video prediction, traffic prediction, and weather prediction benchmarks in `docs/en/model_zoos`.
 
 #### Fix Bugs
@@ -71,6 +72,7 @@ Release version to V0.1.0 with code refactoring.
 
 #### Update Documents
 
+* Release arXiv preprint of [SimVPv2](https://arxiv.org/abs/2211.12509). This version supports the morst experiments in [SimVPv2](https://arxiv.org/abs/2211.12509), which is the extend version of [SimVP](https://arxiv.org/abs/2206.05099).
 * Upload `readthedocs` documents. Summarize video prediction benchmark results on MMNIST in [video_benchmarks.md](https://github.com/chengtan9907/SimVPv2/docs/en/model_zoos/video_benchmarks.md).
 * Update benchmark results of video prediction baselines and MetaFormer architectures based on SimVP on MMNIST, TaxiBJ, and WeatherBench datasets.
 * Update README and add a license.

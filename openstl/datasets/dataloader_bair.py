@@ -187,6 +187,7 @@ class DataProcess(object):
         tfrecords = os.listdir(path)
         tfrecords.sort()
         num_pictures = 0
+        assert tf is not None and 'Please install tensorflow, e.g., pip install tensorflow'
 
         for tfrecord in tfrecords:
             filepath = os.path.join(path, tfrecord)
