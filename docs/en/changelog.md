@@ -7,9 +7,10 @@ Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenS
 #### New Features
 
 * Support visualization tools in [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py), config files in [configs](https://github.com/chengtan9907/OpenSTL/tree/master/configs), and trained files (models, logs, and visualizations) in [v0.3.0](https://github.com/chengtan9907/OpenSTL/releases/tag/v0.3.0) of STL methods on various datasets (on updating).
-* Support the dataloader of video classification datasets [Kinetics](https://deepmind.com/research/open-source/kinetics) and [BAIR](https://arxiv.org/abs/1710.05268), which has a similar setting as the Human3.6M and KTH dataloaders. Relevant video transforms in Kinetics are supported according to [VideoMAE](https://github.com/MCG-NJU/VideoMAE), and config files are provided.
+* Support the dataloader of video classification datasets [Kinetics](https://deepmind.com/research/open-source/kinetics) and [BAIR](https://arxiv.org/abs/1710.05268), which has a similar setting as the Human3.6M and KTH dataloaders. Relevant video transforms in Kinetics are supported according to [VideoMAE](https://github.com/MCG-NJU/VideoMAE), and config files are provided. Add data preparation of TaxiBJ as issue [#34](https://github.com/chengtan9907/OpenSTL/issues/34).
 * Update STL results visualization by [vis_video](https://github.com/chengtan9907/OpenSTL/tree/master/tools/visualizations/vis_video.py) for video prediction, traffic prediction, weather prediction tasks in [video_visualization](https://github.com/chengtan9907/OpenSTL/docs/en/visualization/video_visualization.md), [traffic_visualization](https://github.com/chengtan9907/OpenSTL/docs/en/visualization/traffic_visualization.md), and [weather_visualization](https://github.com/chengtan9907/SimVPv2/docs/en/visualization/weather_visualization.md).
 * Support Jupyter notebook tutorials and video examples in [examples](https://github.com/chengtan9907/OpenSTL/tree/master/examples).
+* Support early-stop training with `--early_stop_epoch` as issue [#36](https://github.com/chengtan9907/OpenSTL/issues/36).
 
 #### Update Documents
 

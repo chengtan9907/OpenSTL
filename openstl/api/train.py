@@ -44,6 +44,7 @@ class BaseExperiment(object):
         self._rank = 0
         self._world_size = 1
         self._dist = self.args.dist
+        self._early_stop = self.args.early_stop_epoch
 
         self._preparation(dataloaders)
         if self._rank == 0:
@@ -87,6 +88,8 @@ class BaseExperiment(object):
             # re-set gpu_ids with distributed training mode
             self._gpu_ids = range(self._world_size)
         self.device = self._acquire_device()
+        if self._early_stop <= self._max_epochs // 5:
+            self._early_stop = self._max_epochs * 2
 
         # log and checkpoint
         base_dir = self.args.res_dir if self.args.res_dir is not None else 'work_dirs'
@@ -285,8 +288,9 @@ class BaseExperiment(object):
 
     def train(self):
         """Training loops of STL methods"""
-        recorder = Recorder(verbose=True)
+        recorder = Recorder(verbose=True, early_stop_time=min(self._max_epochs // 10, 10))
         num_updates = self._epoch * self.steps_per_epoch
+        early_stop = False
         self.call_hook('before_train_epoch')
 
         eta = 1.0  # PredRNN variants
@@ -307,10 +311,12 @@ class BaseExperiment(object):
                 if self._rank == 0:
                     print_log('Epoch: {0}, Steps: {1} | Lr: {2:.7f} | Train Loss: {3:.7f} | Vali Loss: {4:.7f}\n'.format(
                         epoch + 1, len(self.train_loader), cur_lr, loss_mean.avg, vali_loss))
-                    recorder(vali_loss, self.method.model, self.path)
+                    early_stop = recorder(vali_loss, self.method.model, self.path)
                     self._save(name='latest')
             if self._use_gpu and self.args.empty_cache:
                 torch.cuda.empty_cache()
+            if epoch > self._early_stop and early_stop:  # early stop training
+                print_log('Early stop training at f{} epoch'.format(epoch))
 
         if not check_dir(self.path):  # exit training when work_dir is removed
             assert False and "Exit training because work_dir is removed"
