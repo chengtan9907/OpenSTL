@@ -17,6 +17,6 @@ patch_size = 4
 layer_norm = 0
 decouple_beta = 0.1
 # training
-# lr = 5e-4
+lr = 1e-4
 batch_size = 16
 sched = 'onecycle'

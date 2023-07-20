@@ -16,6 +16,6 @@ stride = 1
 patch_size = 4
 layer_norm = 0
 # training
-# lr = 1e-4
+lr = 1e-4
 batch_size = 16
 sched = 'onecycle'

@@ -15,6 +15,6 @@ tau = 5
 cell_mode = 'normal'
 model_mode = 'normal'
 # training
-# lr = 1e-3
+lr = 5e-4
 batch_size = 16
 sched = 'onecycle'
