@@ -192,7 +192,7 @@ We support various spatiotemporal prediction methods and will provide benchmarks
 
 We present visualization examples of ConvLSTM below. For more detailed information, please refer to the [visualization](docs/en/visualization/).
 
-- For synthetic moving object trajectory prediction and real-world video prediction, visualization examples of other approaches can be found in [visualization/video_visualization.md](docs/en/visualization/video_visualization.md).
+- For synthetic moving object trajectory prediction and real-world video prediction, visualization examples of other approaches can be found in [visualization/video_visualization.md](docs/en/visualization/video_visualization.md). BAIR and Kinetics are not benchmarked and only for illustration.
 
 - For traffic flow prediction, visualization examples of other approaches are shown in [visualization/traffic_visualization.md](docs/en/visualization/traffic_visualization.md).
 
@@ -226,7 +226,7 @@ We present visualization examples of ConvLSTM below. For more detailed informati
 
 | BAIR Robot Pushing | Kinetics-400 | 
 | :---: | :---: |
-| <div align=center><img src='https://github-production-user-asset-6210df.s3.amazonaws.com/44519745/257872182-4f31928d-2ebc-4407-b2d4-1fe4a8da5837.gif' height="auto" width="360" ></div> | <div align=center><img src='https://github-production-user-asset-6210df.s3.amazonaws.com/44519745/257872560-00775edf-5773-478c-8836-f7aec461e209.gif' height="auto" width="360" ></div> |
+| <div align=center><img src='https://github-production-user-asset-6210df.s3.amazonaws.com/44519745/257872182-4f31928d-2ebc-4407-b2d4-1fe4a8da5837.gif' height="auto" width="260" ></div> | <div align=center><img src='https://github-production-user-asset-6210df.s3.amazonaws.com/44519745/257872560-00775edf-5773-478c-8836-f7aec461e209.gif' height="auto" width="260" ></div> |
 
 </div>
 
