@@ -10,3 +10,8 @@ training = True
 beta = 0.5
 gamma = 0.8
 coef = 0.5
+# training
+lr = 5e-4
+batch_size = 16
+sched = 'cosine'
+warmup_epoch = 5

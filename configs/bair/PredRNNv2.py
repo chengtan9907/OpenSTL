@@ -19,4 +19,4 @@ decouple_beta = 0.1
 # training
 # lr = 5e-4
 batch_size = 16
-sched = 'onecycle'
+# sched = 'onecycle'

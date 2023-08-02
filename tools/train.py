@@ -29,9 +29,14 @@ if __name__ == '__main__':
         config = update_config(config, load_config(cfg_path),
                                exclude_keys=['method'])
     else:
-        config = update_config(config, load_config(cfg_path),
-                               exclude_keys=['method', 'batch_size', 'val_batch_size', 'sched',
+        loaded_cfg = load_config(cfg_path)
+        config = update_config(config, loaded_cfg,
+                               exclude_keys=['method', 'batch_size', 'val_batch_size',
                                              'drop_path', 'warmup_epoch'])
+        default_values = {'batch_size': 16, 'epoch': 200, 'lr': 1e-3, 'sched': 'onecycle'}
+        for attribute in default_values.keys():
+            if config[attribute] is None:
+                config[attribute] = default_values[attribute]
 
     # set multi-process settings
     setup_multi_processes(config)

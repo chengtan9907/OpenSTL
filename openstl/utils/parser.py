@@ -78,7 +78,7 @@ def create_parser():
                         help='Whether to allow overwriting the provided config file with args')
 
     # Training parameters (optimizer)
-    parser.add_argument('--epoch', '-e', default=200, type=int, help='end epochs')
+    parser.add_argument('--epoch', '-e', default=None, type=int, help='end epochs (default: 200)')
     parser.add_argument('--log_step', default=1, type=int, help='Log interval by step')
     parser.add_argument('--opt', default='adam', type=str, metavar='OPTIMIZER',
                         help='Optimizer (default: "adam"')
@@ -97,9 +97,9 @@ def create_parser():
                         help='Check to early stop after this epoch')
 
     # Training parameters (scheduler)
-    parser.add_argument('--sched', default='onecycle', type=str, metavar='SCHEDULER',
+    parser.add_argument('--sched', default=None, type=str, metavar='SCHEDULER',
                         help='LR scheduler (default: "onecycle"')
-    parser.add_argument('--lr', default=1e-3, type=float, help='Learning rate')
+    parser.add_argument('--lr', default=None, type=float, help='Learning rate (default: 1e-3)')
     parser.add_argument('--lr_k_decay', type=float, default=1.0,
                         help='learning rate k-decay for cosine/poly (default: 1.0)')
     parser.add_argument('--warmup_lr', type=float, default=1e-5, metavar='LR',

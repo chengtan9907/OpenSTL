@@ -12,5 +12,5 @@ alpha = 0.1
 # lr = 1e-3
 batch_size = 16
 drop_path = 0.1
-sched = 'onecycle'
+# sched = 'onecycle'
 # --broadcast_buffers is needed

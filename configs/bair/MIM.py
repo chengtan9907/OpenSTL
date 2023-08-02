@@ -19,5 +19,5 @@ layer_norm = 0
 # lr = 5e-4
 batch_size = 16
 val_batch_size = 16
-sched = 'onecycle'
+# sched = 'onecycle'
 drop_last = True
