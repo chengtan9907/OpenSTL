@@ -16,27 +16,24 @@ except ImportError:
 
 
 if __name__ == '__main__':
-    args = create_parser().parse_args()
+    parser = create_parser()
+    
+    #Arguments priority: 
+    #   command line > f{args.method}.py > default from parser.py
+    #first parser run to get the parameters to load f{args.method}.py 
+    args = parser.parse_args()
     config = args.__dict__
 
-    if has_nni:
-        tuner_params = nni.get_next_parameter()
-        config.update(tuner_params)
-
+    #If we provided a config file, loads it. Else, tries to find one for
+    #the method.
     cfg_path = osp.join('./configs', args.dataname, f'{args.method}.py') \
         if args.config_file is None else args.config_file
-    if args.overwrite:
-        config = update_config(config, load_config(cfg_path),
-                               exclude_keys=['method'])
-    else:
-        loaded_cfg = load_config(cfg_path)
-        config = update_config(config, loaded_cfg,
-                               exclude_keys=['method', 'batch_size', 'val_batch_size',
-                                             'drop_path', 'warmup_epoch'])
-        default_values = {'batch_size': 16, 'epoch': 200, 'lr': 1e-3, 'sched': 'onecycle'}
-        for attribute in default_values.keys():
-            if config[attribute] is None:
-                config[attribute] = default_values[attribute]
+    loaded_cfg = load_config(cfg_path)
+    #Push the default values for this method to the parser
+    parser.set_defaults(**loaded_cfg)
+    
+    #second parser run to get the final parameters
+    args = parser.parse_args()
 
     # set multi-process settings
     setup_multi_processes(config)
