@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # run this script on the root
-mkdir data/weather
+mkdir -p data/weather
 cd data/weather
 
 # down 5.625deg `2m_temperature` (32x64) and place them in `data/weather/` according to `https://github.com/pangeo-data/WeatherBench`
