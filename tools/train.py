@@ -22,7 +22,6 @@ if __name__ == '__main__':
     #   command line > f{args.method}.py > default from parser.py
     #first parser run to get the parameters to load f{args.method}.py 
     args = parser.parse_args()
-    config = args.__dict__
 
     #If we provided a config file, loads it. Else, tries to find one for
     #the method.
@@ -34,6 +33,11 @@ if __name__ == '__main__':
     
     #second parser run to get the final parameters
     args = parser.parse_args()
+    config = args.__dict__
+
+    if has_nni:
+        tuner_params = nni.get_next_parameter()
+        config.update(tuner_params)
 
     # set multi-process settings
     setup_multi_processes(config)
