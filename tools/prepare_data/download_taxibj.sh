@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # run this script on the root
-mkdir data/taxibj
+mkdir -p data/taxibj
 cd data/taxibj
 
 # download dataset.npz in `data/taxibj/`

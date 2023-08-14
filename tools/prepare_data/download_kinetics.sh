@@ -2,6 +2,7 @@
 
 # run this script on the root of OpenSTL,
 # we provide this script according to https://github.com/cvdfoundation/kinetics-dataset
+mkdir -p data
 cd data
 
 

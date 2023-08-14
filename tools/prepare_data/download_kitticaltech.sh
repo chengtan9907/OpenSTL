@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # run this script on the root
-mkdir data/kitti_hkl
+mkdir -p data/kitti_hkl
 cd data
 
 # you can download kitti and caltech datasets from Baidu Cloud `https://pan.baidu.com/s/1fudsBHyrf3nbt-7d42YWWg?pwd=kjfk`

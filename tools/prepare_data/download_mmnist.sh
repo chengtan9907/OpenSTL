@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # run this script on the root
-mkdir data/moving_mnist
+mkdir -p data/moving_mnist
 cd data/moving_mnist
 
 # download mmnist and place them in `data/moving_mnist/`

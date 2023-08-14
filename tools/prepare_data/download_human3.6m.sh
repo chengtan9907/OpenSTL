@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # run this script on the root
-mkdir data/human
+mkdir -p data/human
 cd data/human
 
 # # Download H36M annotations

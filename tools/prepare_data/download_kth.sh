@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # run this script on the root
-mkdir data/kth
+mkdir -p data/kth
 cd data/kth
 
 FORMAT='jpg'

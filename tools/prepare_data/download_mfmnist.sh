@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # run this script on the root
-mkdir data/moving_fmnist
+mkdir -p data/moving_fmnist
 cd data/moving_fmnist
 
 # download fmnist and place them in `data/moving_fmnist/`
