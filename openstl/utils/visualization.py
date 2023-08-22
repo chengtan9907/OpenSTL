@@ -64,7 +64,7 @@ def get_mpl_colormap(cmap_name):
     return color_range.reshape(256, 1, 3)
 
 
-def show_video_line(data, ncols, vmax=0.6, cbar=False, format='png', out_path=None, use_rgb=False):
+def show_video_line(data, ncols, vmax=0.6, vmin=0.0, cmap='gray', norm=None, cbar=False, format='png', out_path=None, use_rgb=False):
     """generate images with a video sequence"""
     fig, axes = plt.subplots(nrows=1, ncols=ncols, figsize=(3.25 * ncols, 3))
     plt.subplots_adjust(wspace=0.01, hspace=0)
@@ -77,19 +77,19 @@ def show_video_line(data, ncols, vmax=0.6, cbar=False, format='png', out_path=No
         if use_rgb:
             im = axes.imshow(cv2.cvtColor(data[0], cv2.COLOR_BGR2RGB))
         else:
-            im = axes.imshow(data[0], cmap='gray')
+            im = axes.imshow(data[0], cmap=cmap, norm=norm)
         images.append(im)
         axes.axis('off')
-        im.set_clim(0, vmax)
+        im.set_clim(vmin, vmax)
     else:
         for t, ax in enumerate(axes.flat):
             if use_rgb:
                 im = ax.imshow(cv2.cvtColor(data[t], cv2.COLOR_BGR2RGB), cmap='gray')
             else:
-                im = ax.imshow(data[t], cmap='gray')
+                im = ax.imshow(data[t], cmap=cmap, norm=norm)
             images.append(im)
             ax.axis('off')
-            im.set_clim(0, vmax)
+            im.set_clim(vmin, vmax)
 
     if cbar and ncols > 1:
         cbaxes = fig.add_axes([0.9, 0.15, 0.04 / ncols, 0.7]) 
@@ -101,7 +101,7 @@ def show_video_line(data, ncols, vmax=0.6, cbar=False, format='png', out_path=No
     plt.close()
 
 
-def show_video_gif_multiple(prev, true, pred, out_path=None, use_rgb=False):
+def show_video_gif_multiple(prev, true, pred, vmax=0.6, vmin=0.0, cmap='gray', norm=None, out_path=None, use_rgb=False):
     """generate gif with a video sequence"""
 
     def swap_axes(x):
@@ -120,27 +120,28 @@ def show_video_gif_multiple(prev, true, pred, out_path=None, use_rgb=False):
                 plt.text(0.3, 1.05, 'ground truth', fontsize=15, color='green', transform=ax.transAxes)
                 if i < prev_frames:
                     if use_rgb:
-                        ax.imshow(cv2.cvtColor(prev[i], cv2.COLOR_BGR2RGB))
+                        im = ax.imshow(cv2.cvtColor(prev[i], cv2.COLOR_BGR2RGB))
                     else:
-                        ax.imshow(prev[i], cmap='gray')
+                        im = ax.imshow(prev[i], cmap=cmap, norm=norm)
                 else:
                     if use_rgb:
-                        ax.imshow(cv2.cvtColor(true[i-frames], cv2.COLOR_BGR2RGB))
+                        im = ax.imshow(cv2.cvtColor(true[i-frames], cv2.COLOR_BGR2RGB))
                     else:
-                        ax.imshow(true[i-frames], cmap='gray')
+                        im = ax.imshow(true[i-frames], cmap=cmap, norm=norm)
             elif t == 1:
                 plt.text(0.2, 1.05, 'predicted frames', fontsize=15, color='red', transform=ax.transAxes)
                 if i < prev_frames:
                     if use_rgb:
-                        ax.imshow(cv2.cvtColor(prev[i], cv2.COLOR_BGR2RGB))
+                        im = ax.imshow(cv2.cvtColor(prev[i], cv2.COLOR_BGR2RGB))
                     else:
-                        ax.imshow(prev[i], cmap='gray')
+                        im = ax.imshow(prev[i], cmap=cmap, norm=norm)
                 else:
                     if use_rgb:
-                        ax.imshow(cv2.cvtColor(pred[i-frames], cv2.COLOR_BGR2RGB))
+                        im = ax.imshow(cv2.cvtColor(pred[i-frames], cv2.COLOR_BGR2RGB))
                     else:
-                        ax.imshow(pred[i-frames], cmap='gray')
+                        im = ax.imshow(pred[i-frames], cmap=cmap, norm=norm)
             ax.axis('off')
+            im.set_clim(vmin, vmax)
         plt.savefig('./tmp.png', bbox_inches='tight', format='png')
         images.append(imageio.imread('./tmp.png'))
     plt.close()
