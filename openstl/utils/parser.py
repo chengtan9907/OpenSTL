@@ -115,6 +115,74 @@ def create_parser():
     parser.add_argument('--decay_rate', '--dr', type=float, default=0.1, metavar='RATE',
                         help='LR decay rate (default: 0.1)')
     parser.add_argument('--filter_bias_and_bn', type=bool, default=False,
-                        help='LR decay rate (default: 0.1)')
+                        help='Whether to set the weight decay of bias and bn to 0')
 
     return parser
+
+
+def default_parser():
+    default_values = {
+        # Set-up parameters
+        'device': 'cuda',
+        'dist': False,
+        'display_step': 10,
+        'res_dir': 'work_dirs',
+        'ex_name': 'Debug',
+        'use_gpu': True,
+        'fp16': False,
+        'torchscript': False,
+        'seed': 42,
+        'diff_seed': False,
+        'fps': False,
+        'empty_cache': True,
+        'find_unused_parameters': False,
+        'broadcast_buffers': True,
+        'resume_from': None,
+        'auto_resume': False,
+        'test': False,
+        'deterministic': False,
+        'launcher': 'pytorch',
+        'local_rank': 0,
+        'port': 29500,
+        # dataset parameters
+        'batch_size': 16,
+        'val_batch_size': 16,
+        'num_workers': 4,
+        'data_root': './data',
+        'dataname': 'mmnist',
+        'pre_seq_length': 10,
+        'aft_seq_length': 10,
+        'total_length': 20,
+        'use_augment': False,
+        'use_prefetcher': False,
+        'drop_last': False,
+        # method parameters
+        'method': 'SimVP',
+        'config_file': 'configs/mmnist/simvp/SimVP_gSTA.py',
+        'model_type': 'gSTA',
+        'drop': 0,
+        'drop_path': 0,
+        'overwrite': False,
+        # Training parameters (optimizer)
+        'epoch': 200,
+        'log_step': 1,
+        'opt': 'adam',
+        'opt_eps': None,
+        'opt_betas': None,
+        'momentum': 0.9,
+        'weight_decay': 0,
+        'clip_grad': None,
+        'clip_mode': 'norm',
+        # Training parameters (scheduler)
+        'sched': 'onecycle',
+        'lr': 1e-3,
+        'lr_k_decay': 1.0,
+        'warmup_lr': 1e-5,
+        'min_lr': 1e-6,
+        'final_div_factor': 1e4,
+        'warmup_epoch': 0,
+        'decay_epoch': 100,
+        'decay_rate': 0.1,
+        'filter_bias_and_bn': False,
+    }
+    return default_values

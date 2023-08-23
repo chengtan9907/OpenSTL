@@ -5,7 +5,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 from openstl.api import BaseExperiment
-from openstl.utils import (create_parser, get_dist_info, load_config,
+from openstl.utils import (create_parser, default_parser, get_dist_info, load_config,
                            setup_multi_processes, update_config)
 
 try:
@@ -33,7 +33,7 @@ if __name__ == '__main__':
         config = update_config(config, loaded_cfg,
                                exclude_keys=['method', 'batch_size', 'val_batch_size',
                                              'drop_path', 'warmup_epoch'])
-        default_values = {'batch_size': 16, 'epoch': 200, 'lr': 1e-3, 'sched': 'onecycle'}
+        default_values = default_parser()
         for attribute in default_values.keys():
             if config[attribute] is None:
                 config[attribute] = default_values[attribute]

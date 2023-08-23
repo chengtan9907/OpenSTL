@@ -7,7 +7,7 @@ from .main_utils import (set_seed, setup_multi_processes, print_log, output_name
                          collect_env, check_dir, get_dataset, count_parameters, measure_throughput,
                          load_config, update_config, weights_to_cpu,
                          init_dist, init_random_seed, get_dist_info, reduce_tensor)
-from .parser import create_parser
+from .parser import create_parser, default_parser
 from .predrnn_utils import (reserve_schedule_sampling_exp, schedule_sampling, reshape_patch,
                             reshape_patch_back)
 from .dmvfn_utils import LapLoss, MeanShift, VGGPerceptualLoss
@@ -20,7 +20,7 @@ from .visualization import (show_video_line, show_video_gif_multiple, show_video
 __all__ = [
     'collect_results_gpu', 'gather_tensors', 'gather_tensors_batch',
     'nondist_forward_collect', 'dist_forward_collect',
-    'Config', 'check_file_exist', 'create_parser',
+    'Config', 'check_file_exist', 'create_parser', 'default_parser',
     'set_seed', 'setup_multi_processes', 'print_log', 'output_namespace', 'collect_env', 'check_dir',
     'get_dataset', 'count_parameters', 'measure_throughput', 'load_config', 'update_config', 'weights_to_cpu',
     'init_dist', 'init_random_seed', 'get_dist_info', 'reduce_tensor',
