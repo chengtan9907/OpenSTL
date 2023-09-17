@@ -35,6 +35,7 @@ def create_parser():
     parser.add_argument('--auto_resume', action='store_true', default=False,
                         help='When training was interupted, resume from the latest checkpoint')
     parser.add_argument('--test', action='store_true', default=False, help='Only performs testing')
+    parser.add_argument('--inference', '-i', action='store_true', default=False, help='Only performs inference')
     parser.add_argument('--deterministic', action='store_true', default=False,
                         help='whether to set deterministic options for CUDNN backend (reproducable)')
     parser.add_argument('--launcher', default='none', type=str,
@@ -142,6 +143,7 @@ def default_parser():
         'resume_from': None,
         'auto_resume': False,
         'test': False,
+        'inference': False,
         'deterministic': False,
         'launcher': 'pytorch',
         'local_rank': 0,

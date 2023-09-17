@@ -29,7 +29,8 @@ if __name__ == '__main__':
     for attribute in default_values.keys():
         if config[attribute] is None:
             config[attribute] = default_values[attribute]
-    config['test'] = True
+    if not config['inference'] and not config['test']:
+        config['test'] = True
 
     # set multi-process settings
     setup_multi_processes(config)
@@ -38,6 +39,9 @@ if __name__ == '__main__':
     exp = BaseExperiment(args)
     rank, _ = get_dist_info()
 
-    mse = exp.test()
-    if rank == 0 and has_nni:
+    if config['inference'] and not config['test']:
+        mse = exp.inference()
+    else:
+        mse = exp.test()
+    if rank == 0 and has_nni and mse is not None:
         nni.report_final_result(mse)

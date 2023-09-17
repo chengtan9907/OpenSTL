@@ -109,7 +109,7 @@ class BaseExperiment(object):
             for handler in logging.root.handlers[:]:
                 logging.root.removeHandler(handler)
             timestamp = time.strftime('%Y%m%d_%H%M%S', time.localtime())
-            prefix = 'train' if not self.args.test else 'test'
+            prefix = 'train' if (not self.args.test and not self.args.inference) else 'test'
             logging.basicConfig(level=logging.INFO,
                                 filename=osp.join(self.path, '{}_{}.log'.format(prefix, timestamp)),
                                 filemode='a', format='%(asctime)s - %(message)s')
@@ -368,3 +368,20 @@ class BaseExperiment(object):
                 np.save(osp.join(folder_path, np_data + '.npy'), results[np_data])
 
         return eval_res['mse']
+
+    def inference(self):
+        """A inference loop of STL methods"""
+        best_model_path = osp.join(self.path, 'checkpoint.pth')
+        self._load_from_state_dict(torch.load(best_model_path))
+
+        self.call_hook('before_val_epoch')
+        results = self.method.test_one_epoch(self, self.test_loader)
+        self.call_hook('after_val_epoch')
+
+        if self._rank == 0:
+            folder_path = osp.join(self.path, 'saved')
+            check_dir(folder_path)
+            for np_data in ['inputs', 'trues', 'preds']:
+                np.save(osp.join(folder_path, np_data + '.npy'), results[np_data])
+
+        return None
