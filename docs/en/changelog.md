@@ -15,6 +15,7 @@ Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenS
 
 #### Update Documents
 
+* The [OpenSTL](https://arxiv.org/abs/2306.11249) paper has been accepted by NeurIPS 2023 Dataset and Benchmark Track.
 * Release arXiv preprint of [OpenSTL](https://arxiv.org/abs/2306.11249), which describes the overall framework, benchmark results, and experimental settings, etc.
 * Update benchmark results of video prediction, traffic prediction, and weather prediction benchmarks in `docs/en/model_zoos`.
 * Add the Huggingface organization for [OpenSTL🤗](https://huggingface.co/OpenSTL), where users can join it by [invitation link](https://huggingface.co/organizations/OpenSTL/share/ovCzbEGVhnQNFHBGMMLfXEsPhmuqgBZfii).

@@ -69,6 +69,8 @@ OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, en
 
 ## News and Updates
 
+[2023-09-23] The OpenSTL paper has been accepted by NeurIPS 2023 Dataset and Benchmark Track! [arXiv](https://arxiv.org/abs/2306.11249).
+
 [2023-06-19] `OpenSTL` v0.3.0 is released and will be enhanced in [#25](https://github.com/chengtan9907/OpenSTL/issues/25).
 
 ## Installation
@@ -127,7 +129,7 @@ We also provide a Colab demo of this tutorial:
 
 ## Overview of Model Zoo and Datasets
 
-We support various spatiotemporal prediction methods and will provide benchmarks on various STL datasets. We are working on add new methods and collecting experiment results.
+We support various spatiotemporal prediction methods and provide [benchmarks](https://github.com/chengtan9907/OpenSTL/tree/master/docs/en/model_zoos) on various STL datasets. We are working on add new methods and collecting experiment results.
 
 * Spatiotemporal Prediction Methods.
 
@@ -243,10 +245,10 @@ OpenSTL is an open-source project for STL algorithms created by researchers in *
 If you are interested in our repository or our paper, please cite the following paper:
 
 ```
-@article{tan2023openstl,
+@inproceedings{tan2023openstl,
   title={OpenSTL: A Comprehensive Benchmark of Spatio-Temporal Predictive Learning},
   author={Tan, Cheng and Li, Siyuan and Gao, Zhangyang and Guan, Wenfei and Wang, Zedong and Liu, Zicheng and Wu, Lirong and Li, Stan Z},
-  journal={arXiv preprint arXiv:2306.11249},
+  booktitle={Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
   year={2023}
 }
 
