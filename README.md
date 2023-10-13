@@ -99,6 +99,7 @@ python setup.py develop
 * opencv-python
 * packaging
 * pandas
+* python<=3.10.8
 * scikit-image
 * scikit-learn
 * torch

@@ -37,6 +37,7 @@ python setup.py develop  # or `pip install -e .`
 * opencv-python
 * packaging
 * pandas
+* python<=3.10.8
 * scikit-image
 * scikit-learn
 * torch
@@ -51,6 +52,7 @@ python setup.py develop  # or `pip install -e .`
     * If you are installing `cv2` for the first time, `ImportError: libGL.so.1` will occur, which can be solved by `apt install libgl1-mesa-glx`.
     * Errors might occur with `hickle` and this dependency when using KittiCaltech dataset. You can solve the issues by installing additional packages according to the output message.
     * As for WeatherBench, you encounter some import or runtime errors in the version of `xarray`. You can install the latest version or `xarray==0.19.0` to solve the errors, i.e., `pip install xarray==0.19.0`, and then install required packages according to error messages.
+    * Please use Python<=3.10.x to prevent the error of timm, `ValueError: mutable default <class 'timm.models.maxxvit.MaxxVitConvCfg'> for field conv_cfg is not allowed: use default_factory`. Refer to issue [#1530](https://github.com/huggingface/pytorch-image-models/issues/1530) in issue [#62](https://github.com/chengtan9907/OpenSTL/issues/62).
 
 2. Following the above instructions, OpenSTL is installed on `dev` mode, any local modifications made to the code will take effect. You can install it by `pip install .` to use it as a PyPi package, and you should reinstall it to make the local modifications effect.
 

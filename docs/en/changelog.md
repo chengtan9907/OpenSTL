@@ -24,6 +24,7 @@ Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenS
 
 * Fix bugs in the dataloader (issue [#26](https://github.com/chengtan9907/OpenSTL/issues/26)) and dataset prepration tools (issue [#27](https://github.com/chengtan9907/OpenSTL/issues/27) and [#28](https://github.com/chengtan9907/OpenSTL/issues/28)).
 * Fix bugs of overwrite config values during training, where `utils/main_utils/update_config` will overwrite the config file with the default values in `utils/main_utils/parser` in mistake (issue [#42](https://github.com/chengtan9907/OpenSTL/issues/42)). Using `default_parser()` to provide the default values and fulfill the config after updating values in the given config file (solving pull request [#47](https://github.com/chengtan9907/OpenSTL/pull/47)).
+* Fix bugs of env installation (issue [#62](https://github.com/chengtan9907/OpenSTL/issues/62)) and update `environment.yml`.
 
 ### v0.2.0 (21/04/2023)
 
