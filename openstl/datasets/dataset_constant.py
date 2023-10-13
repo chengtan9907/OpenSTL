@@ -30,6 +30,14 @@ dataset_parameters = {
         'data_name': 'mnist_cifar',
         'metrics': ['mse', 'mae', 'ssim', 'psnr'],
     },
+    'noisymmnist': {
+        'in_shape': [10, 1, 64, 64],
+        'pre_seq_length': 10,
+        'aft_seq_length': 10,
+        'total_length': 20,
+        'data_name': 'noisymmnist',
+        'metrics': ['mse', 'mae', 'ssim', 'psnr'],
+    },
     'taxibj': {
         'in_shape': [4, 2, 32, 32],
         'pre_seq_length': 4,
