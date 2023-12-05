@@ -263,6 +263,8 @@ class BaseExperiment(object):
             _tmp_input = torch.ones(1, self.args.total_length, Hp, Wp, Cp).to(self.device)
             _tmp_flag = torch.ones(1, self.args.aft_seq_length - 1, Hp, Wp, Cp).to(self.device)
             input_dummy = (_tmp_input, _tmp_flag)
+        elif self.args.method in ['swinlstm_d', 'swinlstm_b']:
+            input_dummy = torch.ones(1, self.args.total_length, H, W, C).to(self.device)
         elif self.args.method == 'predrnnv2':
             Hp, Wp = H // self.args.patch_size, W // self.args.patch_size
             Cp = self.args.patch_size ** 2 * C
