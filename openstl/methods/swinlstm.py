@@ -5,7 +5,7 @@ from timm.utils import AverageMeter
 from tqdm import tqdm
 
 from openstl.models import SwinLSTM_D_Model, SwinLSTM_B_Model
-from openstl.utils import reserve_schedule_sampling_exp, schedule_sampling, reduce_tensor
+from openstl.utils import reduce_tensor
 from .base_method import Base_method
 
 class SwinLSTM_D(Base_method):
@@ -82,10 +82,23 @@ class SwinLSTM_D(Base_method):
             self.model_optim.sync_lookahead()
 
         return num_updates, losses_m, eta
+    
+    def _predict(self, batch_x, batch_y, **kwargs):
+        """Forward the model"""
+        # reverse schedule sampling
+        _, img_channel, img_height, img_width = self.args.in_shape
+
+        # preprocess
+        test_ims = torch.cat([batch_x, batch_y], dim=1).permute(0, 1, 3, 4, 2).contiguous()
+
+        img_gen, _ = self.model(test_ims, return_loss=False)
+        pred_y = img_gen[:, -self.args.aft_seq_length:].permute(0, 1, 4, 2, 3).contiguous()
+
+        return pred_y
 
 class SwinLSTM_B(SwinLSTM_D):
     def __init__(self, args, device, steps_per_epoch):
-        super(SwinLSTM_B, self).__init__()
+        SwinLSTM_D.__init__(self, args, device, steps_per_epoch)
         self.model = self._build_model(self.args)
         self.model_optim, self.scheduler, self.by_epoch = self._init_optimizer(steps_per_epoch)
         self.criterion = nn.MSELoss()
