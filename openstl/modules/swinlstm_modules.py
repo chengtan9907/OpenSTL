@@ -8,6 +8,10 @@ class SwinLSTMCell(nn.Module):
     def __init__(self, dim, input_resolution, num_heads, window_size, depth,
                  mlp_ratio=4., qkv_bias=True, qk_scale=None, drop=0., attn_drop=0.,
                  drop_path=0., norm_layer=nn.LayerNorm, flag=None):
+        """
+        Args:
+        flag:  0 UpSample   1 DownSample  2 STconvert
+        """
         super(SwinLSTMCell, self).__init__()
 
         self.STBs = nn.ModuleList(
@@ -58,12 +62,18 @@ class STB(SwinTransformerBlock):
     def __init__(self, index, dim, input_resolution, depth, num_heads, window_size, 
                  mlp_ratio=4., qkv_bias=True, qk_scale=None, drop=0., attn_drop=0., 
                  drop_path=0., norm_layer=nn.LayerNorm, flag=None):
+        if flag == 0:
+            drop_path = drop_path[depth - index - 1]
+        elif flag == 1:
+            drop_path = drop_path[index]
+        elif flag == 2:
+            drop_path = drop_path
         super(STB, self).__init__(dim=dim, input_resolution=input_resolution, 
                                   num_heads=num_heads, window_size=window_size,
                                   shift_size=0 if (index % 2 == 0) else window_size // 2,
                                   mlp_ratio=mlp_ratio, qkv_bias=qkv_bias,                                   
                                   drop=drop, attn_drop=attn_drop,
-                                  drop_path=drop_path[depth - index - 1] if (flag == 0) else drop_path[index],
+                                  drop_path=drop_path,
                                   norm_layer=norm_layer)
         self.red = nn.Linear(2 * dim, dim)
 
@@ -226,7 +236,7 @@ class UpSample(nn.Module):
 class DownSample(nn.Module):
     def __init__(self, img_size, patch_size, in_chans, embed_dim, depths_downsample, num_heads, window_size,
                  mlp_ratio=4., qkv_bias=True, qk_scale=None, drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1,
-                 norm_layer=nn.LayerNorm):
+                 norm_layer=nn.LayerNorm, flag=1):
         super(DownSample, self).__init__()
 
         self.num_layers = len(depths_downsample)
@@ -255,7 +265,7 @@ class DownSample(nn.Module):
                                  qkv_bias=qkv_bias, qk_scale=qk_scale,
                                  drop=drop_rate, attn_drop=attn_drop_rate,
                                  drop_path=dpr[sum(depths_downsample[:i_layer]):sum(depths_downsample[:i_layer + 1])],
-                                 norm_layer=norm_layer)
+                                 norm_layer=norm_layer, flag=flag)
 
             self.layers.append(layer)
             self.downsample.append(downsample)
@@ -276,7 +286,7 @@ class DownSample(nn.Module):
 class STconvert(nn.Module): 
     def __init__(self, img_size, patch_size, in_chans, embed_dim, depths, num_heads, 
                  window_size, mlp_ratio=4., qkv_bias=True, qk_scale=None, drop_rate=0., 
-                 attn_drop_rate=0., drop_path_rate=0.1, norm_layer=nn.LayerNorm):
+                 attn_drop_rate=0., drop_path_rate=0.1, norm_layer=nn.LayerNorm, flag=2):
         super(STconvert, self).__init__()
         
         self.embed_dim = embed_dim
@@ -295,7 +305,8 @@ class STconvert(nn.Module):
                                   window_size=window_size, mlp_ratio=mlp_ratio,
                                   qkv_bias=qkv_bias, qk_scale=qk_scale,
                                   drop=drop_rate, attn_drop=attn_drop_rate,
-                                  drop_path=drop_path_rate, norm_layer=norm_layer)
+                                  drop_path=drop_path_rate, norm_layer=norm_layer,
+                                  flag=flag)
     def forward(self, x, h=None):
         x = self.patch_embed(x)
 
