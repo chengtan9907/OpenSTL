@@ -107,6 +107,7 @@ class MAU_Model(nn.Module):
 
     def forward(self, frames_tensor, mask_true, **kwargs):
         # [batch, length, height, width, channel] -> [batch, length, channel, height, width]
+        device = frames_tensor.device
         frames = frames_tensor.permute(0, 1, 4, 2, 3).contiguous()
         mask_true = mask_true.permute(0, 1, 4, 2, 3).contiguous()
 
@@ -128,9 +129,9 @@ class MAU_Model(nn.Module):
                 in_channel = self.num_hidden[layer_idx - 1]
             for i in range(self.tau):
                 tmp_t.append(torch.zeros(
-                    [batch_size, in_channel, height, width]).to(self.configs.device))
+                    [batch_size, in_channel, height, width]).to(device))
                 tmp_s.append(torch.zeros(
-                    [batch_size, in_channel, height, width]).to(self.configs.device))
+                    [batch_size, in_channel, height, width]).to(device))
             T_pre.append(tmp_t)
             S_pre.append(tmp_s)
 
@@ -148,7 +149,7 @@ class MAU_Model(nn.Module):
             if t == 0:
                 for i in range(self.num_layers):
                     zeros = torch.zeros(
-                        [batch_size, self.num_hidden[i], height, width]).to(self.configs.device)
+                        [batch_size, self.num_hidden[i], height, width]).to(device)
                     T_t.append(zeros)
             S_t = frames_feature
             for i in range(self.num_layers):

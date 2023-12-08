@@ -44,6 +44,7 @@ class PredRNNv2_Model(nn.Module):
     def forward(self, frames_tensor, mask_true, **kwargs):
         return_loss = kwargs.get('return_loss', True)
         # [batch, length, height, width, channel] -> [batch, length, channel, height, width]
+        device = frames_tensor.device
         frames = frames_tensor.permute(0, 1, 4, 2, 3).contiguous()
         mask_true = mask_true.permute(0, 1, 4, 2, 3).contiguous()
 
@@ -61,14 +62,14 @@ class PredRNNv2_Model(nn.Module):
 
         for i in range(self.num_layers):
             zeros = torch.zeros(
-                [batch, self.num_hidden[i], height, width]).to(self.configs.device)
+                [batch, self.num_hidden[i], height, width], device=device)
             h_t.append(zeros)
             c_t.append(zeros)
             delta_c_list.append(zeros)
             delta_m_list.append(zeros)
 
         memory = torch.zeros(
-            [batch, self.num_hidden[0], height, width]).to(self.configs.device)
+            [batch, self.num_hidden[0], height, width], device=device)
 
         for t in range(self.configs.total_length - 1):
 

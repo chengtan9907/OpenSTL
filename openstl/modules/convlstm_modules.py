@@ -53,7 +53,6 @@ class ConvLSTMCell(nn.Module):
         g_t = torch.tanh(g_x + g_h)
 
         c_new = f_t * c_t + i_t * g_t
-
         o_t = torch.sigmoid(o_x + o_h)
-        h_new = o_t * g_t
+        h_new = o_t * torch.tanh(c_new)
         return h_new, c_new

@@ -63,14 +63,15 @@ class PhyCell(nn.Module):
         batch_size = input_.data.size()[0]
         if (first_timestep):   
             self.initHidden(batch_size)  # init Hidden at each forward start
-        for j,cell in enumerate(self.cell_list):
+        for j, cell in enumerate(self.cell_list):
+            self.H[j] = self.H[j].to(input_.device)
             if j==0:  # bottom layer
                 self.H[j] = cell(input_, self.H[j])
             else:
                 self.H[j] = cell(self.H[j-1],self.H[j])
         return self.H, self.H
     
-    def initHidden(self,batch_size):
+    def initHidden(self, batch_size):
         self.H = [] 
         for i in range(self.n_layers):
             self.H.append(torch.zeros(
@@ -109,7 +110,7 @@ class PhyD_ConvLSTM_Cell(nn.Module):
                               padding=self.padding, bias=self.bias)
                  
     # we implement LSTM that process only one timestep 
-    def forward(self,x, hidden): # x [batch, hidden_dim, width, height]
+    def forward(self, x, hidden): # x [batch, hidden_dim, width, height]
         h_cur, c_cur = hidden
         
         combined = torch.cat([x, h_cur], dim=1)  # concatenate along channel axis
@@ -151,7 +152,9 @@ class PhyD_ConvLSTM(nn.Module):
         batch_size = input_.data.size()[0]
         if (first_timestep):   
             self.initHidden(batch_size) # init Hidden at each forward start
-        for j,cell in enumerate(self.cell_list):
+        for j, cell in enumerate(self.cell_list):
+            self.H[j] = self.H[j].to(input_.device)
+            self.C[j] = self.C[j].to(input_.device)
             if j==0: # bottom layer
                 self.H[j], self.C[j] = cell(input_, (self.H[j],self.C[j]))
             else:
@@ -162,9 +165,9 @@ class PhyD_ConvLSTM(nn.Module):
         self.H, self.C = [],[]  
         for i in range(self.n_layers):
             self.H.append(torch.zeros(
-                batch_size,self.hidden_dims[i], self.input_shape[0], self.input_shape[1]).to(self.device))
+                batch_size, self.hidden_dims[i], self.input_shape[0], self.input_shape[1]).to(self.device))
             self.C.append(torch.zeros(
-                batch_size,self.hidden_dims[i], self.input_shape[0], self.input_shape[1]).to(self.device))
+                batch_size, self.hidden_dims[i], self.input_shape[0], self.input_shape[1]).to(self.device))
     
     def setHidden(self, hidden):
         H,C = hidden

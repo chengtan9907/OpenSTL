@@ -51,7 +51,7 @@ class PhyDNet_Model(nn.Module):
         for b in range(0, self.encoder.phycell.cell_list[0].input_dim):
             filters = self.encoder.phycell.cell_list[0].F.conv1.weight[:,b,:,:]
             m = self.k2m(filters.double()).float()
-            loss += self.criterion(m, constraints)
+            loss += self.criterion(m, constraints.to(m.device))
 
         return loss
 
@@ -78,6 +78,6 @@ class PhyDNet_Model(nn.Module):
                 filters = self.encoder.phycell.cell_list[0].F.conv1.weight[:,b,:,:]
                 m = self.k2m(filters.double()).float()
                 if kwargs.get('return_loss', True):
-                    loss += self.criterion(m, constraints)
+                    loss += self.criterion(m, constraints.to(m.device))
 
             return torch.stack(predictions, dim=1), loss

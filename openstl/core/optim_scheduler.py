@@ -131,7 +131,7 @@ def get_optim_scheduler(args, epoch, model, steps_per_epoch):
         lr_scheduler = optim.lr_scheduler.OneCycleLR(
             optimizer,
             max_lr=args.lr,
-            total_steps=total_steps,
+            total_steps=total_steps // len(args.gpus),
             final_div_factor=getattr(args, 'final_div_factor', 1e4))
         by_epoch = False
     elif sched_lower == 'cosine':

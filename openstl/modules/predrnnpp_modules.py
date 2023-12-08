@@ -81,7 +81,7 @@ class CausalLSTMCell(nn.Module):
     def forward(self, x_t, h_t, c_t, m_t):
         x_concat = self.conv_x(x_t)
         h_concat = self.conv_h(h_t)
-        c_concat = self.conv_c(m_t)
+        c_concat = self.conv_c(c_t)
         m_concat = self.conv_m(m_t)
         i_x, f_x, g_x, i_x_prime, f_x_prime, g_x_prime, o_x = \
             torch.split(x_concat, self.num_hidden, dim=1)

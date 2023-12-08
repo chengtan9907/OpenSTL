@@ -45,7 +45,6 @@ class SimVP_Model(nn.Module):
 
         Y = self.dec(hid, skip)
         Y = Y.reshape(B, T, C, H, W)
-
         return Y
 
 

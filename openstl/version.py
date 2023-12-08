@@ -1,6 +1,6 @@
 # Copyright (c) CAIRI AI Lab. All rights reserved
 
-__version__ = '0.3.0'
+__version__ = '1.0.0'
 
 
 def parse_version_info(version_str):

@@ -120,6 +120,7 @@ work_dirs/
 workspace/
 tools/exp_bash/
 pretrains
+lightning_logs/
 
 # Pytorch
 *.pth

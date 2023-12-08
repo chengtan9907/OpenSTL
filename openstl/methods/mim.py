@@ -1,7 +1,5 @@
-import torch.nn as nn
-
-from openstl.models import MIM_Model
 from .predrnn import PredRNN
+from openstl.models import MIM_Model
 
 
 class MIM(PredRNN):
@@ -13,14 +11,11 @@ class MIM(PredRNN):
 
     """
 
-    def __init__(self, args, device, steps_per_epoch):
-        PredRNN.__init__(self, args, device, steps_per_epoch)
-        assert args.batch_size == args.val_batch_size, f"{args.batch_size} != {args.val_batch_size}"
-        self.model = self._build_model(self.args)
-        self.model_optim, self.scheduler, self.by_epoch = self._init_optimizer(steps_per_epoch)
-        self.criterion = nn.MSELoss()
+    def __init__(self, **args):
+        PredRNN.__init__(self, **args)
+        assert self.hparams.batch_size == self.hparams.val_batch_size, f"{self.hparams.batch_size} != {self.hparams.val_batch_size}"
 
-    def _build_model(self, args):
-        num_hidden = [int(x) for x in self.args.num_hidden.split(',')]
+    def _build_model(self, **args):
+        num_hidden = [int(x) for x in self.hparams.num_hidden.split(',')]
         num_layers = len(num_hidden)
-        return MIM_Model(num_layers, num_hidden, args).to(self.device)
+        return MIM_Model(num_layers, num_hidden, self.hparams)

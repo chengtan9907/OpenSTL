@@ -11,39 +11,18 @@ def create_parser():
                         help='Name of device to use for tensor computations (cuda/cpu)')
     parser.add_argument('--dist', action='store_true', default=False,
                         help='Whether to use distributed training (DDP)')
-    parser.add_argument('--display_step', default=10, type=int,
-                        help='Interval in batches between display of training metrics')
     parser.add_argument('--res_dir', default='work_dirs', type=str)
     parser.add_argument('--ex_name', '-ex', default='Debug', type=str)
-    parser.add_argument('--use_gpu', default=True, type=bool)
     parser.add_argument('--fp16', action='store_true', default=False,
                         help='Whether to use Native AMP for mixed precision training (PyTorch=>1.6.0)')
     parser.add_argument('--torchscript', action='store_true', default=False,
                         help='Whether to use torchscripted model')
     parser.add_argument('--seed', default=42, type=int)
-    parser.add_argument('--diff_seed', action='store_true', default=False,
-                        help='Whether to set different seeds for different ranks')
     parser.add_argument('--fps', action='store_true', default=False,
                         help='Whether to measure inference speed (FPS)')
-    parser.add_argument('--empty_cache', action='store_true', default=True,
-                        help='Whether to empty cuda cache after GPU training')
-    parser.add_argument('--find_unused_parameters', action='store_true', default=False,
-                        help='Whether to find unused parameters in forward during DDP training')
-    parser.add_argument('--broadcast_buffers', action='store_false', default=True,
-                        help='Whether to set broadcast_buffers to false during DDP training')
-    parser.add_argument('--resume_from', type=str, default=None, help='the checkpoint file to resume from')
-    parser.add_argument('--auto_resume', action='store_true', default=False,
-                        help='When training was interupted, resume from the latest checkpoint')
     parser.add_argument('--test', action='store_true', default=False, help='Only performs testing')
-    parser.add_argument('--inference', '-i', action='store_true', default=False, help='Only performs inference')
     parser.add_argument('--deterministic', action='store_true', default=False,
                         help='whether to set deterministic options for CUDNN backend (reproducable)')
-    parser.add_argument('--launcher', default='none', type=str,
-                        choices=['none', 'pytorch', 'slurm', 'mpi'],
-                        help='job launcher for distributed training')
-    parser.add_argument('--local_rank', type=int, default=0)
-    parser.add_argument('--port', type=int, default=29500,
-                        help='port only works when launcher=="slurm"')
 
     # dataset parameters
     parser.add_argument('--batch_size', '-b', default=16, type=int, help='Training batch size')
@@ -64,10 +43,9 @@ def create_parser():
 
     # method parameters
     parser.add_argument('--method', '-m', default='SimVP', type=str,
-                        choices=['ConvLSTM', 'convlstm', 'CrevNet', 'crevnet', 'DMVFN', 'dmvfn', 'E3DLSTM', 'e3dlstm',
-                                 'MAU', 'mau', 'MIM', 'mim', 'PhyDNet', 'phydnet', 'PredNet', 'prednet',
-                                 'PredRNN', 'predrnn', 'PredRNNpp', 'predrnnpp', 'PredRNNv2', 'predrnnv2',
-                                 'SimVP', 'simvp', 'TAU', 'tau'],
+                        choices=['ConvLSTM', 'convlstm', 'E3DLSTM', 'e3dlstm', 'MAU', 'mau', 'MIM', 'mim', 
+                                'PhyDNet', 'phydnet', 'PredRNN', 'predrnn', 'PredRNNpp',  'predrnnpp', 
+                                'PredRNNv2', 'predrnnv2', 'SimVP', 'simvp', 'TAU', 'tau'],
                         help='Name of video prediction method to train (default: "SimVP")')
     parser.add_argument('--config_file', '-c', default='configs/mmnist/simvp/SimVP_gSTA.py', type=str,
                         help='Path to the default config file')
@@ -94,8 +72,6 @@ def create_parser():
                         help='Clip gradient norm (default: None, no clipping)')
     parser.add_argument('--clip_mode', type=str, default='norm',
                         help='Gradient clipping mode. One of ("norm", "value", "agc")')
-    parser.add_argument('--early_stop_epoch', default=-1, type=int,
-                        help='Check to early stop after this epoch')
     parser.add_argument('--no_display_method_info', action='store_true', default=False,
                         help='Do not display method info')
 
@@ -120,6 +96,10 @@ def create_parser():
     parser.add_argument('--filter_bias_and_bn', type=bool, default=False,
                         help='Whether to set the weight decay of bias and bn to 0')
 
+    # lightning
+    parser.add_argument('--gpus', nargs='+', default=[0], type=int)
+    parser.add_argument('--metric_for_bestckpt', default='val_loss', type=str)
+
     return parser
 
 
@@ -128,26 +108,14 @@ def default_parser():
         # Set-up parameters
         'device': 'cuda',
         'dist': False,
-        'display_step': 10,
         'res_dir': 'work_dirs',
         'ex_name': 'Debug',
-        'use_gpu': True,
         'fp16': False,
         'torchscript': False,
         'seed': 42,
-        'diff_seed': False,
         'fps': False,
-        'empty_cache': True,
-        'find_unused_parameters': False,
-        'broadcast_buffers': True,
-        'resume_from': None,
-        'auto_resume': False,
         'test': False,
-        'inference': False,
         'deterministic': False,
-        'launcher': 'pytorch',
-        'local_rank': 0,
-        'port': 29500,
         # dataset parameters
         'batch_size': 16,
         'val_batch_size': 16,
@@ -177,7 +145,6 @@ def default_parser():
         'weight_decay': 0,
         'clip_grad': None,
         'clip_mode': 'norm',
-        'early_stop_epoch': -1,
         'no_display_method_info': False,
         # Training parameters (scheduler)
         'sched': 'onecycle',
@@ -190,5 +157,8 @@ def default_parser():
         'decay_epoch': 100,
         'decay_rate': 0.1,
         'filter_bias_and_bn': False,
+        # Lightning parameters
+        'gpus': [0],
+        'metric_for_bestckpt': 'val_loss'
     }
     return default_values

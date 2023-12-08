@@ -249,11 +249,11 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4, data_name='m
                            image_size=image_size, use_augment=False)
 
     dataloader_train = create_loader(train_set,
-                                     batch_size=batch_size,
-                                     shuffle=True, is_training=True,
-                                     pin_memory=True, drop_last=True,
-                                     num_workers=num_workers,
-                                     distributed=distributed, use_prefetcher=use_prefetcher)
+                                    batch_size=batch_size,
+                                    shuffle=True, is_training=True,
+                                    pin_memory=True, drop_last=True,
+                                    num_workers=num_workers, persistent_workers=True,
+                                    distributed=distributed, use_prefetcher=use_prefetcher)
     dataloader_vali = create_loader(test_set,
                                     batch_size=val_batch_size,
                                     shuffle=False, is_training=False,
@@ -271,14 +271,7 @@ def load_data(batch_size, val_batch_size, data_root, num_workers=4, data_name='m
 
 
 if __name__ == '__main__':
-    from openstl.utils import init_dist
-    os.environ['LOCAL_RANK'] = str(0)
-    os.environ['RANK'] = str(0)
-    os.environ['MASTER_ADDR'] = 'localhost'
-    os.environ['MASTER_PORT'] = '12357'
-    dist_params = dict(launcher='pytorch', backend='nccl', init_method='env://', world_size=1)
-    init_dist(**dist_params)
-
+    
     dataloader_train, _, dataloader_test = \
         load_data(batch_size=16,
                   val_batch_size=4,

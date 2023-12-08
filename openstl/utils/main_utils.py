@@ -3,82 +3,17 @@
 import cv2
 import os
 import logging
-import platform
-import random
 import subprocess
 import sys
-import warnings
-import numpy as np
 from collections import defaultdict, OrderedDict
 from typing import Tuple
 
 import torch
 import torchvision
-import torch.multiprocessing as mp
 from torch import distributed as dist
 
 import openstl
 from .config_utils import Config
-
-
-def set_seed(seed, deterministic=False):
-    """Set random seed.
-
-    Args:
-        seed (int): Seed to be used.
-        deterministic (bool): Whether to set the deterministic option for
-            CUDNN backend, i.e., set `torch.backends.cudnn.deterministic`
-            to True and `torch.backends.cudnn.benchmark` to False.
-            Default: False.
-    """
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.manual_seed(seed)
-    if deterministic:
-        torch.backends.cudnn.deterministic = True
-        torch.backends.cudnn.benchmark = False
-    else:
-        torch.backends.cudnn.benchmark = True
-
-
-def setup_multi_processes(cfg):
-    """Setup multi-processing environment variables."""
-    # set multi-process start method as `fork` to speed up the training
-    if platform.system() != 'Windows':
-        mp_start_method = cfg.get('mp_start_method', 'fork')
-        current_method = mp.get_start_method(allow_none=True)
-        if current_method is not None and current_method != mp_start_method:
-            warnings.warn(
-                f'Multi-processing start method `{mp_start_method}` is '
-                f'different from the previous setting `{current_method}`.'
-                f'It will be force set to `{mp_start_method}`. You can change '
-                f'this behavior by changing `mp_start_method` in your config.')
-        mp.set_start_method(mp_start_method, force=True)
-
-    # disable opencv multithreading to avoid system being overloaded
-    opencv_num_threads = cfg.get('opencv_num_threads', 0)
-    cv2.setNumThreads(opencv_num_threads)
-
-    # setup OMP threads
-    # This code is referred from https://github.com/pytorch/pytorch/blob/master/torch/distributed/run.py  # noqa
-    if 'OMP_NUM_THREADS' not in os.environ and cfg['num_workers'] > 1:
-        omp_num_threads = 1
-        warnings.warn(
-            f'Setting OMP_NUM_THREADS environment variable for each process '
-            f'to be {omp_num_threads} in default, to avoid your system being '
-            f'overloaded, please further tune the variable for optimal '
-            f'performance in your application as needed.')
-        os.environ['OMP_NUM_THREADS'] = str(omp_num_threads)
-
-    # setup MKL threads
-    if 'MKL_NUM_THREADS' not in os.environ and cfg['num_workers'] > 1:
-        mkl_num_threads = 1
-        warnings.warn(
-            f'Setting MKL_NUM_THREADS environment variable for each process '
-            f'to be {mkl_num_threads} in default, to avoid your system being '
-            f'overloaded, please further tune the variable for optimal '
-            f'performance in your application as needed.')
-        os.environ['MKL_NUM_THREADS'] = str(mkl_num_threads)
 
 
 def collect_env():
@@ -140,8 +75,8 @@ def output_namespace(namespace):
 def check_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
-        return False
-    return True
+        return path
+    return path
 
 
 def get_dataset(dataname, config):
@@ -149,10 +84,6 @@ def get_dataset(dataname, config):
     from openstl.datasets import load_data
     config.update(dataset_parameters[dataname])
     return load_data(**config)
-
-
-def count_parameters(model):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 def measure_throughput(model, input_dummy):
@@ -239,69 +170,6 @@ def weights_to_cpu(state_dict: OrderedDict) -> OrderedDict:
     return state_dict_cpu
 
 
-def init_dist(launcher: str, backend: str = 'nccl', **kwargs) -> None:
-    if mp.get_start_method(allow_none=True) is None:
-        mp.set_start_method('spawn')
-    if launcher == 'pytorch':
-        _init_dist_pytorch(backend, **kwargs)
-    elif launcher == 'mpi':
-        _init_dist_mpi(backend, **kwargs)
-    else:
-        raise ValueError(f'Invalid launcher type: {launcher}')
-
-
-def init_random_seed(seed=None, device='cuda'):
-    """Initialize random seed.
-
-    If the seed is not set, the seed will be automatically randomized,
-    and then broadcast to all processes to prevent some potential bugs.
-    Args:
-        seed (int, Optional): The seed. Default to None.
-        device (str): The device where the seed will be put on.
-            Default to 'cuda'.
-    Returns:
-        int: Seed to be used.
-    """
-    if seed is not None:
-        return seed
-
-    # Make sure all ranks share the same random seed to prevent
-    # some potential bugs. Please refer to
-    # https://github.com/open-mmlab/mmdetection/issues/6339
-    rank, world_size = get_dist_info()
-    seed = np.random.randint(2**31)
-    if world_size == 1:
-        return seed
-
-    if rank == 0:
-        random_num = torch.tensor(seed, dtype=torch.int32, device=device)
-    else:
-        random_num = torch.tensor(0, dtype=torch.int32, device=device)
-    dist.broadcast(random_num, src=0)
-    return random_num.item()
-
-
-def _init_dist_pytorch(backend: str, **kwargs) -> None:
-    # TODO: use local_rank instead of rank % num_gpus
-    rank = int(os.environ['RANK'])
-    num_gpus = torch.cuda.device_count()
-    torch.cuda.set_device(rank % num_gpus)
-    dist.init_process_group(backend=backend, **kwargs)
-
-
-def _init_dist_mpi(backend: str, **kwargs) -> None:
-    local_rank = int(os.environ['OMPI_COMM_WORLD_LOCAL_RANK'])
-    torch.cuda.set_device(local_rank)
-    if 'MASTER_PORT' not in os.environ:
-        # 29500 is torch.distributed default port
-        os.environ['MASTER_PORT'] = '29500'
-    if 'MASTER_ADDR' not in os.environ:
-        raise KeyError('The environment variable MASTER_ADDR is not set')
-    os.environ['WORLD_SIZE'] = os.environ['OMPI_COMM_WORLD_SIZE']
-    os.environ['RANK'] = os.environ['OMPI_COMM_WORLD_RANK']
-    dist.init_process_group(backend=backend, **kwargs)
-
-
 def get_dist_info() -> Tuple[int, int]:
     if dist.is_available() and dist.is_initialized():
         rank = dist.get_rank()
@@ -310,9 +178,3 @@ def get_dist_info() -> Tuple[int, int]:
         rank = 0
         world_size = 1
     return rank, world_size
-
-
-def reduce_tensor(tensor):
-    rt = tensor.data.clone()
-    dist.all_reduce(rt.div_(dist.get_world_size()), op=dist.ReduceOp.SUM)
-    return rt

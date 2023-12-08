@@ -12,4 +12,3 @@ N_S = 2
 batch_size = 16
 drop_path = 0.1
 # sched = 'onecycle'
-# --broadcast_buffers is needed

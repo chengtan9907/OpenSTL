@@ -1,6 +1,6 @@
 # Copyright (c) CAIRI AI Lab. All rights reserved
 
-from .train import BaseExperiment
+from .exp import BaseExperiment
 
 __all__ = [
     'BaseExperiment',
