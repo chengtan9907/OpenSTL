@@ -24,7 +24,7 @@ class HumanDataset(Dataset):
     """
 
     def __init__(self, data_root, list_path, image_size=256,
-                 pre_seq_length=4, aft_seq_length=4, step=5, use_augment=False):
+                 pre_seq_length=4, aft_seq_length=4, step=5, use_augment=False, data_name='human'):
         super(HumanDataset,self).__init__()
         self.data_root = data_root
         self.file_list = None
@@ -39,6 +39,7 @@ class HumanDataset(Dataset):
             self.file_list = f.readlines()
         self.mean = None
         self.std = None
+        self.data_name = data_name
 
     def _augment_seq(self, imgs, h, w):
         """Augmentations for video"""

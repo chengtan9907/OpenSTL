@@ -14,7 +14,7 @@ from openstl.datasets.utils import create_loader
 class KTHDataset(Dataset):
     """KTH Action <https://ieeexplore.ieee.org/document/1334462>`_ Dataset"""
 
-    def __init__(self, datas, indices, pre_seq_length, aft_seq_length, use_augment=False):
+    def __init__(self, datas, indices, pre_seq_length, aft_seq_length, use_augment=False, data_name='kth'):
         super(KTHDataset,self).__init__()
         self.datas = datas.swapaxes(2, 3).swapaxes(1,2)
         self.indices = indices
@@ -23,6 +23,7 @@ class KTHDataset(Dataset):
         self.use_augment = use_augment
         self.mean = 0
         self.std = 1
+        self.data_name = data_name
 
     def _augment_seq(self, imgs, crop_scale=0.95):
         """Augmentations for video"""

@@ -10,13 +10,14 @@ from openstl.datasets.utils import create_loader
 class TaxibjDataset(Dataset):
     """Taxibj <https://arxiv.org/abs/1610.00081>`_ Dataset"""
 
-    def __init__(self, X, Y, use_augment=False):
+    def __init__(self, X, Y, use_augment=False, data_name='taxibj'):
         super(TaxibjDataset, self).__init__()
         self.X = (X+1) / 2  # channel is 2
         self.Y = (Y+1) / 2
         self.use_augment = use_augment
         self.mean = 0
         self.std = 1
+        self.data_name = data_name
 
     def _augment_seq(self, seqs):
         """Augmentations as a video sequence"""

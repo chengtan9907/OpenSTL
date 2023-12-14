@@ -21,7 +21,7 @@ class KittiCaltechDataset(Dataset):
     """KittiCaltech <https://dl.acm.org/doi/10.1177/0278364913491297>`_ Dataset"""
 
     def __init__(self, datas, indices, pre_seq_length, aft_seq_length,
-                 require_back=False, use_augment=False):
+                 require_back=False, use_augment=False, data_name='kitticaltech'):
         super(KittiCaltechDataset, self).__init__()
         self.datas = datas.swapaxes(2, 3).swapaxes(1, 2)
         self.indices = indices
@@ -31,6 +31,7 @@ class KittiCaltechDataset(Dataset):
         self.use_augment = use_augment
         self.mean = 0
         self.std = 1
+        self.data_name = data_name
 
     def _augment_seq(self, imgs, crop_scale=0.95):
         """Augmentations for video"""
