@@ -30,6 +30,11 @@ def create_parser():
     parser.add_argument('--num_workers', default=4, type=int)
     parser.add_argument('--data_root', default='./data')
     parser.add_argument('--dataname', '-d', default='mmnist', type=str,
+                        choices=['bair', 'mfmnist', 'mmnist', 'mmnist_cifar', 'noisymmnist', 'taxibj', 'human',
+                                'kth', 'kth20', 'kth40', 'kitticaltech', 'kinetics', 'kinetics400', 'kinetics600',
+                                'weather', 'weather_t2m_5_625', 'weather_mv_4_28_s6_5_625', 'weather_mv_4_4_s6_5_625',
+                                'weather_r_5_625', 'weather_uv10_5_625', 'weather_tcc_5_625', 'weather_t2m_1_40625',
+                                'weather_r_1_40625', 'weather_uv10_1_40625', 'weather_tcc_1_40625'],
                         help='Dataset name (default: "mmnist")')
     parser.add_argument('--pre_seq_length', default=None, type=int, help='Sequence length before prediction')
     parser.add_argument('--aft_seq_length', default=None, type=int, help='Sequence length after prediction')
@@ -45,9 +50,10 @@ def create_parser():
     parser.add_argument('--method', '-m', default='SimVP', type=str,
                         choices=['ConvLSTM', 'convlstm', 'E3DLSTM', 'e3dlstm', 'MAU', 'mau', 'MIM', 'mim', 
                                 'PhyDNet', 'phydnet', 'PredRNN', 'predrnn', 'PredRNNpp',  'predrnnpp', 
-                                'PredRNNv2', 'predrnnv2', 'SimVP', 'simvp', 'TAU', 'tau'],
+                                'PredRNNv2', 'predrnnv2', 'SimVP', 'simvp', 'TAU', 'tau', 'MMVP', 'mmvp', 
+                                'SwinLSTM', 'swinlstm'],
                         help='Name of video prediction method to train (default: "SimVP")')
-    parser.add_argument('--config_file', '-c', default='configs/mmnist/simvp/SimVP_gSTA.py', type=str,
+    parser.add_argument('--config_file', '-c', default=None, type=str,
                         help='Path to the default config file')
     parser.add_argument('--model_type', default=None, type=str,
                         help='Name of model for SimVP (default: None)')
@@ -130,7 +136,7 @@ def default_parser():
         'drop_last': False,
         # method parameters
         'method': 'SimVP',
-        'config_file': 'configs/mmnist/simvp/SimVP_gSTA.py',
+        'config_file': None,
         'model_type': 'gSTA',
         'drop': 0,
         'drop_path': 0,

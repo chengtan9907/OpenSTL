@@ -19,7 +19,7 @@ import pytorch_lightning.callbacks as plc
 class BaseExperiment(object):
     """The basic class of PyTorch training and evaluation."""
 
-    def __init__(self, args, dataloaders=None):
+    def __init__(self, args, dataloaders=None, strategy='ddp'):
         """Initialize experiments (non-dist as an example)"""
         self.args = args
         self.config = self.args.__dict__
@@ -37,13 +37,13 @@ class BaseExperiment(object):
         self.method = method_maps[self.args.method](steps_per_epoch=len(self.data.train_loader), \
             test_mean=self.data.test_mean, test_std=self.data.test_std, save_dir=save_dir, **self.config)
         callbacks, self.save_dir = self._load_callbacks(args, save_dir, ckpt_dir)
-        self.trainer = self._init_trainer(self.args, callbacks)
+        self.trainer = self._init_trainer(self.args, callbacks, strategy)
 
-    def _init_trainer(self, args, callbacks):
+    def _init_trainer(self, args, callbacks, strategy):
         trainer_config = {
             'devices': args.gpus,  # Use the all GPUs
             'max_epochs': args.epoch,  # Maximum number of epochs to train for
-            "strategy": 'ddp', # 'ddp', 'deepspeed_stage_2', 'ddp_find_unused_parameters_false'
+            "strategy": strategy, # 'ddp', 'deepspeed_stage_2', 'ddp_find_unused_parameters_false'
             'accelerator': 'gpu',  # Use distributed data parallel
             'callbacks': callbacks,
         }
