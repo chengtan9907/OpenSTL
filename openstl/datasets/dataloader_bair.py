@@ -26,7 +26,7 @@ class BAIRDataset(Dataset):
         use_augment (bool): Whether to use augmentations (defaults to False).
     """
 
-    def __init__(self, datas, indices, image_size=64, pre_seq_length=2, aft_seq_length=12, use_augment=False):
+    def __init__(self, datas, indices, image_size=64, pre_seq_length=2, aft_seq_length=12, use_augment=False, data_name='bair'):
         super(BAIRDataset,self).__init__()
         self.datas = datas
         self.indices = indices
@@ -37,6 +37,7 @@ class BAIRDataset(Dataset):
         self.use_augment = use_augment
         self.mean = 0
         self.std = 1
+        self.data_name = data_name
 
     def _augment_seq(self, imgs, crop_scale=0.95):
         """Augmentations for video"""
