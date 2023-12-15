@@ -5,7 +5,6 @@ fvcore
 hickle
 lpips
 matplotlib
-nni
 netcdf4
 numpy
 opencv-python
@@ -17,4 +16,4 @@ scikit-learn
 timm>=0.5.4,<=0.6.11
 tqdm
 xarray==0.19.0
-lightning
+pytorch-lightning<=1.9.5
