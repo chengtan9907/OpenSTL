@@ -26,7 +26,8 @@ method_maps = {
     'tau': TAU,
     'mmvp': MMVP,
     'swinlstm_d': SwinLSTM_D,
-    'swinlstm_b': SwinLSTM_B
+    'swinlstm_b': SwinLSTM_B,
+    'swinlstm': SwinLSTM_B
 }
 
 __all__ = [

@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-from einops import rearrange
 from timm.models.swin_transformer import SwinTransformerBlock,  window_reverse, PatchEmbed, PatchMerging, window_partition
 from timm.models.layers import to_2tuple
 
@@ -175,7 +174,8 @@ class PatchExpanding(nn.Module):
         assert L == H * W, "input feature has wrong size"
 
         x = x.view(B, H, W, C)
-        x = rearrange(x, 'b h w (p1 p2 c)-> b (h p1) (w p2) c', p1=2, p2=2, c=C // 4)
+        x = x.reshape(B, H, W, 2, 2, C // 4)
+        x = x.permute(0, 1, 3, 2, 4, 5).reshape(B, H * 2, W * 2, C // 4)
         x = x.view(B, -1, C // 4)
         x = self.norm(x)
 

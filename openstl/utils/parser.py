@@ -51,7 +51,7 @@ def create_parser():
                         choices=['ConvLSTM', 'convlstm', 'E3DLSTM', 'e3dlstm', 'MAU', 'mau', 'MIM', 'mim', 
                                 'PhyDNet', 'phydnet', 'PredRNN', 'predrnn', 'PredRNNpp',  'predrnnpp', 
                                 'PredRNNv2', 'predrnnv2', 'SimVP', 'simvp', 'TAU', 'tau', 'MMVP', 'mmvp', 
-                                'SwinLSTM', 'swinlstm'],
+                                'SwinLSTM', 'swinlstm', 'swinlstm_d', 'swinlstm_b'],
                         help='Name of video prediction method to train (default: "SimVP")')
     parser.add_argument('--config_file', '-c', default=None, type=str,
                         help='Path to the default config file')
