@@ -4,24 +4,26 @@
 
 ## Table of Contents
 
-- [Moving MNIST Benchmarks](#moving-mnist-benchmarks)
-    - [STL Benchmarks on Moving MNIST](#stl-benchmarks-on-mmnist)
-    - [MetaVP Benchmarks on Moving MNIST](#benchmark-of-metaformers-based-on-simvp-metavp)
-- [Moving Fashion Benchmarks](#moving-fmnist-benchmarks)
-    - [STL Benchmarks on Moving Fashion MNIST](#stl-benchmarks-on-mfmnist)
-    - [MetaVP Benchmarks on Moving Fashion MNIST](#benchmark-of-metaformers-based-on-simvp-metavp-1)
-- [Moving MNIST-CIFAR Benchmarks](#moving-mnist-cifar-benchmarks)
-    - [STL Benchmarks on Moving MNIST-CIFAR](#stl-benchmarks-on-mmnist-cifar)
-    - [MetaVP Benchmarks on Moving MNIST-CIFAR](#benchmark-of-metaformers-based-on-simvp-metavp-2)
-- [KittiCaltech Benchmarks](#kitticaltech-benchmarks)
-    - [STL Benchmarks on KittiCaltech](#stl-benchmarks-on-kitticaltech)
-    - [MetaVP Benchmarks on KittiCaltech](#benchmark-of-metaformers-based-on-simvp-metavp-3)
-- [KTH Benchmarks](#kth-benchmarks)
-    - [STL Benchmarks on KTH](#stl-benchmarks-on-kth)
-    - [MetaVP Benchmarks on KTH](#benchmark-of-metaformers-based-on-simvp-metavp-4)
-- [Human 3.6M Benchmarks](#human-36m-benchmarks)
-    - [STL Benchmarks on Human 3.6M](#stl-benchmarks-on-human-36m)
-    - [MetaVP Benchmarks on Human 3.6M](#benchmark-of-metaformers-based-on-simvp-metavp-5)
+- [Video Prediction Benchmarks](#video-prediction-benchmarks)
+  - [Table of Contents](#table-of-contents)
+  - [Moving MNIST Benchmarks](#moving-mnist-benchmarks)
+    - [**STL Benchmarks on MMNIST**](#stl-benchmarks-on-mmnist)
+    - [**Benchmark of MetaFormers Based on SimVP (MetaVP)**](#benchmark-of-metaformers-based-on-simvp-metavp)
+  - [Moving FMNIST Benchmarks](#moving-fmnist-benchmarks)
+    - [**STL Benchmarks on MFMNIST**](#stl-benchmarks-on-mfmnist)
+    - [**Benchmark of MetaFormers Based on SimVP (MetaVP)**](#benchmark-of-metaformers-based-on-simvp-metavp-1)
+  - [Moving MNIST-CIFAR Benchmarks](#moving-mnist-cifar-benchmarks)
+    - [**STL Benchmarks on MMNIST-CIFAR**](#stl-benchmarks-on-mmnist-cifar)
+    - [**Benchmark of MetaFormers Based on SimVP (MetaVP)**](#benchmark-of-metaformers-based-on-simvp-metavp-2)
+  - [KittiCaltech Benchmarks](#kitticaltech-benchmarks)
+    - [**STL Benchmarks on KittiCaltech**](#stl-benchmarks-on-kitticaltech)
+    - [**Benchmark of MetaFormers Based on SimVP (MetaVP)**](#benchmark-of-metaformers-based-on-simvp-metavp-3)
+  - [KTH Benchmarks](#kth-benchmarks)
+    - [**STL Benchmarks on KTH**](#stl-benchmarks-on-kth)
+    - [**Benchmark of MetaFormers Based on SimVP (MetaVP)**](#benchmark-of-metaformers-based-on-simvp-metavp-4)
+  - [Human 3.6M Benchmarks](#human-36m-benchmarks)
+    - [**STL Benchmarks on Human 3.6M**](#stl-benchmarks-on-human-36m)
+    - [**Benchmark of MetaFormers Based on SimVP (MetaVP)**](#benchmark-of-metaformers-based-on-simvp-metavp-5)
 
 <details open>
 <summary>Currently supported spatiotemporal prediction methods</summary>
@@ -96,7 +98,6 @@ For a fair comparison of different methods, we report the best results when mode
 | MAU          |  2000 epoch |   4.5M |  17.8G |  201 |  22.25 |  67.96 | 0.9511 | 23.68 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_mau_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_mau_one_ep2000.log) |
 | E3D-LSTM     |  2000 epoch |  51.0M | 298.9G |   18 |  24.07 |  77.49 | 0.9436 | 23.19 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_e3dlstm_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_e3dlstm_one_ep2000.log) |
 | PredRNN.V2   |  2000 epoch |  23.9M | 116.6G |   52 |  17.26 |  57.22 | 0.9624 | 25.01 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnnv2_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_predrnnv2_one_ep2000.log) |
-<!-- | DMVFN        |  2000 epoch |   3.5M |   0.2G | 1145 | 123.67 | 179.96 | 0.8140 | 16.15 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_dmvfn_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_dmvfn_one_ep2000.log) | -->
 | SimVP+IncepU |  2000 epoch |  58.0M |  19.4G |  209 |  21.15 |  64.15 | 0.9536 | 23.99 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_incepu_one_ep2000.log) |
 | SimVP+gSTA-S |  2000 epoch |  46.8M |  16.5G |  282 |  15.05 |  49.80 | 0.9675 | 25.97 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_simvp_s_gsta_one_ep2000.log) |
 | TAU          |  2000 epoch |  44.7M |  16.0G |  283 |  15.69 |  51.46 | 0.9661 | 25.71 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep2000.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/mmnist-weights/mmnist_tau_one_ep2000.log) |
@@ -341,7 +342,6 @@ For a fair comparison of different methods, we report the best results when mode
 | PredRNN      |  50 epoch | 1xbs16 |  24.6M |  704.0 |  25 | 113.2 | 1458.3 | 0.9831 | 33.94 | 0.03245 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnn_cos_ep50.log) |
 | PredRNN++    |  50 epoch | 1xbs16 |  39.3M | 1033.0 |  18 | 110.0 | 1452.2 | 0.9832 | 34.02 | 0.03196 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnpp_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnpp_cos_ep50.log) |
 | PredRNN.V2   |  50 epoch | 1xbs16 |  24.6M |  708.0 |  24 | 114.9 | 1484.7 | 0.9827 | 33.84 | 0.03334 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnv2_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_predrnnv2_cos_ep50.log) |
-<!-- | DMVFN        |  50 epoch | 1xbs16 |   8.6M |   63.6 | 341 | 109.3 | 1449.3 | 0.9833 | 34.05 | 0.03189 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_dmvfn_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_dmvfn_cos_ep50.log) | -->
 | SimVP+IncepU |  50 epoch | 1xbs16 |  41.2M |  197.0 |  26 | 115.8 | 1511.5 | 0.9822 | 33.73 | 0.03467 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_incepu_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_incepu_cos_ep50.log) |
 | SimVP+gSTA-S |  50 epoch | 1xbs16 |  11.3M |   74.6 |  52 | 108.4 | 1441.0 | 0.9834 | 34.08 | 0.03224 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_gsta_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_simvp_gsta_cos_ep50.log) |
 | TAU          |  50 epoch | 1xbs16 |  37.6M |  182.0 |  26 | 113.3 | 1390.7 | 0.9839 | 34.03 | 0.02783 | [model](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_tau_cos_ep50.pth) \| [log](https://github.com/chengtan9907/OpenSTL/releases/download/human-weights/human_tau_cos_ep50.log) |

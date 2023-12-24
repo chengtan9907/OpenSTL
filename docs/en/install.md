@@ -110,9 +110,10 @@ OpenSTL
     |   ├── ...
 ```
 
-### Moving MNIST / FMNIST
+### Moving MNIST / FMNIST / MNIST-CIFAR / MNIST Noise
 
 [Moving MNIST](http://arxiv.org/abs/1502.04681) and [Moving FMNIST](http://arxiv.org/abs/1502.04681) are toy datasets, which generate gray-scale videos (64x64 resolutions) with two objects. We provide [download_mmnist.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_mmnist.sh) and [download_mfmnist.sh](https://github.com/chengtan9907/OpenSTL/tree/master/tools/prepare_data/download_mfmnist.sh), which download datasets from [MMNIST download](http://www.cs.toronto.edu/~nitish/unsupervised_video/) and [MFMNIST download](http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/train-images-idx3-ubyte.gz). Note that the train set is generated online while the test set is fixed to ensure the consistency of evaluation results.
+We provided the combised version of MNIST and CIFAR-10 and the noise versions of Moving MNIST (dynamic / missing / perceptual) in the dataset implementation.
 
 ### BAIR Robot Pushing
 

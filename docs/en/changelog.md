@@ -1,5 +1,9 @@
 ## Changelog
 
+### v1.0.0 (15/12/2023)
+
+Release version to OpenSTL (PyTorch Lightning) V1.0.0.
+
 ### v0.3.0 (19/06/2023)
 
 Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenSTL/issues/25).

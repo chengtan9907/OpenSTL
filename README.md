@@ -30,11 +30,14 @@
 
 ## Introduction
 
-OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, encompassing a broad spectrum of methods and diverse tasks, ranging from synthetic moving object trajectories to real-world scenarios such as human motion, driving scenes, traffic flow, and weather forecasting. OpenSTL offers a modular and extensible framework, excelling in user-friendliness, organization, and comprehensiveness. The codebase is organized into three abstracted layers, namely the core layer, algorithm layer, and user interface layer, arranged from the bottom to the top.
+OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, encompassing a broad spectrum of methods and diverse tasks, ranging from synthetic moving object trajectories to real-world scenarios such as human motion, driving scenes, traffic flow, and weather forecasting. OpenSTL offers a modular and extensible framework, excelling in user-friendliness, organization, and comprehensiveness. The codebase is organized into three abstracted layers, namely the core layer, algorithm layer, and user interface layer, arranged from the bottom to the top. We support PyTorch Lightning implementation [OpenSTL-Lightning](https://github.com/chengtan9907/OpenSTL/tree/OpenSTL-Lightning) (recommended) and naive PyTorch version [OpenSTL](https://github.com/chengtan9907/OpenSTL/tree/OpenSTL).
 
 <p align="center" width="100%">
   <img src='https://github.com/chengtan9907/OpenSTL/assets/34480960/4f466441-a78a-405c-beb6-00a37e3d3827' width="90%">
 </p>
+<!-- <p align="center" width="100%">
+  <img src='https://github-production-user-asset-6210df.s3.amazonaws.com/44519745/246222226-61e6b8e8-959c-4bb3-a1cd-c994b423de3f.png' width="90%">
+</p> -->
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -69,9 +72,9 @@ OpenSTL is a comprehensive benchmark for spatio-temporal predictive learning, en
 
 ## News and Updates
 
-[2023-12-15] OpenSTL-Lightning (`OpenSTL` v1.0.0) is released.
+[2023-12-15] [OpenSTL-Lightning](https://github.com/chengtan9907/OpenSTL/tree/OpenSTL-Lightning) (`OpenSTL` v1.0.0) is released.
 
-[2023-09-23] The OpenSTL paper has been accepted by NeurIPS 2023 Dataset and Benchmark Track! [arXiv](https://arxiv.org/abs/2306.11249).
+[2023-09-23] The OpenSTL paper has been accepted by NeurIPS 2023 Dataset and Benchmark Track! [arXiv](https://arxiv.org/abs/2306.11249) / [Zhihu](https://zhuanlan.zhihu.com/p/640271275).
 
 [2023-06-19] `OpenSTL` v0.3.0 is released and will be enhanced in [#25](https://github.com/chengtan9907/OpenSTL/issues/25).
 
