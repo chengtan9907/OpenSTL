@@ -155,6 +155,7 @@ We support various spatiotemporal prediction methods and provide [benchmarks](ht
     - [x] [TAU](https://arxiv.org/abs/2206.12126) (CVPR'2023)
     - [x] [MMVP](https://arxiv.org/abs/2308.16154) (ICCV'2023)
     - [x] [SwinLSTM](https://arxiv.org/abs/2308.09891) (ICCV'2023)
+    - [x] WaST (AAAI'2024)
 
     </details>
 

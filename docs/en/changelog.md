@@ -4,6 +4,15 @@
 
 Release version to OpenSTL (PyTorch Lightning) V1.0.0.
 
+#### New Features
+
+* Update the training and testing pipelines for OpenSTL based on PyTorch Lightning.
+* Support more STL methods, e.g., WaST.
+
+#### Update Documents
+
+* Fix the readthedoc version of the [webpage](https://openstl.readthedocs.io/en/latest/).
+
 ### v0.3.0 (19/06/2023)
 
 Release version to OpenSTL V0.3.0 as [#25](https://github.com/chengtan9907/OpenSTL/issues/25).
