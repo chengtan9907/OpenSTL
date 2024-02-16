@@ -18,3 +18,4 @@ timm
 tqdm
 xarray
 pytorch-lightning
+PyWavelets
