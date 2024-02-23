@@ -21,6 +21,7 @@ class Base_method(pl.LightningModule):
         self.save_hyperparameters()
         self.model = self._build_model(**args)
         self.criterion = nn.MSELoss()
+        self.test_outputs = []
 
     def _build_model(self):
         raise NotImplementedError
@@ -59,12 +60,14 @@ class Base_method(pl.LightningModule):
     def test_step(self, batch, batch_idx):
         batch_x, batch_y = batch
         pred_y = self(batch_x, batch_y)
-        return {'inputs': batch_x.cpu().numpy(), 'preds': pred_y.cpu().numpy(), 'trues': batch_y.cpu().numpy()}
+        outputs = {'inputs': batch_x.cpu().numpy(), 'preds': pred_y.cpu().numpy(), 'trues': batch_y.cpu().numpy()}
+        self.test_outputs.append(outputs)
+        return outputs
 
-    def test_epoch_end(self, outputs):
+    def on_test_epoch_end(self):
         results_all = {}
-        for k in outputs[0].keys():
-            results_all[k] = np.concatenate([batch[k] for batch in outputs], axis=0)
+        for k in self.test_outputs[0].keys():
+            results_all[k] = np.concatenate([batch[k] for batch in self.test_outputs], axis=0)
         
         eval_res, eval_log = metric(results_all['preds'], results_all['trues'],
             self.hparams.test_mean, self.hparams.test_std, metrics=self.metric_list, 
