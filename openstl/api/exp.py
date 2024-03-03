@@ -46,6 +46,7 @@ class BaseExperiment(object):
             "strategy": strategy, # 'ddp', 'deepspeed_stage_2', 'ddp_find_unused_parameters_false'
             'accelerator': 'gpu',  # Use distributed data parallel
             'callbacks': callbacks,
+            'resume_from_checkpoint': args.ckpt_path if args.ckpt_path else None, # train from resume
         }
         return Trainer.from_argparse_args(argparse.Namespace(**trainer_config))
 
