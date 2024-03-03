@@ -40,9 +40,6 @@ class Base_method(pl.LightningModule):
             },
         }
 
-    def lr_scheduler_step(self, scheduler, *args, **kwargs):
-        scheduler.step(epoch=self.current_epoch)
-
     def forward(self, batch):
         NotImplementedError
     
