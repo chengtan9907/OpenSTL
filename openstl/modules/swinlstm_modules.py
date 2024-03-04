@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from timm.models.swin_transformer import SwinTransformerBlock,  window_reverse, PatchEmbed, PatchMerging, window_partition
-from timm.models.layers import to_2tuple
+from timm.layers import to_2tuple
 
 class SwinLSTMCell(nn.Module):
     def __init__(self, dim, input_resolution, num_heads, window_size, depth,

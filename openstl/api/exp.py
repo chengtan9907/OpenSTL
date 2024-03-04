@@ -40,15 +40,12 @@ class BaseExperiment(object):
         self.trainer = self._init_trainer(self.args, callbacks, strategy)
 
     def _init_trainer(self, args, callbacks, strategy):
-        trainer_config = {
-            'devices': args.gpus,  # Use the all GPUs
-            'max_epochs': args.epoch,  # Maximum number of epochs to train for
-            "strategy": strategy, # 'ddp', 'deepspeed_stage_2', 'ddp_find_unused_parameters_false'
-            'accelerator': 'gpu',  # Use distributed data parallel
-            'callbacks': callbacks,
-            'resume_from_checkpoint': args.ckpt_path if args.ckpt_path else None, # train from resume
-        }
-        return Trainer.from_argparse_args(argparse.Namespace(**trainer_config))
+        return Trainer(devices=args.gpus,  # Use these GPUs
+                       max_epochs=args.epoch,  # Maximum number of epochs to train for
+                       strategy=strategy,   # 'ddp', 'deepspeed_stage_2', 'ddp_find_unused_parameters_false'
+                       accelerator='gpu',  # Use distributed data parallel
+                       callbacks=callbacks
+                    )
 
     def _load_callbacks(self, args, save_dir, ckpt_dir):
         method_info = None

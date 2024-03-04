@@ -2,6 +2,7 @@ asynctest
 codecov
 flake8
 isort
+notebook
 pytest 
 pytest-cov
 pytest-runner

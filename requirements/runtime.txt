@@ -1,6 +1,7 @@
 dask
 decord
 future
+einops
 fvcore
 hickle
 lpips
@@ -10,10 +11,11 @@ numpy
 opencv-python
 packaging
 pandas
-scikit-image<=0.19.3
+scikit-image
 six
 scikit-learn
-timm>=0.5.4,<=0.6.11
+timm
 tqdm
-xarray==0.19.0
-pytorch-lightning<=1.9.5
+xarray
+pytorch-lightning
+PyWavelets
