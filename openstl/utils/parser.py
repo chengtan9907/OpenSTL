@@ -34,7 +34,8 @@ def create_parser():
                                 'kth', 'kth20', 'kth40', 'kitticaltech', 'kinetics', 'kinetics400', 'kinetics600',
                                 'weather', 'weather_t2m_5_625', 'weather_mv_4_28_s6_5_625', 'weather_mv_4_4_s6_5_625',
                                 'weather_r_5_625', 'weather_uv10_5_625', 'weather_tcc_5_625', 'weather_t2m_1_40625',
-                                'weather_r_1_40625', 'weather_uv10_1_40625', 'weather_tcc_1_40625'],
+                                'weather_r_1_40625', 'weather_uv10_1_40625', 'weather_tcc_1_40625',
+                                'sevir_vis', 'sevir_ir069', 'sevir_ir107', 'sevir_vil'],
                         help='Dataset name (default: "mmnist")')
     parser.add_argument('--pre_seq_length', default=None, type=int, help='Sequence length before prediction')
     parser.add_argument('--aft_seq_length', default=None, type=int, help='Sequence length after prediction')
