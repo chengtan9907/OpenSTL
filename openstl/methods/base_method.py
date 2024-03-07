@@ -68,7 +68,8 @@ class Base_method(pl.LightningModule):
         
         eval_res, eval_log = metric(results_all['preds'], results_all['trues'],
             self.hparams.test_mean, self.hparams.test_std, metrics=self.metric_list, 
-            channel_names=self.channel_names, spatial_norm=self.spatial_norm)
+            channel_names=self.channel_names, spatial_norm=self.spatial_norm,
+            threshold=self.hparams.get('metric_threshold', None))
         
         results_all['metrics'] = np.array([eval_res['mae'], eval_res['mse']])
 
