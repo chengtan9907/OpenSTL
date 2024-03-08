@@ -119,11 +119,11 @@ class SEVIRDataset(Dataset):
         """
         Closes all open file handles
         """
-        self._hdf_file.close()
+        self.hf.close()
         self._hdf_file=str()
 
     def __del__(self):
-        self._hdf_file.close()
+        self.hf.close()
 
     def __len__(self):
         """
@@ -227,6 +227,7 @@ class SEVIRDataset(Dataset):
         Read samples from converted h5 file
         """
         hf = h5py.File(self._hdf_file, mode='r')
+        self.hf = hf
         IN = hf['IN']
         OUT = hf['OUT']
         assert len(IN) == len(OUT), f'{self._hdf_file} has different number of input and output'
