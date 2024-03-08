@@ -47,5 +47,9 @@ def load_data(dataname, batch_size, val_batch_size, num_workers, data_root, dist
                 data_split = k
         return load_data(batch_size, val_batch_size, data_root, num_workers,
                          distributed=dist, data_split=data_split, **kwargs)
+    elif 'sevir' in dataname:  #'sevir_vis', 'sevir_ir069', 'sevir_ir107', 'sevir_vil'
+        from .dataloader_sevir import load_data
+        cfg_dataloader['data_name'] = kwargs.get('data_name', 'sevir')
+        return load_data(batch_size, val_batch_size, data_root, num_workers, **cfg_dataloader)
     else:
         raise ValueError(f'Dataname {dataname} is unsupported')

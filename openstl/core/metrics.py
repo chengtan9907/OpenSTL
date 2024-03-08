@@ -13,6 +13,13 @@ except:
 def rescale(x):
     return (x - x.max()) / (x.max() - x.min()) * 2 - 1
 
+def _threshold(x, y, t):
+    t = np.greater_equal(x, t).astype(np.float32)
+    p = np.greater_equal(y, t).astype(np.float32)
+    is_nan = np.logical_or(np.isnan(x), np.isnan(y))
+    t = np.where(is_nan, np.zeros_like(t, dtype=np.float32), t)
+    p = np.where(is_nan, np.zeros_like(p, dtype=np.float32), p)
+    return t, p
 
 def MAE(pred, true, spatial_norm=False):
     if not spatial_norm:
@@ -85,6 +92,55 @@ def SSIM(pred, true, **kwargs):
                                                             (sigma1_sq + sigma2_sq + C2))
     return ssim_map.mean()
 
+def POD(hits, misses, eps=1e-6):
+    """
+    probability_of_detection
+    Inputs:
+    Outputs:
+        pod = hits / (hits + misses) averaged over the T channels
+        
+    """
+    pod = (hits + eps) / (hits + misses + eps)
+    return np.mean(pod)
+
+def SUCR(hits, fas, eps=1e-6):
+    """
+    success_rate
+    Inputs:
+    Outputs:
+        sucr = hits / (hits + false_alarms) averaged over the D channels
+    """
+    sucr = (hits + eps) / (hits + fas + eps)
+    return np.mean(sucr)
+
+def CSI(hits, fas, misses, eps=1e-6):
+    """
+    critical_success_index 
+    Inputs:
+    Outputs:
+        csi = hits / (hits + false_alarms + misses) averaged over the D channels
+    """
+    csi = (hits + eps) / (hits + misses + fas + eps)
+    return np.mean(csi)
+
+def sevir_metrics(pred, true, threshold):
+    """
+    calcaulate t, p, hits, fas, misses
+    Inputs:
+    pred: [N, T, C, L, L]
+    true: [N, T, C, L, L]
+    threshold: float
+    """
+    pred = pred.transpose(1, 0, 2, 3, 4)
+    true = true.transpose(1, 0, 2, 3, 4)
+    hits, fas, misses = [], [], []
+    for i in range(pred.shape[0]):
+        t, p = _threshold(pred[i], true[i], threshold)
+        hits.append(np.sum(t * p))
+        fas.append(np.sum((1 - t) * p))
+        misses.append(np.sum(t * (1 - p)))
+    return np.array(hits), np.array(fas), np.array(misses)
+
 
 class LPIPS(torch.nn.Module):
     """Learned Perceptual Image Patch Similarity, LPIPS.
@@ -112,7 +168,7 @@ class LPIPS(torch.nn.Module):
 
 def metric(pred, true, mean=None, std=None, metrics=['mae', 'mse'],
            clip_range=[0, 1], channel_names=None,
-           spatial_norm=False, return_log=True):
+           spatial_norm=False, return_log=True, threshold=74.0):
     """The evaluation function to output metrics.
 
     Args:
@@ -134,7 +190,7 @@ def metric(pred, true, mean=None, std=None, metrics=['mae', 'mse'],
         true = true * std + mean
     eval_res = {}
     eval_log = ""
-    allowed_metrics = ['mae', 'mse', 'rmse', 'ssim', 'psnr', 'snr', 'lpips']
+    allowed_metrics = ['mae', 'mse', 'rmse', 'ssim', 'psnr', 'snr', 'lpips', 'pod', 'sucr', 'csi']
     invalid_metrics = set(metrics) - set(allowed_metrics)
     if len(invalid_metrics) != 0:
         raise ValueError(f'metric {invalid_metrics} is not supported.')
@@ -178,6 +234,12 @@ def metric(pred, true, mean=None, std=None, metrics=['mae', 'mse'],
                 rmse_sum += eval_res[f'rmse_{str(c_name)}']
             eval_res['rmse'] = rmse_sum / c_group
 
+    if 'pod' in metrics:
+        hits, fas, misses = sevir_metrics(pred, true, threshold)
+        eval_res['pod'] = POD(hits, misses)
+        eval_res['sucr'] = SUCR(hits, fas)
+        eval_res['csi'] = CSI(hits, fas, misses) 
+        
     pred = np.maximum(pred, clip_range[0])
     pred = np.minimum(pred, clip_range[1])
     if 'ssim' in metrics:
