@@ -423,7 +423,7 @@ class SwinSubBlock(SwinTransformerBlock):
         shift_size = 0 if (layer_i % 2 == 0) else window_size // 2
         super().__init__(dim, input_resolution, num_heads=8, window_size=window_size,
                          shift_size=shift_size, mlp_ratio=mlp_ratio,
-                         drop_path=drop_path, drop=drop, qkv_bias=True)
+                         drop_path=drop_path, attn_drop=drop, proj_drop=drop, qkv_bias=True)
         self.apply(self._init_weights)
 
     def _init_weights(self, m):
@@ -442,39 +442,9 @@ class SwinSubBlock(SwinTransformerBlock):
     def forward(self, x):
         B, C, H, W = x.shape
         x = x.flatten(2).transpose(1, 2)
-        shortcut = x
         x = self.norm1(x)
         x = x.view(B, H, W, C)
-
-        # cyclic shift
-        if self.shift_size > 0:
-            shifted_x = torch.roll(x, shifts=(-self.shift_size, -self.shift_size), dims=(1, 2))
-        else:
-            shifted_x = x
-
-        # partition windows
-        x_windows = window_partition(
-            shifted_x, self.window_size)  # nW*B, window_size, window_size, C
-        x_windows = x_windows.view(
-            -1, self.window_size * self.window_size, C)  # nW*B, window_size*window_size, C
-
-        # W-MSA/SW-MSA
-        attn_windows = self.attn(x_windows, mask=None)  # nW*B, window_size*window_size, C
-
-        # merge windows
-        attn_windows = attn_windows.view(-1, self.window_size, self.window_size, C)
-        shifted_x = window_reverse(attn_windows, self.window_size, H, W)  # B H' W' C
-
-        # reverse cyclic shift
-        if self.shift_size > 0:
-            x = torch.roll(shifted_x, shifts=(self.shift_size, self.shift_size), dims=(1, 2))
-        else:
-            x = shifted_x
-        x = x.view(B, H * W, C)
-
-        # FFN
-        x = shortcut + self.drop_path(x)
-        x = x + self.drop_path(self.mlp(self.norm2(x)))
+        x = super().forward(x)
 
         return x.reshape(B, H, W, C).permute(0, 3, 1, 2)
 
@@ -520,7 +490,7 @@ class ViTSubBlock(ViTBlock):
 
     def __init__(self, dim, mlp_ratio=4., drop=0., drop_path=0.1):
         super().__init__(dim=dim, num_heads=8, mlp_ratio=mlp_ratio, qkv_bias=True,
-                         drop=drop, drop_path=drop_path, act_layer=nn.GELU, norm_layer=nn.LayerNorm)
+                         attn_drop=drop, proj_drop=0, drop_path=drop_path, act_layer=nn.GELU, norm_layer=nn.LayerNorm)
         self.drop_path = DropPath(drop_path) if drop_path > 0. else nn.Identity()
         self.apply(self._init_weights)
 
