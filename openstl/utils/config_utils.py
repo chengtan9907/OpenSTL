@@ -5,6 +5,7 @@ import shutil
 import sys
 import ast
 from importlib import import_module
+import os
 
 '''
 Thanks the code from https://github.com/open-mmlab/mmcv/blob/master/mmcv/utils/config.py wrote by Open-MMLab.
@@ -58,8 +59,10 @@ class Config:
             regexp = r'\{\{\s*' + str(key) + r'\s*\}\}'
             value = value.replace('\\', '/')
             config_file = re.sub(regexp, value, config_file)
-        with open(temp_config_name, 'w') as tmp_config_file:
-            tmp_config_file.write(config_file)
+        # with open(temp_config_name, 'w') as tmp_config_file:
+        #     tmp_config_file.write(config_file)
+        temp_config_file = open(temp_config_name, 'w')
+        temp_config_file.write(config_file)
 
     @staticmethod
     def _file2dict(filename, use_predefined_variables=True):
@@ -71,7 +74,7 @@ class Config:
 
         with tempfile.TemporaryDirectory() as temp_config_dir:
             temp_config_file = tempfile.NamedTemporaryFile(
-                dir=temp_config_dir, suffix=fileExtname)
+                dir=temp_config_dir, suffix=fileExtname, delete=False)
             temp_config_name = osp.basename(temp_config_file.name)
 
             # Substitute predefined variables
@@ -96,6 +99,7 @@ class Config:
                 del sys.modules[temp_module_name]
             # close temp file
             temp_config_file.close()
+            os.remove(temp_config_file.name)
         return cfg_dict
 
     @staticmethod

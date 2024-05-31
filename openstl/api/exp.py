@@ -92,13 +92,13 @@ class BaseExperiment(object):
         return BaseDataModule(train_loader, vali_loader, test_loader)
 
     def train(self):
-        self.trainer.fit(self.method, self.data)
+        self.trainer.fit(self.method, self.data.train_loader)
 
     def test(self):
         if self.args.test == True:
             ckpt = torch.load(osp.join(self.save_dir, 'checkpoints', 'best.ckpt'))
             self.method.load_state_dict(ckpt['state_dict'])
-        self.trainer.test(self.method, self.data)
+        self.trainer.test(self.method, self.data.test_loader)
     
     def display_method_info(self, args):
         """Plot the basic infomation of supported methods"""

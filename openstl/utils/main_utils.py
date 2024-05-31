@@ -128,13 +128,15 @@ def measure_throughput(model, input_dummy):
 
 def load_config(filename:str = None):
     """load and print config"""
-    print('loading config from ' + filename + ' ...')
+    print('loading config from ' + filename)
     try:
         configfile = Config(filename=filename)
         config = configfile._cfg_dict
-    except (FileNotFoundError, IOError):
-        config = dict()
-        print('warning: fail to load the config!')
+    except Exception as e:
+        raise Exception('error in load the config:{}'.format(e))
+    # except (FileNotFoundError, IOError):
+    #     config = dict()
+    #     print('warning: fail to load the config!')
     return config
 
 

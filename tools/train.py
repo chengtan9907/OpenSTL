@@ -29,7 +29,7 @@ if __name__ == '__main__':
                 config[attribute] = default_values[attribute]
 
     print('>'*35 + ' training ' + '<'*35)
-    exp = BaseExperiment(args)
+    exp = BaseExperiment(args, strategy='auto')
     rank, _ = get_dist_info()
     exp.train()
 
