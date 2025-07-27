@@ -13,6 +13,7 @@ from .tau import TAU
 from .mmvp import MMVP
 from .swinlstm import SwinLSTM_D, SwinLSTM_B
 from .wast import WaST
+from .predformer import PredFormer
 
 method_maps = {
     'convlstm': ConvLSTM,
@@ -29,11 +30,12 @@ method_maps = {
     'swinlstm_d': SwinLSTM_D,
     'swinlstm_b': SwinLSTM_B,
     'swinlstm': SwinLSTM_B,
-    'wast': WaST
+    'wast': WaST,
+    'predformer': PredFormer
 }
 
 __all__ = [
     'method_maps', 'ConvLSTM', 'E3DLSTM', 'MAU', 'MIM',
     'PredRNN', 'PredRNNpp', 'PredRNNv2', 'PhyDNet', 'SimVP', 'TAU',
-    "MMVP", 'SwinLSTM_D', 'SwinLSTM_B', 'WaST'
+    "MMVP", 'SwinLSTM_D', 'SwinLSTM_B', 'WaST', 'PredFormer'
 ]

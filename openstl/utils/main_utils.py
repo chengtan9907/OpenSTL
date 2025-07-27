@@ -178,3 +178,8 @@ def get_dist_info() -> Tuple[int, int]:
         rank = 0
         world_size = 1
     return rank, world_size
+
+def reduce_tensor(tensor):
+    rt = tensor.data.clone()
+    dist.all_reduce(rt.div_(dist.get_world_size()), op=dist.ReduceOp.SUM)
+    return rt

@@ -15,6 +15,7 @@ from .simvp_modules import (BasicConv2d, ConvSC, GroupConv2d,
 from .mmvp_modules import (ResBlock, RRDB, ResidualDenseBlock_4C, Up, Conv3D, ConvLayer,
                            MatrixPredictor3DConv, SimpleMatrixPredictor3DConv_direct, PredictModel) 
 from .swinlstm_modules import UpSample, DownSample, STconvert
+from .predformer_modules import Attention, PreNorm, FeedForward
 
 __all__ = [
     'ConvLSTMCell', 'CausalLSTMCell', 'GHU', 'SpatioTemporalLSTMCell', 'SpatioTemporalLSTMCellv2',
@@ -26,7 +27,7 @@ __all__ = [
     'SwinSubBlock', 'UniformerSubBlock', 'VANSubBlock', 'ViTSubBlock', 'TAUSubBlock',
     'ResBlock', 'RRDB', 'ResidualDenseBlock_4C', 'Up', 'Conv3D', 'ConvLayer',
     'MatrixPredictor3DConv', 'SimpleMatrixPredictor3DConv_direct', 'PredictModel',
-    'UpSample', 'DownSample', 'STconvert' 
+    'UpSample', 'DownSample', 'STconvert', 'Attention', 'PreNorm', 'FeedForward'
     
     
 ]
