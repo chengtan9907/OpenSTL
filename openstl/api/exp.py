@@ -35,8 +35,12 @@ class BaseExperiment(object):
 
         seed_everything(args.seed)
         self.data = self._get_data(dataloaders)
-        self.method = method_maps[self.args.method](steps_per_epoch=len(self.data.train_loader), \
-            test_mean=self.data.test_mean, test_std=self.data.test_std, save_dir=save_dir, **self.config)
+        if self.args.method != "predformer":
+            self.method = method_maps[self.args.method](steps_per_epoch=len(self.data.train_loader), \
+                test_mean=self.data.test_mean, test_std=self.data.test_std, save_dir=save_dir, **self.config)
+        else:
+            device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+            self.method = method_maps[self.args.method](args, device, steps_per_epoch=len(self.data.train_loader))
         callbacks, self.save_dir = self._load_callbacks(args, save_dir, ckpt_dir, additional_callbacks)
         self.trainer = self._init_trainer(self.args, callbacks, strategy)
 

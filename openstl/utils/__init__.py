@@ -3,7 +3,7 @@
 from .config_utils import Config
 from .collect import (gather_tensors, gather_tensors_batch, nondist_forward_collect,
                       dist_forward_collect, collect_results_gpu)
-from .main_utils import (print_log, output_namespace, collect_env, check_dir, 
+from .main_utils import (set_seed, init_dist, init_random_seed, weights_to_cpu,print_log, output_namespace, collect_env, check_dir, 
                         get_dataset, measure_throughput, load_config, update_config, get_dist_info, reduce_tensor)
 from .parser import create_parser, default_parser
 from .predrnn_utils import (reserve_schedule_sampling_exp, schedule_sampling, reshape_patch,
@@ -17,6 +17,7 @@ from .mmvp_utils import build_similarity_matrix, sim_matrix_postprocess, sim_mat
 
 
 __all__ = [
+    'set_seed', 'init_dist', 'init_random_seed', 'weights_to_cpu',
     'gather_tensors', 'gather_tensors_batch', 'nondist_forward_collect',
     'dist_forward_collect', 'collect_results_gpu',
     'Config', 'create_parser', 'default_parser',
