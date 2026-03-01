@@ -141,3 +141,4 @@ configs/kinetics/simvp
 configs/bair/simvp
 
 .claude/
+*.out
