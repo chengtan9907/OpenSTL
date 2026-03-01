@@ -1,0 +1,79 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "OpenSTL"
+version = "1.0.1"
+description = "Open Spatio-Temporal Learning Framework"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+requires-python = ">=3.8"
+authors = [
+    {name = "CAIRI AI Lab"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    "numpy",
+    "torch>=2.1.0",
+    "lightning>=2.2.1,<3.0",
+    "timm>=0.9.0,<2.0",
+    "xarray>=0.19.0",
+    "netcdf4",
+    "dask",
+    "einops",
+    "fvcore",
+    "hickle",
+    "lpips",
+    "matplotlib",
+    "opencv-python",
+    "packaging",
+    "pandas",
+    "scikit-image",
+    "scikit-learn",
+    "tqdm",
+    "PyWavelets",
+]
+
+[project.optional-dependencies]
+optional = [
+    "decord",
+    "basemap",
+    "geos",
+    "pyproj",
+    "tensorflow",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "pre-commit",
+]
+
+[project.urls]
+Homepage = "https://github.com/chiancheng/OpenSTL"
+Repository = "https://github.com/chiancheng/OpenSTL"
+
+[tool.setuptools]
+packages = ["openstl"]
+
+[tool.setuptools.package-data]
+openstl = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"

@@ -14,8 +14,8 @@ pandas
 scikit-image
 six
 scikit-learn
-timm
+timm>=0.9.0,<2.0
 tqdm
 xarray
-lightning==2.2.1
+lightning>=2.2.1,<3.0
 PyWavelets

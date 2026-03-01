@@ -1,20 +1,71 @@
 import json
 from torch import optim
 
-from timm.optim.adafactor import Adafactor
-from timm.optim.adahessian import Adahessian
-from timm.optim.adamp import AdamP
-from timm.optim.lookahead import Lookahead
-from timm.optim.nadam import Nadam
-from timm.optim.nvnovograd import NvNovoGrad
-from timm.optim.radam import RAdam
-from timm.optim.rmsprop_tf import RMSpropTF
-from timm.optim.sgdp import SGDP
+# timm 1.0.x compatibility: use try-except for deprecated imports
+try:
+    from timm.optim.adafactor import Adafactor
+except ImportError:
+    from timm.optim import Adafactor
 
-from timm.scheduler.cosine_lr import CosineLRScheduler
-from timm.scheduler.multistep_lr import MultiStepLRScheduler
-from timm.scheduler.step_lr import StepLRScheduler
-from timm.scheduler.tanh_lr import TanhLRScheduler
+try:
+    from timm.optim.adahessian import Adahessian
+except ImportError:
+    from timm.optim import Adahessian
+
+try:
+    from timm.optim.adamp import AdamP
+except ImportError:
+    from timm.optim import AdamP
+
+try:
+    from timm.optim.lookahead import Lookahead
+except ImportError:
+    from timm.optim import Lookahead
+
+try:
+    from timm.optim.nadam import Nadam
+except ImportError:
+    from timm.optim import NAdam as Nadam
+
+try:
+    from timm.optim.nvnovograd import NvNovoGrad
+except ImportError:
+    from timm.optim import NvNovoGrad
+
+try:
+    from timm.optim.radam import RAdam
+except ImportError:
+    from timm.optim import RAdam
+
+try:
+    from timm.optim.rmsprop_tf import RMSpropTF
+except ImportError:
+    from timm.optim import RMSpropTF
+
+try:
+    from timm.optim.sgdp import SGDP
+except ImportError:
+    from timm.optim import SGDP
+
+try:
+    from timm.scheduler.cosine_lr import CosineLRScheduler
+except ImportError:
+    from timm.scheduler import CosineLRScheduler
+
+try:
+    from timm.scheduler.multistep_lr import MultiStepLRScheduler
+except ImportError:
+    from timm.scheduler import MultiStepLRScheduler
+
+try:
+    from timm.scheduler.step_lr import StepLRScheduler
+except ImportError:
+    from timm.scheduler import StepLRScheduler
+
+try:
+    from timm.scheduler.tanh_lr import TanhLRScheduler
+except ImportError:
+    from timm.scheduler import TanhLRScheduler
 
 from .optim_constant import optim_parameters
 

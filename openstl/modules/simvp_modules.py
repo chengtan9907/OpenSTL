@@ -3,7 +3,10 @@ import torch
 import torch.nn as nn
 
 from timm.layers import DropPath, trunc_normal_
-from timm.models.convnext import ConvNeXtBlock
+try:
+    from timm.layers import ConvNeXtBlock
+except ImportError:
+    from timm.models.convnext import ConvNeXtBlock
 from timm.models.mlp_mixer import MixerBlock
 from timm.models.swin_transformer import SwinTransformerBlock, window_partition, window_reverse
 from timm.models.vision_transformer import Block as ViTBlock
