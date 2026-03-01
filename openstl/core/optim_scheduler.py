@@ -121,6 +121,10 @@ def get_optim_scheduler(args, epoch, model, steps_per_epoch):
     opt_lower = args.opt.lower()
     weight_decay = args.weight_decay
 
+    # Ensure epoch is an integer
+    if isinstance(epoch, str):
+        epoch = int(epoch)
+
     # if weight_decay and filter_bias_and_bn:
     if args.filter_bias_and_bn:
         if hasattr(model, 'no_weight_decay'):
@@ -181,7 +185,7 @@ def get_optim_scheduler(args, epoch, model, steps_per_epoch):
             optimizer = Lookahead(optimizer)
 
     sched_lower = args.sched.lower()
-    total_steps = epoch * steps_per_epoch
+    total_steps = int(epoch) * int(steps_per_epoch)
     by_epoch = True
     if sched_lower == 'onecycle':
         lr_scheduler = optim.lr_scheduler.OneCycleLR(
