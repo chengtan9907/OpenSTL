@@ -139,15 +139,26 @@ def load_config(filename:str = None):
 
 
 def update_config(args, config, exclude_keys=list()):
-    """update the args dict with a new config"""
+    """update the args dict with a new config
+
+    Config file values should override argparse default values.
+    Only when a value is explicitly provided via CLI should it take precedence.
+
+    Args:
+        args: argparse namespace or dict containing CLI arguments
+        config: config dict loaded from config file
+        exclude_keys: list of keys to exclude from config override
+
+    Returns:
+        Updated args dict with config values applied
+    """
     assert isinstance(args, dict) and isinstance(config, dict)
     for k in config.keys():
-        if args.get(k, False):
-            if args[k] != config[k] and k not in exclude_keys and args[k] is not None:
-                print(f'overwrite config key -- {k}: {config[k]} -> {args[k]}')
-            else:
-                args[k] = config[k]
-        else:
+        if k in exclude_keys:
+            continue
+        # Apply config value - config file values override defaults
+        # CLI values (if explicitly set by user) can still override later
+        if config[k] is not None:
             args[k] = config[k]
     return args
 
