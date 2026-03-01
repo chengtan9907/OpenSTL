@@ -46,15 +46,46 @@ class SetupCallback(Callback):
 
 
 class EpochEndCallback(Callback):
+    def __init__(self):
+        super().__init__()
+        self.train_losses = []
+        self.val_losses = []
+
     def on_train_epoch_end(self, trainer, pl_module, outputs=None):
-        self.avg_train_loss = trainer.callback_metrics.get('train_loss')
+        avg_train_loss = trainer.callback_metrics.get('train_loss', None)
+        if avg_train_loss is not None:
+            self.train_losses.append(float(avg_train_loss))
 
     def on_validation_epoch_end(self, trainer, pl_module):
         lr = trainer.optimizers[0].param_groups[0]['lr']
         avg_val_loss = trainer.callback_metrics.get('val_loss')
 
-        if hasattr(self, 'avg_train_loss'):
-            print_log(f"Epoch {trainer.current_epoch}: Lr: {lr:.7f} | Train Loss: {self.avg_train_loss:.7f} | Vali Loss: {avg_val_loss:.7f}")
+        if hasattr(self, 'train_losses') and len(self.train_losses) > 0:
+            train_loss = self.train_losses[-1]
+            self.val_losses.append(float(avg_val_loss) if avg_val_loss is not None else 0.0)
+            print_log(f"Epoch {trainer.current_epoch}: Lr: {lr:.7f} | Train Loss: {train_loss:.7f} | Vali Loss: {avg_val_loss:.7f}")
+
+    def on_fit_end(self, trainer, pl_module):
+        """Save training history to CSV after training completes."""
+        if trainer.is_global_zero and hasattr(self, 'train_losses'):
+            import csv
+            import os.path as osp
+
+            # Get save_dir from trainer
+            save_dir = None
+            for callback in trainer.callbacks:
+                if isinstance(callback, SetupCallback):
+                    save_dir = callback.save_dir
+                    break
+
+            if save_dir:
+                history_path = osp.join(save_dir, 'training_history.csv')
+                with open(history_path, 'w', newline='') as f:
+                    writer = csv.writer(f)
+                    writer.writerow(['epoch', 'train_loss', 'val_loss'])
+                    for i, (train_l, val_l) in enumerate(zip(self.train_losses, self.val_losses)):
+                        writer.writerow([i, train_l, val_l])
+                print_log(f"Training history saved to {history_path}")
 
 class BestCheckpointCallback(ModelCheckpoint):
     def on_validation_epoch_end(self, trainer, pl_module):

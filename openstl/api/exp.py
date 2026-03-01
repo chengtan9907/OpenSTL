@@ -39,12 +39,34 @@ class BaseExperiment(object):
         self.trainer = self._init_trainer(self.args, callbacks, strategy)
 
     def _init_trainer(self, args, callbacks, strategy):
-        return Trainer(devices=args.gpus,  # Use these GPUs
-                       max_epochs=args.epoch,  # Maximum number of epochs to train for
-                       strategy=strategy,   # 'ddp', 'deepspeed_stage_2', 'ddp_find_unused_parameters_false'
-                       accelerator='gpu',  # Use distributed data parallel
-                       callbacks=callbacks
-                    )
+        """Initialize Lightning Trainer with optional mixed precision support.
+
+        Args:
+            args: Configuration arguments
+            callbacks: List of Lightning callbacks
+            strategy: Distributed strategy ('auto', 'ddp', 'deepspeed_stage_2', etc.)
+
+        Returns:
+            Lightning Trainer instance
+        """
+        # Mixed precision configuration
+        # Options: None (FP32), '16-mixed' (FP16), 'bf16-mixed' (BF16), '32' (FP32)
+        precision_mode = getattr(args, 'precision', None)
+
+        # Gradient clipping configuration
+        gradient_clip_val = getattr(args, 'grad_clip', None)
+        gradient_clip_algorithm = getattr(args, 'grad_clip_algorithm', 'norm')
+
+        return Trainer(
+            devices=args.gpus,
+            max_epochs=args.epoch,
+            strategy=strategy,
+            accelerator='gpu',
+            callbacks=callbacks,
+            precision=precision_mode,
+            gradient_clip_val=gradient_clip_val,
+            gradient_clip_algorithm=gradient_clip_algorithm,
+        )
 
     def _load_callbacks(self, args, save_dir, ckpt_dir):
         method_info = None
