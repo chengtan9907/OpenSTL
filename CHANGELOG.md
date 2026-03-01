@@ -56,6 +56,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added fallback import for `ConvNeXtBlock`
 - **timm 1.0.x compatibility** in `openstl/modules/wast_modules.py`:
   - Added fallback import for `SqueezeExcite`, `InvertedResidual`
+- **update_config logic bug** in `openstl/utils/main_utils.py`:
+  - Fixed config file values not overriding argparse defaults
+  - Simplified function logic to always apply config values
+  - Added comprehensive test coverage (6 tests)
+  - Fixes issues #193 and #200
 
 ## [1.0.0] - 2023-XX-XX
 
