@@ -121,6 +121,7 @@ workspace/
 tools/exp_bash/
 pretrains
 lightning_logs/
+logs/
 
 # Pytorch
 *.pth
@@ -139,3 +140,6 @@ configs_test/
 api/test.py
 configs/kinetics/simvp
 configs/bair/simvp
+
+.claude/
+*.out
