@@ -11,8 +11,9 @@ def readme():
 def get_version():
     version_file = 'openstl/version.py'
     with open(version_file, 'r', encoding='utf-8') as f:
-        exec(compile(f.read(), version_file, 'exec'))
-    return locals()['__version__']
+        namespace = {}
+        exec(compile(f.read(), version_file, 'exec'), namespace)
+    return namespace['__version__']
 
 
 def parse_requirements(fname='requirements.txt', with_version=True):

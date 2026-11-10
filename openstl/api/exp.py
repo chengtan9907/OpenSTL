@@ -39,10 +39,11 @@ class BaseExperiment(object):
         self.trainer = self._init_trainer(self.args, callbacks, strategy)
 
     def _init_trainer(self, args, callbacks, strategy):
-        return Trainer(devices=args.gpus,  # Use these GPUs
+        use_gpu = args.device == 'cuda' and torch.cuda.is_available()
+        return Trainer(devices=args.gpus if use_gpu else 1,  # Use these GPUs
                        max_epochs=args.epoch,  # Maximum number of epochs to train for
                        strategy=strategy,   # 'ddp', 'deepspeed_stage_2', 'ddp_find_unused_parameters_false'
-                       accelerator='gpu',  # Use distributed data parallel
+                       accelerator='gpu' if use_gpu else 'cpu',
                        callbacks=callbacks
                     )
 
