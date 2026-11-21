@@ -13,9 +13,9 @@ except:
 def rescale(x):
     return (x - x.max()) / (x.max() - x.min()) * 2 - 1
 
-def _threshold(x, y, t):
-    t = np.greater_equal(x, t).astype(np.float32)
-    p = np.greater_equal(y, t).astype(np.float32)
+def _threshold(x, y, threshold):
+    t = np.greater_equal(x, threshold).astype(np.float32)
+    p = np.greater_equal(y, threshold).astype(np.float32)
     is_nan = np.logical_or(np.isnan(x), np.isnan(y))
     t = np.where(is_nan, np.zeros_like(t, dtype=np.float32), t)
     p = np.where(is_nan, np.zeros_like(p, dtype=np.float32), p)
@@ -135,7 +135,7 @@ def sevir_metrics(pred, true, threshold):
     true = true.transpose(1, 0, 2, 3, 4)
     hits, fas, misses = [], [], []
     for i in range(pred.shape[0]):
-        t, p = _threshold(pred[i], true[i], threshold)
+        t, p = _threshold(true[i], pred[i], threshold)
         hits.append(np.sum(t * p))
         fas.append(np.sum((1 - t) * p))
         misses.append(np.sum(t * (1 - p)))
